@@ -19,7 +19,7 @@
 
 include_recipe "mysql::client"
 
-package "perl-DBD-MySQL"
+package "perl-DBD-MySQL" do
 	action :install
 end
 
