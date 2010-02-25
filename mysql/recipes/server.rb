@@ -32,6 +32,22 @@ service "mysqld" do
 	action :enable
 end
 
+directory "#{node[:mysql][:tmpdir]}" do
+	owner "mysql"
+	group "mysql"
+	mode "0755"
+	action :create
+	not_if "test -d #{node[:mysql][:tmpdir]}"
+end
+
+directory "#{node[:mysql][:logdir]}" do
+	owner "mysql"
+	group "mysql"
+	mode "0755"
+	action :create
+	not_if "test -d #{node[:mysql][:logdir]}"
+end
+
 template "/etc/my.cnf" do
 	source "my.cnf.erb"
 	owner "root"
@@ -45,6 +61,7 @@ template "/etc/my.cnf" do
           :table_cache => node[:mysql][:table_cache],
           :thread_cache_size => node[:mysql][:thread_cache_size],
           :open_files_limit => node[:mysql][:open_files_limit],
+          :max_connections => node[:mysql][:max_connections],
           :max_allowed_packet => node[:mysql][:max_allowed_packet],
           :tmp_table_size => node[:mysql][:tmp_table_size],
           :max_heap_table_size => node[:mysql][:max_heap_table_size],
@@ -57,11 +74,8 @@ template "/etc/my.cnf" do
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end
 
-#	variables(
-#          :port => node[:memcached][:port],
-#          :user => node[:memcached][:user],
-#          :max_connections => node[:memcached][:max_connections],
-#          :cache_size => node[:memcached][:cache_size],
-#          :memcache_options => node[:memcached][:memcache_options],
-#          :address => node[:memcached][:address]
-#	)
+if (node[:mysql][:root_password])
+	execute "setting-mysql-passwd" do
+		command "mysqladmin -u root password #{node[:mysql][:root_password]}"
+	end
+end
