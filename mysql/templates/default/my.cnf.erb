@@ -18,7 +18,7 @@ wait_timeout=600
 
 # Slow Query Log Settings
 # -----------------------
-#log-slow-queries=<%= @log_slow_queries %>
+#log-slow-queries=<%= node[:mysql][:log_slow_queries] %>
 #long_query_time=2
 #log-queries-not-using-indexes
 

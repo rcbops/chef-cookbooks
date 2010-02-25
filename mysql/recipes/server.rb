@@ -38,7 +38,21 @@ template "/etc/my.cnf" do
 	group "root"
 	mode "0644"
 	variables(
-
+          :datadir => node[:mysql][:datadir],
+          :tmpdir => node[:mysql][:tmpdir],
+          :logdir => node[:mysql][:logdir],
+          :socket => node[:mysql][:socket],
+          :table_cache => node[:mysql][:table_cache],
+          :thread_cache_size => node[:mysql][:thread_cache_size],
+          :open_files_limit => node[:mysql][:open_files_limit],
+          :max_allowed_packet => node[:mysql][:max_allowed_packet],
+          :tmp_table_size => node[:mysql][:tmp_table_size],
+          :max_heap_table_size => node[:mysql][:max_heap_table_size],
+          :query_cache_size => node[:mysql][:query_cache_size],
+          :sort_buffer_size => node[:mysql][:sort_buffer_size],
+          :read_buffer_size => node[:mysql][:read_buffer_size],
+          :read_rnd_buffer_size => node[:mysql][:read_rnd_buffer_size],
+          :join_buffer_size => node[:mysql][:join_buffer_size],
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end
