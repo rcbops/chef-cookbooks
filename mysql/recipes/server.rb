@@ -69,7 +69,8 @@ template "/etc/my.cnf" do
           :sort_buffer_size => node[:mysql][:sort_buffer_size],
           :read_buffer_size => node[:mysql][:read_buffer_size],
           :read_rnd_buffer_size => node[:mysql][:read_rnd_buffer_size],
-          :join_buffer_size => node[:mysql][:join_buffer_size]
+          :join_buffer_size => node[:mysql][:join_buffer_size],
+          :max_join_size => node[:mysql][:max_join_size]
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end

@@ -29,7 +29,7 @@ set_unless[:mysql][:read_rnd_buffer_size]	= "8M"
 set_unless[:mysql][:join_buffer_size]		= "1M"
 
 #
-set[:mysql][:max_join_size]	= "DEFAULT"
+set[:mysql][:max_join_size]	= "4294967295"
 
 # set_unless[:mysql][:]		= ""
 # set_unless[:mysql][:]		= ""
