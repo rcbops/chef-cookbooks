@@ -70,6 +70,7 @@ template "/etc/my.cnf" do
           :read_buffer_size => node[:mysql][:read_buffer_size],
           :read_rnd_buffer_size => node[:mysql][:read_rnd_buffer_size],
           :join_buffer_size => node[:mysql][:join_buffer_size],
+          :log_slow_queries => node[:mysql][:log_slow_queries],
           :max_join_size => node[:mysql][:max_join_size]
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
