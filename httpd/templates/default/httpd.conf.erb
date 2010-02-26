@@ -1,43 +1,3 @@
-#
-# This is the main Apache server configuration file.  It contains the
-# configuration directives that give the server its instructions.
-# See <URL:http://httpd.apache.org/docs/2.2/> for detailed information.
-# In particular, see
-# <URL:http://httpd.apache.org/docs/2.2/mod/directives.html>
-# for a discussion of each configuration directive.
-#
-#
-# Do NOT simply read the instructions in here without understanding
-# what they do.  They're here only as hints or reminders.  If you are unsure
-# consult the online docs. You have been warned.  
-#
-# The configuration directives are grouped into three basic sections:
-#  1. Directives that control the operation of the Apache server process as a
-#     whole (the 'global environment').
-#  2. Directives that define the parameters of the 'main' or 'default' server,
-#     which responds to requests that aren't handled by a virtual host.
-#     These directives also provide default values for the settings
-#     of all virtual hosts.
-#  3. Settings for virtual hosts, which allow Web requests to be sent to
-#     different IP addresses or hostnames and have them handled by the
-#     same Apache server process.
-#
-# Configuration and logfile names: If the filenames you specify for many
-# of the server's control files begin with "/" (or "drive:/" for Win32), the
-# server will use that explicit path.  If the filenames do *not* begin
-# with "/", the value of ServerRoot is prepended -- so "logs/foo.log"
-# with ServerRoot set to "/etc/httpd" will be interpreted by the
-# server as "/etc/httpd/logs/foo.log".
-#
-
-### Section 1: Global Environment
-#
-# The directives in this section affect the overall operation of Apache,
-# such as the number of concurrent requests it can handle or where it
-# can find its configuration files.
-#
-
-#
 # Don't give away too much information about all the subcomponents
 # we are running.  Comment out this line if you don't mind remote sites
 # finding out what major optional modules you are running
@@ -71,20 +31,20 @@ Timeout 120
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive Off
+KeepAlive <%= @keepalive %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
 # during a persistent connection. Set to 0 to allow an unlimited amount.
 # We recommend you leave this number high, for maximum performance.
 #
-MaxKeepAliveRequests 100
+MaxKeepAliveRequests <%= @max_keepalive_requests %>
 
 #
 # KeepAliveTimeout: Number of seconds to wait for the next request from the
 # same client on the same connection.
 #
-KeepAliveTimeout 15
+KeepAliveTimeout <%= @keepalive_timeout %>
 
 ##
 ## Server-Pool Size Regulation (MPM specific)
@@ -98,28 +58,12 @@ KeepAliveTimeout 15
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule prefork.c>
-StartServers       8
-MinSpareServers    5
-MaxSpareServers   20
-ServerLimit      256
-MaxClients       256
-MaxRequestsPerChild  4000
-</IfModule>
-
-# worker MPM
-# StartServers: initial number of server processes to start
-# MaxClients: maximum number of simultaneous client connections
-# MinSpareThreads: minimum number of worker threads which are kept spare
-# MaxSpareThreads: maximum number of worker threads which are kept spare
-# ThreadsPerChild: constant number of worker threads in each server process
-# MaxRequestsPerChild: maximum number of requests a server process serves
-<IfModule worker.c>
-StartServers         2
-MaxClients         150
-MinSpareThreads     25
-MaxSpareThreads     75 
-ThreadsPerChild     25
-MaxRequestsPerChild  0
+StartServers         <%= @start_servers %>
+MinSpareServers      <%= @min_spare_servers %>
+MaxSpareServers      <%= @max_spare_servers %>
+ServerLimit          <%= @server_limit %>
+MaxClients           <%= @max_clients %>
+MaxRequestsPerChild  <%= @max_requests_per_child %>
 </IfModule>
 
 #
@@ -138,229 +82,54 @@ Listen 80
 #
 Include conf.d/*.conf
 
-#
-# If you wish httpd to run as a different user or group, you must run
-# httpd as root initially and it will switch.  
-#
-# User/Group: The name (or #number) of the user/group to run httpd as.
-#  . On SCO (ODT 3) use "User nouser" and "Group nogroup".
-#  . On HPUX you may not be able to use shared memory as nobody, and the
-#    suggested workaround is to create a user www and use that user.
-#  NOTE that some kernels refuse to setgid(Group) or semctl(IPC_SET)
-#  when the value of (unsigned)Group is above 60000; 
-#  don't use Group #-1 on these systems!
-#
 User apache
 Group apache
 
 ### Section 2: 'Main' server configuration
-#
-# The directives in this section set up the values used by the 'main'
-# server, which responds to any requests that aren't handled by a
-# <VirtualHost> definition.  These values also provide defaults for
-# any <VirtualHost> containers you may define later in the file.
-#
-# All of these directives may appear inside <VirtualHost> containers,
-# in which case these default settings will be overridden for the
-# virtual host being defined.
-#
-
-#
-# ServerAdmin: Your address, where problems with the server should be
-# e-mailed.  This address appears on some server-generated pages, such
-# as error documents.  e.g. admin@your-domain.com
-#
 ServerAdmin root@localhost
-
-#
-# ServerName gives the name and port that the server uses to identify itself.
-# This can often be determined automatically, but we recommend you specify
-# it explicitly to prevent problems during startup.
-#
-# If this is not set to valid DNS name for your host, server-generated
-# redirections will not work.  See also the UseCanonicalName directive.
-#
-# If your host doesn't have a registered DNS name, enter its IP address here.
-# You will have to access it by its address anyway, and this will make 
-# redirections work in a sensible way.
-#
 #ServerName www.example.com:80
-
-#
-# UseCanonicalName: Determines how Apache constructs self-referencing 
-# URLs and the SERVER_NAME and SERVER_PORT variables.
-# When set "Off", Apache will use the Hostname and Port supplied
-# by the client.  When set "On", Apache will use the value of the
-# ServerName directive.
-#
 UseCanonicalName Off
-
-#
-# DocumentRoot: The directory out of which you will serve your
-# documents. By default, all requests are taken from this directory, but
-# symbolic links and aliases may be used to point to other locations.
-#
 DocumentRoot "/var/www/html"
 
-#
-# Each directory to which Apache has access can be configured with respect
-# to which services and features are allowed and/or disabled in that
-# directory (and its subdirectories). 
-#
-# First, we configure the "default" to be a very restrictive set of 
-# features.  
-#
 <Directory />
     Options FollowSymLinks
     AllowOverride None
 </Directory>
 
 #
-# Note that from this point forward you must specifically allow
-# particular features to be enabled - so if something's not working as
-# you might expect, make sure that you have specifically enabled it
-# below.
-#
-
-#
 # This should be changed to whatever you set DocumentRoot to.
 #
 <Directory "/var/www/html">
-
-#
-# Possible values for the Options directive are "None", "All",
-# or any combination of:
-#   Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
-#
-# Note that "MultiViews" must be named *explicitly* --- "Options All"
-# doesn't give it to you.
-#
-# The Options directive is both complicated and important.  Please see
-# http://httpd.apache.org/docs/2.2/mod/core.html#options
-# for more information.
-#
     Options Indexes FollowSymLinks
-
-#
-# AllowOverride controls what directives may be placed in .htaccess files.
-# It can be "All", "None", or any combination of the keywords:
-#   Options FileInfo AuthConfig Limit
-#
     AllowOverride None
-
-#
-# Controls who can get stuff from this server.
-#
     Order allow,deny
     Allow from all
-
 </Directory>
 
-#
-# DirectoryIndex: sets the file that Apache will serve if a directory
-# is requested.
-#
-# The index.html.var file (a type-map) is used to deliver content-
-# negotiated documents.  The MultiViews Option can be used for the 
-# same purpose, but it is much slower.
-#
 DirectoryIndex index.html index.html.var
 
-#
-# AccessFileName: The name of the file to look for in each directory
-# for additional configuration directives.  See also the AllowOverride
-# directive.
-#
 AccessFileName .htaccess
 
-#
-# The following lines prevent .htaccess and .htpasswd files from being 
-# viewed by Web clients. 
-#
 <Files ~ "^\.ht">
     Order allow,deny
     Deny from all
 </Files>
 
-#
-# TypesConfig describes where the mime.types file (or equivalent) is
-# to be found.
-#
 TypesConfig /etc/mime.types
-
-#
-# DefaultType is the default MIME type the server will use for a document
-# if it cannot otherwise determine one, such as from filename extensions.
-# If your server contains mostly text or HTML documents, "text/plain" is
-# a good value.  If most of your content is binary, such as applications
-# or images, you may want to use "application/octet-stream" instead to
-# keep browsers from trying to display binary files as though they are
-# text.
-#
 DefaultType text/plain
-
-#
-# The mod_mime_magic module allows the server to use various hints from the
-# contents of the file itself to determine its type.  The MIMEMagicFile
-# directive tells the module where the hint definitions are located.
-#
 <IfModule mod_mime_magic.c>
-#   MIMEMagicFile /usr/share/magic.mime
     MIMEMagicFile conf/magic
 </IfModule>
 
-#
-# HostnameLookups: Log the names of clients or just their IP addresses
-# e.g., www.apache.org (on) or 204.62.129.132 (off).
-# The default is off because it'd be overall better for the net if people
-# had to knowingly turn this feature on, since enabling it means that
-# each client request will result in AT LEAST one lookup request to the
-# nameserver.
-#
 HostnameLookups Off
 
-#
-# EnableMMAP: Control whether memory-mapping is used to deliver
-# files (assuming that the underlying OS supports it).
-# The default is on; turn this off if you serve from NFS-mounted 
-# filesystems.  On some systems, turning it off (regardless of
-# filesystem) can improve performance; for details, please see
-# http://httpd.apache.org/docs/2.2/mod/core.html#enablemmap
-#
 #EnableMMAP off
 
-#
-# EnableSendfile: Control whether the sendfile kernel support is 
-# used to deliver files (assuming that the OS supports it). 
-# The default is on; turn this off if you serve from NFS-mounted 
-# filesystems.  Please see
-# http://httpd.apache.org/docs/2.2/mod/core.html#enablesendfile
-#
 #EnableSendfile off
 
-#
-# Optionally add a line containing the server version and virtual host
-# name to server-generated pages (internal error documents, FTP directory
-# listings, mod_status and mod_info output etc., but not CGI generated
-# documents or custom error documents).
-# Set to "EMail" to also include a mailto: link to the ServerAdmin.
 # Set to one of:  On | Off | EMail
-#
 ServerSignature On
 
-#
-# Aliases: Add here as many aliases as you need (with no limit). The format is 
-# Alias fakename realname
-#
-# Note that if you include a trailing / on fakename then the server will
-# require it to be present in the URL.  So "/icons" isn't aliased in this
-# example, only "/icons/".  If the fakename is slash-terminated, then the 
-# realname must also be slash terminated, and if the fakename omits the 
-# trailing slash, the realname must also omit it.
-#
-# We include the /icons/ alias for FancyIndexed directory listings.  If you
-# do not use FancyIndexing, you may comment this out.
-#
 Alias /icons/ "/var/www/icons/"
 
 <Directory "/var/www/icons">
