@@ -21,6 +21,17 @@ template "/etc/httpd/conf/httpd.conf" do
         owner "root"
         group "root"
         mode "0644"
+        variables (
+          :keepalive => node[:httpd][:keepalive],
+          :max_keepalive_requests => node[:http][:max_keepalive_requests],
+          :keepalive_timeout => node[:http][:keepalive_timeout],
+          :start_servers => node[:http][:start_servers],
+          :min_spare_servers => node[:http][:min_spare_servers],
+          :max_spare_servers => node[:http][:max_spare_servers],
+          :server_limit => node[:http][:server_limit],
+          :max_clients => node[:http][:max_clients],
+          :max_requests_per_child => node[:http][:max_requests_per_child],
+        )
         notifies :restart, resources(:service => "httpd"), :delayed
 end
 
