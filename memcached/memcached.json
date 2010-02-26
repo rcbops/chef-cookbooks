@@ -1,0 +1,6 @@
+{ 
+  "memcached" : {
+    "cache_size": "128"
+  }, 
+  "recipes": [ "memcached" ] 
+}
