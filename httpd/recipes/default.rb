@@ -72,6 +72,14 @@ template "/etc/httpd/conf.d/icons.conf" do
         notifies :restart, resources(:service => "httpd"), :delayed
 end
 
+template "/etc/httpd/conf.d/browser_match.conf" do
+        source "browser_match.conf.erb"
+        owner "root"
+        group "root"
+        mode "0644"
+        notifies :restart, resources(:service => "httpd"), :delayed
+end
+
 template "/etc/httpd/conf.d/mod_proxy.conf" do
         source "mod_proxy.conf.erb"
         owner "root"
