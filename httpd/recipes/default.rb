@@ -22,7 +22,7 @@ template "/etc/httpd/conf/httpd.conf" do
         group "root"
         mode "0644"
         variables(
-          :keepalive => node[:httpdd][:keepalive],
+          :keepalive => node[:httpd][:keepalive],
           :max_keepalive_requests => node[:httpd][:max_keepalive_requests],
           :keepalive_timeout => node[:httpd][:keepalive_timeout],
           :start_servers => node[:httpd][:start_servers],
