@@ -31,7 +31,29 @@ set_unless[:mysql][:join_buffer_size]		= "1M"
 #
 set[:mysql][:max_join_size]	= "4294967295"
 
+set_unless[:mysql][:default_storage_engine]	= "MyISAM"
+
+# MyISAM Specific Values
+set_unless[:mysql][:key_buffer_size]		= "64M"
+set_unless[:mysql][:myisam_sort_buffer_size]	= "64M"
+
+# InnoDB Specific Values
+set_unless[:mysql][:innodb_buffer_pool_size]		= "2048M"
+set_unless[:mysql][:innodb_additional_mem_pool_size]	= "20M"
+set_unless[:mysql][:innodb_thread_concurrency]		= 16
+
+# Replication Values
+set_unless[:mysql][:server_id]		= "10"
+set_unless[:mysql][:expire_logs_days]	= 7
+
+# Binary Logging
+#if node[:mysql][:binlog_enable]
+	set_unless[:mysql][:log_bin]		= "#{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log"
+	set_unless[:mysql][:log_bin_index]	= "#{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log.index"
+#else
+	set_unless[:mysql][:log_bin]		= "# #{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log"
+#	set_unless[:mysql][:log_bin_index]	= "# #{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log.index"
+#end
+
 # set_unless[:mysql][:]		= ""
 # set_unless[:mysql][:]		= ""
-# set_unless[:mysql][:]		= ""
-# Tunable Parameters

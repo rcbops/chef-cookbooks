@@ -54,7 +54,7 @@ max_join_size=<%= @max_join_size %>
 # Set this to force MySQL to use a particular engine / table-type
 # for new tables. This setting can still be overridden by specifying
 # the engine explicitly in the CREATE TABLE statement.
-#default-storage-engine=InnoDB
+default-storage-engine=<%= @default_storage_engine %>
 
 # MyISAM
 # ------
@@ -63,12 +63,12 @@ max_join_size=<%= @max_join_size %>
 # Try running a 'du -sch /var/lib/mysql/*/*.MYI'
 # This will give you a good estiamte on the size of all the MyISAM indexes.
 # (The buffer may not need to set that high, however)
-key_buffer_size=64M
+key_buffer_size=<%= @key_buffer_size %>
 
 # This setting controls the size of the buffer that is allocated when 
 # sorting MyISAM indexes during a REPAIR TABLE or when creating indexes 
 # with CREATE INDEX or ALTER TABLE.
-myisam_sort_buffer_size=64M
+myisam_sort_buffer_size=<%= @myisam_sort_buffer_size %>
 
 # InnoDB
 # ------
@@ -89,9 +89,8 @@ myisam_sort_buffer_size=64M
 # InnoDB loves RAM. For customers using mostly InnoDB, consider setting
 # this variable somewhat liberally. Do make sure the server is 64-bit, 
 # however, if you plan on setting it above 1.5-2GB.
-innodb_buffer_pool_size=16M
-
-#innodb_additional_mem_pool_size=20M
+innodb_buffer_pool_size=<%= @innodb_buffer_pool_size %>
+innodb_additional_mem_pool_size=<%= @innodb_additional_mem_pool_size %>
 
 # innodb_file_per_table can be useful in certain cases
 # but be aware that it does not scale well with a 
@@ -105,7 +104,7 @@ innodb_buffer_pool_size=16M
 # If you are not sure what to set this two, the
 # following formula can offer up a rough idea:
 # (number of cpus * number of disks * 2)
-#innodb_thread_concurrency=16
+innodb_thread_concurrency=<%= @innodb_thread_concurrency %>
 
 # _____________________________ 
 #< Replication/Backup Settings >
@@ -116,17 +115,17 @@ innodb_buffer_pool_size=16M
 #                ||----w |
 #                ||     ||
 
-server-id=1
+server-id=<%= @server_id %>
 
 # It may be wise to include the server-name or an easy identifier
 # to the server in these logs, such as 'log-bin=/var/lib/mysqllogs/db1-bin-log'
-#log-bin=/var/lib/mysqllogs/bin-log
-#log-bin-index=/var/lib/mysqllogs/bin-log.index
+#log-bin=<%= @log_bin %>
+#log-bin-index=<%= @log_bin_index %>
 #relay-log=/var/lib/mysqllogs/relay-log
 #relay-log-index=/var/lib/mysqllogs/relay-log.index
 
 # MySQL 5.0+ Only
-#expire_logs_days=14
+#expire_logs_days=<%= @expire_log_days %>
 
 # This is usually only needed when setting up chained replication.
 #log-slave-updates
