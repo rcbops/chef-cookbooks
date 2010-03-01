@@ -10,4 +10,9 @@ set_unless[:httpd][:max_clients]		= 256
 set_unless[:httpd][:max_requests_per_child]	= 4000
 
 # PHP Variables
-set_unless[:httpd][:php_memory_limit]                 = "16M"
+set_unless[:httpd][:php_memory_limit]           = "16M"
+set_unless[:httpd][:apc_enabled] 		= 1
+set_unless[:httpd][:apc_shm_segments] 		= 1
+set_unless[:httpd][:apc_optimization] 		= 1
+set_unless[:httpd][:apc_enable_cli] 		= 1
+set_unless[:httpd][:apc_shm_size] 		= 32

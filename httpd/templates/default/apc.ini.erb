@@ -1,0 +1,13 @@
+; Enable apc extension module
+extension = apc.so
+; Options for the apc module
+apc.enabled=<%= @apc_enabled %>
+apc.shm_segments=<%= @apc_shm_segments %>
+apc.optimization=<%= @apc_optimization %>
+apc.shm_size=<%= @apc_shm_size %>
+apc.ttl=7200
+apc.user_ttl=7200
+apc.num_files_hint=1024
+apc.mmap_file_mask=/tmp/apc.XXXXXX
+apc.enable_cli=<%= @apc_enable_cli %>
+apc.cache_by_default=1
