@@ -25,6 +25,9 @@ wait_timeout=600
 # Global, Non Engine-Specific Buffers
 # -----------------------------------
 max_allowed_packet=<%= @max_allowed_packet %>
+<%= if @max_heap_table_size < @tmp_table_size %>
+<%=   @max_heap_table_size = @tmp_table_size %>
+<%= end %>
 tmp_table_size=<%= @tmp_table_size %>
 max_heap_table_size=<%= @max_heap_table_size %>
 
