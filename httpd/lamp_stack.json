@@ -1,0 +1,10 @@
+{ 
+  "memcached": {
+    "cache_size": 128
+  },
+  "httpd": {
+    "php_memory_limit": "32M",
+    "max_clients": 512
+  },
+  "recipes": [ "httpd" ] 
+}
