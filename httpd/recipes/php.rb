@@ -48,7 +48,7 @@ template "/etc/php.ini" do
         group "root"
         mode "0644"
         variables(
-	   :memory_limit => node[:httpd][:php_memory_limit]
+	   :php_memory_limit => node[:httpd][:php_memory_limit]
         )
         notifies :restart, resources(:service => "httpd"), :delayed
 end
