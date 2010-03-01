@@ -49,3 +49,8 @@ attribute 'httpd/max_requests_per_child',
   :display_name => "Max Requests Per Child",
   :description => "Sets the limit on the number of requests that an individual child server process will handle.",
   :default => 4000
+
+attribute 'httpd/php_memory_limit',
+  :display_name => "PHP Memory Limit",
+  :description => "Maximum amount of memory a script may consume.",
+  :default => "16M"
