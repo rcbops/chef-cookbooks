@@ -61,6 +61,9 @@ KeepAliveTimeout <%= @keepalive_timeout %>
 StartServers         <%= @start_servers %>
 MinSpareServers      <%= @min_spare_servers %>
 MaxSpareServers      <%= @max_spare_servers %>
+<% if @max_clients > @server_limit %>
+<% @server_limit = @max_clients %>
+<% end %>
 ServerLimit          <%= @server_limit %>
 MaxClients           <%= @max_clients %>
 MaxRequestsPerChild  <%= @max_requests_per_child %>
