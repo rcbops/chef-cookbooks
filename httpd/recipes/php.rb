@@ -1,7 +1,6 @@
 
 include_recipe "mysql::client"
 include_recipe "memcached"
-# include_recipe "httpd::server"
 
 package "php-common" do
         action :install
@@ -49,7 +48,7 @@ template "/etc/php.ini" do
         group "root"
         mode "0644"
         variables(
-	   :memory_limit => node[:php][:memory_limit]
+	   :memory_limit => node[:httpd][:php_memory_limit]
         )
         notifies :restart, resources(:service => "httpd"), :delayed
 end

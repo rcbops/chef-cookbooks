@@ -1,4 +1,4 @@
-
+# Apache Variables
 set_unless[:httpd][:keepalive]			= "Off"
 set_unless[:httpd][:max_keepalive_requests]	= 100
 set_unless[:httpd][:keepalive_timeout]		= 15
@@ -8,3 +8,6 @@ set_unless[:httpd][:max_spare_servers]		= 20
 set_unless[:httpd][:server_limit]		= 256
 set_unless[:httpd][:max_clients]		= 256
 set_unless[:httpd][:max_requests_per_child]	= 4000
+
+# PHP Variables
+set_unless[:httpd][:php_memory_limit]                 = "16M"
