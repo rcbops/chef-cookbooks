@@ -119,8 +119,13 @@ server-id=<%= @server_id %>
 
 # It may be wise to include the server-name or an easy identifier
 # to the server in these logs, such as 'log-bin=/var/lib/mysqllogs/db1-bin-log'
-#log-bin=<%= @log_bin %>
-#log-bin-index=<%= @log_bin_index %>
+<% if @binlog_enabled = true %>
+log-bin=<%= @log_bin %>
+log-bin-index=<%= @log_bin_index %>
+<% else %>
+# log-bin=<%= @log_bin %>
+# log-bin-index=<%= @log_bin_index %>
+<% end %>
 #relay-log=/var/lib/mysqllogs/relay-log
 #relay-log-index=/var/lib/mysqllogs/relay-log.index
 

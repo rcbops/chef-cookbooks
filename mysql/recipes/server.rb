@@ -84,6 +84,7 @@ template "/etc/my.cnf" do
           :innodb_thread_concurrency => node[:mysql][:innodb_thread_concurrency],
           :server_id => node[:mysql][:server_id],
           :expire_logs_days => node[:mysql][:expire_logs_days],
+          :logbin_enabled => node[:mysql][:logbin_enabled],
           :log_bin => node[:mysql][:log_bin],
           :log_bin_index => node[:mysql][:log_bin_index]
 	)
