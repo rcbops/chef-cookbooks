@@ -22,6 +22,7 @@ package "memcached" do
 end
 
 service "memcached" do
+        supports :status => true, :restart => true
 	action :enable
 end
 
