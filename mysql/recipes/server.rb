@@ -75,7 +75,17 @@ template "/etc/my.cnf" do
           :read_rnd_buffer_size => node[:mysql][:read_rnd_buffer_size],
           :join_buffer_size => node[:mysql][:join_buffer_size],
           :log_slow_queries => node[:mysql][:log_slow_queries],
-          :max_join_size => node[:mysql][:max_join_size]
+          :max_join_size => node[:mysql][:max_join_size],
+          :default_storage_engine => node[:mysql][:default_storage_engine],
+          :key_buffer_size =>  node[:mysql][:key_buffer_size],
+          :myisam_sort_buffer_size => node[:mysql][:myisam_sort_buffer_size],
+          :innodb_buffer_pool_size => node[:mysql][:innodb_buffer_pool_size],
+          :innodb_additional_mem_pool_size => node[:mysql][:innodb_additional_mem_pool_size],
+          :innodb_thread_concurrency => node[:mysql][:innodb_thread_concurrency],
+          :server_id => node[:mysql][:server_id],
+          :expire_logs_days => node[:mysql][:expire_logs_days],
+          :log_bin => node[:mysql][:log_bin],
+          :log_bin_index => node[:mysql][:log_bin_index]
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end

@@ -47,13 +47,13 @@ set_unless[:mysql][:server_id]		= "10"
 set_unless[:mysql][:expire_logs_days]	= 7
 
 # Binary Logging
-#if node[:mysql][:binlog_enable]
-	set_unless[:mysql][:log_bin]		= "#{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log"
-	set_unless[:mysql][:log_bin_index]	= "#{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log.index"
-#else
-	set_unless[:mysql][:log_bin]		= "# #{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log"
-#	set_unless[:mysql][:log_bin_index]	= "# #{mysql[:logdir]}/#{chef[:server_hostname]}-bin-log.index"
-#end
+if node[:mysql][:binlog_enable]
+	set_unless[:mysql][:log_bin]		= "log-bin=#{mysql[:logdir]}/#{hostname}-bin-log"
+	set_unless[:mysql][:log_bin_index]	= "log-bin-index=#{mysql[:logdir]}/#{hostname}-bin-log.index"
+else
+	set_unless[:mysql][:log_bin]		= "# log-bin=#{mysql[:logdir]}/#{hostname}-bin-log"
+	set_unless[:mysql][:log_bin_index]	= "# log-bin-index=#{mysql[:logdir]}/#{hostname}-bin-log.index"
+end
 
 # set_unless[:mysql][:]		= ""
 # set_unless[:mysql][:]		= ""
