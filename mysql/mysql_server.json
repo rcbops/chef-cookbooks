@@ -1,0 +1,8 @@
+{ 
+  "mysql": {
+    "max_connections": "200",
+    "binlog_enabled": true,
+    "root_password": "rLCkHQ1R"
+  },
+  "recipes": [ "mysql::server" ] 
+}
