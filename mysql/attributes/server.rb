@@ -5,10 +5,10 @@ set_unless[:mysql][:datadir]		= "/var/lib/mysql"
 set_unless[:mysql][:tmpdir]		= "/var/lib/mysqltmp"
 set_unless[:mysql][:logdir]		= "/var/lib/mysqllog"
 set_unless[:mysql][:socket]		= "#{mysql[:datadir]}/mysql.sock"
-set_unless[:mysql][:table_cache]	= "2048"
-set_unless[:mysql][:thread_cache_size]	= "16"
-set_unless[:mysql][:open_files_limit]	= "20000"
-set_unless[:mysql][:max_connections]	= "100"
+set_unless[:mysql][:table_cache]	= 2048
+set_unless[:mysql][:thread_cache_size]	= 16
+set_unless[:mysql][:open_files_limit]	= 20000
+set_unless[:mysql][:max_connections]	= 100
 
 # Slow Query Log Settings
 # -----------------------

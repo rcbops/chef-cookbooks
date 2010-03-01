@@ -1,36 +1,91 @@
 maintainer       "Justin Shepherd"
 maintainer_email "jshepher@rackspace.com"
 license          "Apache 2.0"
-description      "Installs/Configures memcached"
+description      "Installs/Configures mysql"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
 version          "0.2"
 
-attribute 'memcached/port',
-  :display_name => "Port",
-  :description => "Listen on TCP port <num>, the default is port 11211.",
-  :default => "11211"
+attribute 'mysql/datadir',
+  :display_name => "DataDir",
+  :description => "",
+  :default => "/var/lib/mysql"
 
-attribute 'memcached/user',
-  :display_name => "Username",
-  :description => "Assume the identity of <username> (only when run as root).",
-  :default => "nobody"
+attribute 'mysql/tmpdir',
+  :display_name => "TempDir",
+  :description => "",
+  :default => "/var/lib/mysqltmp"
 
-attribute 'memcached/max_connections',
+attribute 'mysql/logdir',
+  :display_name => "LogDir",
+  :description => "",
+  :default => "/var/lib/mysqllog"
+
+attribute 'mysql/socket',
+  :display_name => "Socket",
+  :description => "",
+  :default => "/var/lib/mysql/mysql.sock"
+
+attribute 'mysql/table_cache',
+  :display_name => "Table Cache",
+  :description => "",
+  :default => 2048
+
+attribute 'mysql/thread_cache_size',
+  :display_name => "Thread Cache Size",
+  :description => "",
+  :default => 16
+
+attribute 'mysql/open_files_limit',
+  :display_name => "Open Files Limit",
+  :description => "",
+  :default => 20000
+
+attribute 'mysql/max_connections',
   :display_name => "Max Connections",
-  :description => "Use <num> max simultaneous connections; the default is 1024.",
-  :default => 1024
+  :description => "",
+  :default => 200
 
-attribute 'memcached/cache_size',
-  :display_name => "Cache Size",
-  :description => "Use <num> MB memory max to use for object storage; the default is 64 megabytes.",
-  :default => 64
+attribute 'mysql/max_allowed_packet',
+  :display_name => "Max Allowed Packet",
+  :description => "",
+  :default => "16M" 
 
-attribute 'memcached/memcache_options',
-  :display_name => "Additional Options",
-  :description => "Any additional options that are outside of the listed attributes",
-  :default => ""
+attribute 'mysql/tmp_table_size',
+  :display_name => "Temp Table Size",
+  :description => "",
+  :default => "64M"
 
-attribute 'memcached/address',
-  :display_name => "Address",
-  :description => "Listen on <ip_addr>; default to 127.0.0.1. This is an important option to consider as there is no other way to secure the installation.",
-  :default => "127.0.0.1"
+attribute 'mysql/max_heap_table_size',
+  :display_name => "Max Heap Table Size",
+  :description => "",
+  :default => "64M"
+
+attribute 'mysql/query_cache_size',
+  :display_name => "Query Cache Size",
+  :description => "",
+  :default => "32M"
+
+attribute 'mysql/sort_buffer_size',
+  :display_name => "Sort Buffer Size",
+  :description => "",
+  :default => "1M"
+
+attribute 'mysql/read_buffer_size',
+  :display_name => "Read Buffer Size",
+  :description => "",
+  :default => "1M"
+
+attribute 'mysql/read_rnd_buffer_size',
+  :display_name => "Read Random Buffer Size",
+  :description => "",
+  :default => "8M"
+
+attribute 'mysql/join_buffer_size',
+  :display_name => "Join Buffer Size",
+  :description => "",
+  :default => "1M"
+
+attribute 'mysql/datadir',
+  :display_name => "DataDir",
+  :description => "",
+  :default => "/var/lib/mysql"
