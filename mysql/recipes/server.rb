@@ -27,6 +27,10 @@ package "mysql-server" do
 	action :install
 end
 
+package "maatkit" do
+	action :install
+end
+
 service "mysqld" do
 	supports :status => true, :restart => true
 	action :enable
