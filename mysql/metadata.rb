@@ -7,7 +7,7 @@ version          "0.2"
 
 attribute 'mysql/datadir',
   :display_name => "DataDir",
-  :description => "",
+  :description => "The MySQL data directory.",
   :default => "/var/lib/mysql"
 
 attribute 'mysql/tmpdir',
@@ -85,7 +85,57 @@ attribute 'mysql/join_buffer_size',
   :description => "",
   :default => "1M"
 
-attribute 'mysql/datadir',
-  :display_name => "DataDir",
+attribute 'mysql/default_storage_engine',
+  :display_name => "Default Storage Engine",
   :description => "",
-  :default => "/var/lib/mysql"
+  :default => "MyISAM"
+
+attribute 'mysql/key_buffer_size',
+  :display_name => "MyISAM Key Buffer Size",
+  :description => "",
+  :default => "64M"
+
+attribute 'mysql/myisam_sort_buffer_size',
+  :display_name => "MyISAM Sort Buffer Size",
+  :description => "",
+  :default => "64M"
+
+attribute 'mysql/innodb_buffer_pool_size',
+  :display_name => "InnoDB Buffer Pool Size",
+  :description => "The size of the memory buffer InnoDB uses to cache data and indexes of its tables.",
+  :default => "2048M"
+
+attribute 'mysql/innodb_additional_mem_pool_size',
+  :display_name => "InnoDB Additional Mem Pool Size",
+  :description => "The size of a memory pool InnoDB uses to store data dictionary information and other internal data structures.",
+  :default => "20M"
+
+attribute 'mysql/innodb_thread_concurrency',
+  :display_name => "InnoDB Thread Concurrency",
+  :description => "InnoDB tries to keep the number of operating system threads concurrently inside InnoDB less than or equal to the limit given by this variable.",
+  :default => 16
+
+attribute 'mysql/server_id',
+  :display_name => "Server ID",
+  :description => "The server ID, used in replication to give each master and slave a unique identity.",
+  :default => "10"
+
+attribute 'mysql/expire_logs_days',
+  :display_name => "Expire Logs Days",
+  :description => "The number of days for automatic binary log file removal. ",
+  :default => 7
+
+attribute 'mysql/binlog_enabled',
+  :display_name => "Enable Binary Logging",
+  :description => "This variable controls wether Binary Logging is enabled or disabled",
+  :default => "false"
+
+attribute 'mysql/relaylog_enabled',
+  :display_name => "Enable Relay Logs",
+  :description => "This variable controls wether Relay Logging is enabled or disabled",
+  :default => "false"
+
+attribute 'mysql/log_slave_updates_enabled',
+  :display_name => "Enable Log Slave Updates",
+  :description => "This variable controls wether Slave Update Logging is enabled or disabled",
+  :default => "false"
