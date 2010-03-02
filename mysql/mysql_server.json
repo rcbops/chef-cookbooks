@@ -1,8 +1,33 @@
 { 
   "mysql": {
-    "max_connections": "200",
-    "binlog_enabled": true,
-    "root_password": "rLCkHQ1R"
+    	"root_password": "password",
+	"datadir": "/var/lib/mysql",
+	"tmpdir": "/var/lib/mysqltmp",
+	"logdir": "/var/lib/mysqllog",
+	"socket": "/var/lib/mysql/mysql.sock",
+	"table_cache": 2048,
+	"thread_cache_size": 16,
+	"open_files_limit": 20000,
+	"max_connections": 100,
+	"max_allowed_packet": "16M",
+	"tmp_table_size": "64M",
+	"max_heap_table_size": "64M",
+	"query_cache_size": "32M",
+	"sort_buffer_size": "1M",
+	"read_buffer_size": "1M",
+	"read_rnd_buffer_size": "8M",
+	"join_buffer_size": "1M",
+	"default_storage_engine": "MyISAM",
+	"key_buffer_size": "64M",
+	"myisam_sort_buffer_size": "64M",
+	"innodb_buffer_pool_size": "2048M",
+	"innodb_additional_mem_pool_size": "20M",
+	"innodb_thread_concurrency": 16,
+	"server_id": "10",
+	"expire_logs_days": 7,
+	"binlog_enabled": "false",
+	"relaylog_enabled": "false",
+	"log_slave_updates_enabled": "false",
   },
-  "recipes": [ "mysql::server" ] 
+  "recipes": [ "mysql::server" ":
 }
