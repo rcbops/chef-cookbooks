@@ -99,4 +99,14 @@ if (node[:mysql][:root_password])
 	execute "setting-mysql-passwd" do
 		command "mysqladmin -u root password #{node[:mysql][:root_password]}"
 	end
+
+	template "/root/.my.cnf" do
+	        source "client.my.cnf.erb"
+	        owner "root"
+	        group "root"
+	        mode "0644"
+	        variables(
+	          :root_password => node[:mysql][:root_password]
+		)
+	end	
 end
