@@ -1,6 +1,11 @@
 { 
   "memcached" : {
-    "cache_size": "128"
+	"port": 11211,
+	"user": "nobody",
+	"max_connections": 1024,
+    	"cache_size": "64",
+	"address": "127.0.0.1",
+	"memcache_options": ""
   }, 
   "recipes": [ "memcached" ] 
 }
