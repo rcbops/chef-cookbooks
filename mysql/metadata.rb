@@ -12,92 +12,92 @@ attribute 'mysql/datadir',
 
 attribute 'mysql/tmpdir',
   :display_name => "TempDir",
-  :description => "",
+  :description => "The path of the directory to use for creating temporary files.",
   :default => "/var/lib/mysqltmp"
 
 attribute 'mysql/logdir',
   :display_name => "LogDir",
-  :description => "",
+  :description => "This path will affect where your binary logs and relay logs reside.",
   :default => "/var/lib/mysqllog"
 
 attribute 'mysql/socket',
   :display_name => "Socket",
-  :description => "",
+  :description => "This option specifies the Unix socket file to use when listening for local connections.",
   :default => "/var/lib/mysql/mysql.sock"
 
 attribute 'mysql/table_cache',
   :display_name => "Table Cache",
-  :description => "",
+  :description => "The number of open tables for all threads.",
   :default => 2048
 
 attribute 'mysql/thread_cache_size',
   :display_name => "Thread Cache Size",
-  :description => "",
+  :description => "How many threads the server should cache for reuse.",
   :default => 16
 
 attribute 'mysql/open_files_limit',
   :display_name => "Open Files Limit",
-  :description => "",
+  :description => "The number of files that the operating system allows mysqld to open. ",
   :default => 20000
 
 attribute 'mysql/max_connections',
   :display_name => "Max Connections",
-  :description => "",
+  :description => "The number of simultaneous client connections allowed.",
   :default => 200
 
 attribute 'mysql/max_allowed_packet',
   :display_name => "Max Allowed Packet",
-  :description => "",
+  :description => "The maximum size of one packet or any generated/intermediate string.",
   :default => "16M" 
 
 attribute 'mysql/tmp_table_size',
   :display_name => "Temp Table Size",
-  :description => "",
+  :description => "The maximum size of internal in-memory temporary tables.",
   :default => "64M"
 
 attribute 'mysql/max_heap_table_size',
   :display_name => "Max Heap Table Size",
-  :description => "",
+  :description => "This variable sets the maximum size to which MEMORY tables are allowed to grow.",
   :default => "64M"
 
 attribute 'mysql/query_cache_size',
   :display_name => "Query Cache Size",
-  :description => "",
+  :description => "The amount of memory allocated for caching query results.",
   :default => "32M"
 
 attribute 'mysql/sort_buffer_size',
   :display_name => "Sort Buffer Size",
-  :description => "",
+  :description => "Each thread that needs to do a sort allocates a buffer of this size.",
   :default => "1M"
 
 attribute 'mysql/read_buffer_size',
   :display_name => "Read Buffer Size",
-  :description => "",
+  :description => "Each thread that does a sequential scan allocates a buffer of this size for each table it scans.",
   :default => "1M"
 
 attribute 'mysql/read_rnd_buffer_size',
   :display_name => "Read Random Buffer Size",
-  :description => "",
+  :description => "When reading rows in sorted order following a key-sorting operation, the rows are read through this buffer to avoid disk seeks.",
   :default => "8M"
 
 attribute 'mysql/join_buffer_size',
   :display_name => "Join Buffer Size",
-  :description => "",
+  :description => "The size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans.",
   :default => "1M"
 
 attribute 'mysql/default_storage_engine',
   :display_name => "Default Storage Engine",
-  :description => "",
+  :description => "Set the default storage engine (table type) for tables.",
   :default => "MyISAM"
 
 attribute 'mysql/key_buffer_size',
   :display_name => "MyISAM Key Buffer Size",
-  :description => "",
+  :description => "Index blocks for MyISAM tables are buffered and are shared by all threads.",
   :default => "64M"
 
 attribute 'mysql/myisam_sort_buffer_size',
   :display_name => "MyISAM Sort Buffer Size",
-  :description => "",
+  :description => "The size of the buffer that is allocated when sorting MyISAM indexes during a REPAIR TABLE or when creating indexes with CREATE INDEX or ALTER TABLE.",
   :default => "64M"
 
 attribute 'mysql/innodb_buffer_pool_size',
