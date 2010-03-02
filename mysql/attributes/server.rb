@@ -48,8 +48,13 @@ set_unless[:mysql][:expire_logs_days]	= 7
 
 # Binary Logging
 set_unless[:mysql][:binlog_enabled]     = "false"
-set_unless[:mysql][:log_bin]            = "#{mysql[:logdir]}/#{hostname}-bin-log"
-set_unless[:mysql][:log_bin_index]      = "#{mysql[:logdir]}/#{hostname}-bin-log.index"
+set[:mysql][:log_bin]            = "#{mysql[:logdir]}/#{hostname}-bin-log"
+set[:mysql][:log_bin_index]      = "#{mysql[:logdir]}/#{hostname}-bin-log.index"
 
-# set_unless[:mysql][:]		= ""
-# set_unless[:mysql][:]		= ""
+# Relay Logging
+set_unless[:mysql][:relaylog_enabled]	= "false"
+set[:mysql][:relay_log]          = "#{mysql[:logdir]}/#{hostname}-relay-log"
+set[:mysql][:relay_log_index]    = "#{mysql[:logdir]}/#{hostname}-relay-log.index"
+
+# Log Slave Updates
+set_unless[:mysql][:log_slave_updates_enabled] 	= "false"

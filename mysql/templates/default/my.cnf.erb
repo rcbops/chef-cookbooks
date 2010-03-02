@@ -126,14 +126,23 @@ log-bin-index=<%= @log_bin_index %>
 # log-bin=<%= @log_bin %>
 # log-bin-index=<%= @log_bin_index %>
 <% end %>
-#relay-log=/var/lib/mysqllogs/relay-log
-#relay-log-index=/var/lib/mysqllogs/relay-log.index
+<% if @relaylog_enabled %>
+relay-log=<%= @relay_log %>
+relay-log-index=<%= @relay_log_index %>
+<% else %>
+# relay-log=<%= @relay_log %>
+# relay-log-index=<%= @relay_log_index %>
+<% end %>
 
 # MySQL 5.0+ Only
 expire_logs_days=<%= @expire_logs_days %>
 
 # This is usually only needed when setting up chained replication.
+<% if @log_slave_updates_enabled %>
+log-slave-updates
+<% else %>
 #log-slave-updates
+<% end %>
 
 # Enable this to make replication more resilient against server 
 # crashes and restarts, but can cause higher I/O on the server.

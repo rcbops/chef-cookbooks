@@ -86,7 +86,11 @@ template "/etc/my.cnf" do
           :expire_logs_days => node[:mysql][:expire_logs_days],
           :logbin_enabled => node[:mysql][:logbin_enabled],
           :log_bin => node[:mysql][:log_bin],
-          :log_bin_index => node[:mysql][:log_bin_index]
+          :log_bin_index => node[:mysql][:log_bin_index],
+          :relaylog_enabled => node[:mysql][:relaylog_enabled],
+          :relay_log => node[:mysql][:relay_log],
+          :relay_log_index => node[:mysql][:relay_log_index]
+          :log_slave_updates_enabled => node[:mysql][:log_slave_updates_enabled],
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end
