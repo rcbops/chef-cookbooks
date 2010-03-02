@@ -89,8 +89,8 @@ template "/etc/my.cnf" do
           :log_bin_index => node[:mysql][:log_bin_index],
           :relaylog_enabled => node[:mysql][:relaylog_enabled],
           :relay_log => node[:mysql][:relay_log],
-          :relay_log_index => node[:mysql][:relay_log_index]
-          :log_slave_updates_enabled => node[:mysql][:log_slave_updates_enabled],
+          :relay_log_index => node[:mysql][:relay_log_index],
+          :log_slave_updates_enabled => node[:mysql][:log_slave_updates_enabled]
 	)
 	notifies :restart, resources(:service => "mysqld"), :immediately
 end
