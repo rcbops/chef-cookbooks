@@ -1,4 +1,6 @@
 
+include_recipe "httpd::php"
+
 directory "/opt/drush" do
 	owner "root"
 	group "root"
@@ -14,13 +16,14 @@ remote_file "/tmp/drush-All-versions-3.0-beta1.tar.gz" do
 end
 
 execute "extract_drush" do
-	command "/usr/bin/tar -zxf /tmp/drush-All-versions-3.0-beta1.tar.gz -C /opt/drush"
-	action :nothing
+	command "/usr/bin/tar -zxf /tmp/drush-All-versions-3.0-beta1.tar.gz -C /opt"
+	action :run
 end
 
 execute "symlink_drush" do
 	command "/bin/ln -s /opt/drush/drush /usr/local/bin/drush"
-	action :nothing
+	action :run
+	not_if do File.symlink?("/usr/local/bin/drush") end
 end
 
 file "/tmp/drush-All-versions-3.0-beta1.tar.gz" do
