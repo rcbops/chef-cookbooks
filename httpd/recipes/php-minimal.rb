@@ -1,4 +1,6 @@
 
+include_recipe "httpd::server"
+
 package "php-common" do
         action :install
 end

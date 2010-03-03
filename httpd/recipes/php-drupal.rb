@@ -1,4 +1,5 @@
 
+include_recipe "httpd::server"
 include_recipe "httpd::php-minimal"
 include_recipe "mysql::client"
 
