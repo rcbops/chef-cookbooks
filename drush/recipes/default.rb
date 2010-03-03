@@ -1,5 +1,5 @@
 
-include_recipe "httpd::php"
+include_recipe "httpd::php-drupal"
 
 directory "/opt/drush" do
 	owner "root"
