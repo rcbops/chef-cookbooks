@@ -119,14 +119,14 @@ server-id=<%= @server_id %>
 
 # It may be wise to include the server-name or an easy identifier
 # to the server in these logs, such as 'log-bin=/var/lib/mysqllogs/db1-bin-log'
-<% if @binlog_enabled = true %>
+<% if @binlog_enabled == "true" %>
 log-bin=<%= @log_bin %>
 log-bin-index=<%= @log_bin_index %>
 <% else %>
 # log-bin=<%= @log_bin %>
 # log-bin-index=<%= @log_bin_index %>
 <% end %>
-<% if @relaylog_enabled %>
+<% if @relaylog_enabled == "true" %>
 relay-log=<%= @relay_log %>
 relay-log-index=<%= @relay_log_index %>
 <% else %>
@@ -138,7 +138,7 @@ relay-log-index=<%= @relay_log_index %>
 expire_logs_days=<%= @expire_logs_days %>
 
 # This is usually only needed when setting up chained replication.
-<% if @log_slave_updates_enabled %>
+<% if @log_slave_updates_enabled == "true" %>
 log-slave-updates
 <% else %>
 #log-slave-updates
