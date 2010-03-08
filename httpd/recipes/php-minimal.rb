@@ -17,6 +17,8 @@ package "php-devel" do
         action :install
 end
 
+# Currently does not support x86_64
+# extension_dir = 
 template "/etc/php.ini" do
         source "php.ini.erb"
         owner "root"
