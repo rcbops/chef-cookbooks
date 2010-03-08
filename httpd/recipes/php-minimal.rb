@@ -17,15 +17,13 @@ package "php-devel" do
         action :install
 end
 
-# Currently does not support x86_64
-# extension_dir = 
-template "/etc/php.ini" do
-        source "php.ini.erb"
+template "/etc/php.d/memory_limit.ini" do
+        source "memory_limit.ini.erb"
         owner "root"
         group "root"
         mode "0644"
         variables(
-	  :php_memory_limit => node[:httpd][:php_memory_limit]
+          :php_memory_limit => node[:httpd][:php_memory_limit]
         )
         notifies :restart, resources(:service => "httpd"), :delayed
 end
