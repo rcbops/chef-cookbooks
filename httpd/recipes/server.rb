@@ -24,7 +24,17 @@ template "/etc/httpd/conf/httpd.conf" do
         variables(
           :keepalive => node[:httpd][:keepalive],
           :max_keepalive_requests => node[:httpd][:max_keepalive_requests],
-          :keepalive_timeout => node[:httpd][:keepalive_timeout],
+          :keepalive_timeout => node[:httpd][:keepalive_timeout]
+        )
+        notifies :restart, resources(:service => "httpd"), :delayed
+end
+
+template "/etc/httpd/conf.d/mpm_settings.conf" do
+	source "mpm_settings.conf.erb"
+        owner "root"
+        group "root"
+        mode "0644"
+        variables(
           :start_servers => node[:httpd][:start_servers],
           :min_spare_servers => node[:httpd][:min_spare_servers],
           :max_spare_servers => node[:httpd][:max_spare_servers],
