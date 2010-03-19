@@ -21,6 +21,18 @@ package "caching-nameserver" do
 	action :install
 end
 
+package "bind" do
+	action :install
+end
+
+package "bind-libs" do
+	action :install
+end
+
+package "bind-utils" do
+	action :install
+end
+
 service "named" do
         supports :status => true, :restart => true
 	action :enable
@@ -37,6 +49,5 @@ template "/etc/resolv.conf" do
           :dc_nameserver_1 => node[:dns][:dc_nameserver_1],
           :dc_nameserver_2 => node[:dns][:dc_nameserver_2]
 	)
-	notifies :restart, resources(:service => "named"), :immediately
-
+        notifies :restart, resources(:service => "named"), :delayed
 end
