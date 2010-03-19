@@ -17,28 +17,26 @@
 # limitations under the License.
 #
 
-package "memcached" do
+package "caching-nameserver" do
 	action :install
 end
 
-service "memcached" do
+service "named" do
         supports :status => true, :restart => true
 	action :enable
 end
 
-template "/etc/sysconfig/memcached" do
-	source "sysconfig_memcached.erb"
+template "/etc/resolv.conf" do
+	source "resolv.conf.erb"
 	owner "root"
 	group "root"
 	mode "0644"
 	variables(
-          :port => node[:memcached][:port],
-          :user => node[:memcached][:user],
-          :max_connections => node[:memcached][:max_connections],
-          :cache_size => node[:memcached][:cache_size],
-          :memcache_options => node[:memcached][:memcache_options],
-          :address => node[:memcached][:address]
+          :search_domain => node[:dns][:search_domain],
+          :local_nameserver => node[:dns][:local_nameserver],
+          :dc_nameserver_1 => node[:dns][:dc_nameserver_1],
+          :dc_nameserver_2 => node[:dns][:dc_nameserver_2]
 	)
-	notifies :restart, resources(:service => "memcached"), :immediately
+	notifies :restart, resources(:service => "named"), :immediately
 
 end
