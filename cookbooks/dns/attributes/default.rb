@@ -20,7 +20,7 @@ dc_name_servers['lon1'].store("ns2","83.138.151.81")
 dc_name_servers['lon3'].store("ns1","83.138.151.80")
 dc_name_servers['lon3'].store("ns2","83.138.151.81")
 
-datacenter = File.read("/root/.rackspace/datacenter").gsub"\n",''()
+datacenter = File.read("/root/.rackspace/datacenter").gsub("\n",'')
 
 set_unless[:dns][:search_domain] = "somedomain.com"
 set_unless[:dns][:local_nameserver] = "127.0.0.1"
