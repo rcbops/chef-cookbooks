@@ -1,6 +1,29 @@
-set_unless[:memcached][:port] = 11211 
-set_unless[:memcached][:user] = "nobody" 
-set_unless[:memcached][:max_connections] = 1024 
-set_unless[:memcached][:cache_size] = 64 
-set_unless[:memcached][:memcache_options] = "" 
-set_unless[:memcached][:address] = "127.0.0.1" 
+
+dc_name_servers = Hash.new
+dc_name_servers.put("dfw", Hash.new)
+dc_name_servers.put("iad2", Hash.new)
+dc_name_servers.put("iad1", Hash.new)
+dc_name_servers.put("ord", Hash.new)
+dc_name_servers.put("lon1", Hash.new)
+dc_name_servers.put("lon3", Hash.new)
+
+dc_name_servers['dfw'].put("ns1","72.3.128.240")
+dc_name_servers['dfw'].put("ns2","72.3.128.241")
+dc_name_servers['iad1'].put("ns1","69.20.0.164")
+dc_name_servers['iad1'].put("ns2","69.20.0.196")
+dc_name_servers['iad2'].put("ns1","69.20.0.164")
+dc_name_servers['iad2'].put("ns2","69.20.0.196")
+dc_name_servers['ord'].put("ns1","173.203.4.8")
+dc_name_servers['ord'].put("ns2","173.203.4.9")
+dc_name_servers['lon1'].put("ns1","83.138.151.80")
+dc_name_servers['lon1'].put("ns2","83.138.151.81")
+dc_name_servers['lon3'].put("ns1","83.138.151.80")
+dc_name_servers['lon3'].put("ns2","83.138.151.81")
+
+datacenter = File.read("/root/.rackspace/datacenter")
+
+set_unless[:dns][:search_domain] = ""
+set_unless[:dns][:local_nameserver] = "127.0.0.1"
+set_unless[:dns][:dc_nameserver_1] = dc_name_servers[datacenter]["ns1"]
+set_unless[:dns][:dc_nameserver_2] = dc_name_servers[datacenter]["ns2"]
+
