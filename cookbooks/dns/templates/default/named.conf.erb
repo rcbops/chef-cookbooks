@@ -1,0 +1,72 @@
+# $Id: named.conf $
+
+acl goodhosts {
+  127.0.0.0/8;
+  0.0.0.0/0;
+};
+
+acl notifyhosts {
+};
+
+options {
+  listen-on port 53 {
+    <%= @local_nameserver %>;
+  };
+  listen-on-v6 port 53 { ::1; };
+
+  directory       "/var/named";
+  dump-file       "/var/named/data/cache_dump.db";
+  statistics-file "/var/named/data/named_stats.txt";
+  memstatistics-file "/var/named/data/named_mem_stats.txt";
+
+  also-notify { };
+  notify explicit;
+
+  allow-transfer { any; };
+  allow-query { any; };
+
+};
+
+logging {
+  channel default_debug {
+    file "data/named.run";
+    severity dynamic;
+  };
+  channel mylog {
+    file "/var/log/named.log" versions 3 size 100m;
+    severity info;
+    print-time yes;
+    print-category yes;
+  };
+  channel querylog {
+    file "/var/log/query.log" versions 3 size 100m;
+    severity info;
+    print-time yes;
+    print-category yes;
+  };
+  category lame-servers { null; };
+  category queries { querylog; };
+  category default { mylog; };
+};
+
+view dnsuser {
+  match-clients {
+    0.0.0.0/0;
+  };
+
+  zone "." in{
+    type forward;
+    forwarders {
+      <%= @dc_nameserver_1 %>;
+      <%= @dc_nameserver_1 %>;
+    };
+  };
+
+  zone "rms" in{
+    type master;
+    file "masters/src.rms";
+  };
+
+  # # #
+
+};
