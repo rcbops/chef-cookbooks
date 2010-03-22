@@ -33,6 +33,10 @@ package "bind-utils" do
 	action :install
 end
 
+package "bind-chroot" do
+	action :install
+end
+
 service "named" do
         supports :status => true, :restart => true
 	action :enable
@@ -49,5 +53,35 @@ template "/etc/resolv.conf" do
           :dc_nameserver_1 => node[:dns][:dc_nameserver_1],
           :dc_nameserver_2 => node[:dns][:dc_nameserver_2]
 	)
+        notifies :restart, resources(:service => "named"), :delayed
+end
+
+directory "/var/named/chroot/var/named/masters" do
+        owner "mysql"
+        group "mysql"
+        mode "0755"
+        action :create
+        not_if "test -d /var/named/chroot/var/named/masters"
+end
+
+template "/var/named/chroot/etc/named.conf" do
+	source "named.conf.erb"
+	owner "root"
+	group "root"
+	mode "0644"
+	variables(
+          :search_domain => node[:dns][:search_domain],
+          :local_nameserver => node[:dns][:local_nameserver],
+          :dc_nameserver_1 => node[:dns][:dc_nameserver_1],
+          :dc_nameserver_2 => node[:dns][:dc_nameserver_2]
+	)
+        notifies :restart, resources(:service => "named"), :delayed
+end
+
+template "/var/named/chroot/var/named/masters/src.rms" do
+        source "src.rms.erb"
+        owner "root"
+        group "root"
+        mode "0644"
         notifies :restart, resources(:service => "named"), :delayed
 end
