@@ -1,0 +1,770 @@
+#####################################################################
+#
+# Configuration file template for samhain.
+#
+#####################################################################
+# 
+# -- empty lines and lines starting with '#', ';' or '//' are ignored
+# -- boolean options can be Yes/No or True/False or 1/0 
+# -- you can PGP clearsign this file -- samhain will check (if compiled
+#    with support) or otherwise ignore the signature
+# -- CHECK mail address
+#
+# To each log facility, you can assign a threshold severity. Only
+# reports with at least the threshold severity will be logged
+# to the respective facility (even further below).
+#
+#####################################################################
+#
+# SETUP for file system checking:
+# 
+# (i)   There are several policies, each has its own section. Put files
+#       into the section for the appropriate policy (see below).
+# (ii)  Section [EventSeverity]: 
+#       To each policy, you can assign a severity (further below).
+# (iii) Section [Log]: 
+#       To each log facility, you can assign a threshold severity. Only
+#       reports with at least the threshold severity will be logged
+#       to the respective facility (even further below).
+#
+#####################################################################
+
+#####################################################################
+#
+# Files are defined with: file = /absolute/path
+#
+# Directories are defined with:                  dir = /absolute/path
+# or with an optional recursion depth (N <= 99): dir = N/absolute/path
+#
+# Directory inodes are checked. If you only want to check files
+# in a directory, but not the directory inode itself, use (e.g.):
+#
+# [ReadOnly]
+# dir = /some/directory
+# [IgnoreAll]
+# file = /some/directory
+#
+# You can use shell-style globbing patterns, like: file = /path/foo*
+# 
+######################################################################
+
+[Misc]
+##
+## Add or subtract tests from the policies
+## - if you want to change their definitions,
+##   you need to do that before using the policies
+##
+# RedefReadOnly = (no default)
+# RedefAttributes=(no default)
+# RedefLogFiles=(no default)
+# RedefGrowingLogFiles=(no default)
+# RedefIgnoreAll=(no default)
+# RedefIgnoreNone=(no default)
+
+# RedefUser0=(no default)
+# RedefUser1=(no default)
+
+#
+# --------- / --------------
+#
+
+[ReadOnly]
+dir = 0/
+
+[Attributes]
+file = /tmp
+file = /dev
+file = /media
+file = /proc
+file = /sys
+
+#
+# --------- /etc -----------
+#
+
+[ReadOnly]
+##
+## for these files, only access time is ignored
+##
+dir = 99/etc
+
+[Attributes]
+##
+## check permission and ownership
+##
+file = /etc/mtab
+file = /etc/adjtime
+file = /etc/motd
+file = /etc/lvm/.cache
+
+# On Ubuntu, these are in /var/lib rather than /etc
+file = /etc/cups/certs
+file = /etc/cups/certs/0
+
+# managed by fstab-sync on Fedora Core
+file = /etc/fstab
+
+# modified when booting 
+file = /etc/sysconfig/hwconf
+
+# There are files in /etc that might change, thus changing the directory
+# timestamps. Put it here as 'file', and in the ReadOnly section as 'dir'.
+
+file = /etc
+
+#
+# --------- /boot -----------
+#
+
+[ReadOnly]
+dir = 99/boot
+
+#
+# --------- /bin, /sbin -----------
+#
+
+[ReadOnly]
+dir = 99/bin
+dir = 99/sbin
+
+#
+# --------- /lib -----------
+#
+
+[ReadOnly]
+dir = 99/lib
+
+#
+# --------- /dev -----------
+#
+
+[Attributes]
+dir = 99/dev
+
+[IgnoreAll]
+##
+## pseudo terminals are created/removed as needed
+##
+dir = -1/dev/pts
+
+# dir = -1/dev/.udevdb
+
+file = /dev/ppp
+
+#
+# --------- /usr -----------
+#
+
+[ReadOnly]
+dir = 99/usr
+
+#
+# --------- /var -----------
+#
+
+[ReadOnly]
+dir = 99/var
+
+[IgnoreAll]
+dir = -1/var/cache
+dir = -1/var/backups
+dir = -1/var/games
+dir = -1/var/gdm
+dir = -1/var/lock
+dir = -1/var/mail
+dir = -1/var/run
+dir = -1/var/spool
+dir = -1/var/tmp
+dir = -1/var/lib/texmf
+dir = -1/var/lib/scrollkeeper
+
+
+[Attributes]
+
+dir = /var/lib/nfs
+dir = /var/lib/pcmcia
+
+# /var/lib/rpm changes if packets are installed;
+# /var/lib/rpm/__db.00[123] even more frequently
+file = /var/lib/rpm/__db.00?
+
+file = /var/lib/acpi-support/vbestate
+file = /var/lib/alsa/asound.state
+file = /var/lib/apt/lists/lock
+file = /var/lib/apt/lists/partial
+file = /var/lib/cups/certs
+file = /var/lib/cups/certs/0
+file = /var/lib/dpkg/lock
+file = /var/lib/gdm
+file = /var/lib/gdm/.cookie
+file = /var/lib/gdm/.gdmfifo
+file = /var/lib/gdm/:0.Xauth
+file = /var/lib/gdm/:0.Xservers
+file = /var/lib/logrotate/status
+file = /var/lib/mysql
+file = /var/lib/mysql/ib_logfile0
+file = /var/lib/mysql/ibdata1
+file = /var/lib/slocate
+file = /var/lib/slocate/slocate.db
+file = /var/lib/slocate/slocate.db.tmp
+file = /var/lib/urandom
+file = /var/lib/urandom/random-seed
+file = /var/lib/random-seed
+file = /var/lib/xkb
+
+
+[GrowingLogFiles]
+##
+## For these files, changes in signature, timestamps, and increase in size
+## are ignored. Logfile rotation will cause a report because of shrinking
+## size and different inode. 
+##
+dir = 99/var/log
+
+[Attributes]
+#
+# rotated logs will change inode
+#
+file = /var/log/*.[0-9].gz
+file = /var/log/*.[0-9].log
+file = /var/log/*.[0-9]
+file = /var/log/*.old
+file = /var/log/*/*.[0-9].gz
+file = /var/log/*/*.[0-9][0-9].gz
+file = /var/log/*/*.log.[0-9]
+
+[Misc]
+#
+# Various naming schemes for rotated logs
+#
+IgnoreAdded = /var/log/.*\.[0-9]+$
+IgnoreAdded = /var/log/.*\.[0-9]+\.gz$
+IgnoreAdded = /var/log/.*\.[0-9]+\.log$
+#
+# Subdirectories
+#
+IgnoreAdded = /var/log/[[:alnum:]]+/.*\.[0-9]+$
+IgnoreAdded = /var/log/[[:alnum:]]+/.*\.[0-9]+\.gz$
+IgnoreAdded = /var/log/[[:alnum:]]+/.*\.[0-9]+\.log$
+#
+IgnoreAdded = /var/lib/slocate/slocate.db.tmp
+IgnoreMissing = /var/lib/slocate/slocate.db.tmp
+
+#
+# --------- other policies -----------
+#
+
+[IgnoreNone]
+##
+## for these files, all modifications (even access time) are reported
+##    - you may create some interesting-looking file (like /etc/safe_passwd),
+##      just to watch whether someone will access it ...
+##
+
+[Prelink]
+##
+## Use for prelinked files or directories holding them
+##
+
+
+[User0]
+[User1]
+## User0 and User1 are sections for files/dirs with user-definable checking
+## (see the manual) 
+
+
+
+[EventSeverity]
+##
+## Here you can assign severities to policy violations.
+## If this severity exceeds the treshold of a log facility (see below),
+## a policy violation will be logged to that facility.
+##
+## Severity for verification failures.
+##
+# SeverityReadOnly=crit
+# SeverityLogFiles=crit
+# SeverityGrowingLogs=crit
+# SeverityIgnoreNone=crit
+# SeverityAttributes=crit
+# SeverityUser0=crit
+# SeverityUser1=crit
+# SeverityIgnoreAll=crit
+
+
+## Files : file access problems
+# SeverityFiles=crit
+
+## Dirs  : directory access problems
+# SeverityDirs=crit
+
+## Names : suspect (non-printable) characters in a pathname
+# SeverityNames=crit
+
+[Log]
+##
+## Switch on/OFF log facilities and set their threshold severity
+##
+## Values: debug, info, notice, warn, mark, err, crit, alert, none.
+## 'mark' is used for timestamps.
+##
+##
+## Use 'none' to SWITCH OFF a log facility
+## 
+## By default, everything equal to and above the threshold is logged.
+## The specifiers '*', '!', and '=' are interpreted as  
+## 'all', 'all but', and 'only', respectively (like syslogd(8) does, 
+## at least on Linux). Examples:
+## MailSeverity=*
+## MailSeverity=!warn
+## MailSeverity==crit
+
+## E-mail
+##
+# MailSeverity=none
+
+## Console
+##
+# PrintSeverity=info
+
+## Logfile
+##
+# LogSeverity=mark
+
+## Syslog
+##
+# SyslogSeverity=none
+
+## Remote server (yule)
+##
+# ExportSeverity=none
+
+## External script or program
+##
+# ExternalSeverity = none
+
+## Logging to a database
+##
+# DatabaseSeverity = none
+
+## Logging to a Prelude-IDS
+##
+# PreludeSeverity = crit
+
+
+
+#####################################################
+#
+# Optional modules
+#
+#####################################################
+
+# [SuidCheck]
+##
+## --- Check the filesystem for SUID/SGID binaries
+## 
+
+## Switch on
+#
+# SuidCheckActive = yes
+
+## Interval for check (seconds)
+#
+# SuidCheckInterval = 7200
+
+## Alternative: crontab-like schedule
+#
+# SuidCheckSchedule = NULL
+ 
+## Directory to exclude 
+#
+# SuidCheckExclude = NULL
+
+## Limit on files per second (0 == no limit)
+#
+# SuidCheckFps = 0
+
+## Alternative: yield after every file
+#
+# SuidCheckYield = no
+
+## Severity of a detection
+#
+# SeveritySuidCheck = crit
+
+## Quarantine SUID/SGID files if found
+#
+# SuidCheckQuarantineFiles = yes
+
+## Method for Quarantining files:
+#  0 - Delete or truncate the file.
+#  1 - Remove SUID/SGID permissions from file.
+#  2 - Move SUID/SGID file to quarantine dir.
+#
+# SuidCheckQuarantineMethod = 0
+
+## For method 1 and 3, really delete instead of truncating
+# 
+# SuidCheckQuarantineDelete = yes
+
+#[Kernel]
+##
+## --- Check for loadable kernel module rootkits (Linux/FreeBSD only) 
+##
+
+## Switch on/off
+#
+# KernelCheckActive = True
+
+## Check interval (seconds); btw., the check is VERY fast
+#
+# KernelCheckInterval = 300
+
+## Severity
+#
+# SeverityKernel = crit
+
+
+# [Utmp]
+##
+## --- Logging of login/logout events
+##
+
+## Switch on/off
+#
+# LoginCheckActive = True
+
+## Severity for logins, multiple logins, logouts
+# 
+# SeverityLogin=info
+# SeverityLoginMulti=warn
+# SeverityLogout=info
+
+## Interval for login/logout checks
+#
+# LoginCheckInterval = 300
+
+
+# [Database]
+##
+## --- Logging to a relational database
+##
+
+## Database name
+#
+# SetDBName = samhain
+
+## Database table
+#
+# SetDBTable = log
+
+## Database user
+#
+# SetDBUser = samhain
+
+## Database password
+#
+# SetDBPassword = (default: none)
+
+## Database host
+#
+# SetDBHost = localhost
+
+## Log the server timestamp for received messages
+#
+# SetDBServerTstamp = True
+
+## Use a persistent connection
+#
+# UsePersistent = True
+
+# [External]
+##
+## Interface to call external scripts/programs for logging
+##
+
+## The absolute path to the command
+## - Each invocation of this directive will end the definition of the
+##   preceding command, and start the definition of 
+##   an additional, new command
+#
+# OpenCommand = (no default)
+
+## Type (log or rv)
+## - log for log messages, srv for messages received by the server
+#
+# SetType = log
+
+## The command (full command line) to execute
+#
+# SetCommandLine = (no default)
+
+## The environment (KEY=value; repeat for more)
+#
+# SetEnviron = TZ=(your timezone)
+
+## The TIGER192 checksum (optional)
+#
+# SetChecksum = (no default)
+
+## User who runs the command
+#
+# SetCredentials = (default: samhain process uid)
+
+## Words not allowed in message
+#
+# SetFilterNot = (none)
+
+## Words required (ALL of them)
+#
+# SetFilterAnd = (none)
+
+## Words required (at least one)
+#
+# SetFilterOr = (none)
+
+## Deadtime between consecutive calls
+#
+# SetDeadtime = 0
+
+## Add default environment (HOME, PATH, SHELL)
+#
+# SetDefault = no
+
+
+#####################################################
+#
+# Miscellaneous configuration options
+#
+#####################################################
+
+[Misc]
+
+## whether to become a daemon process
+## (this is not honoured on database initialisation)
+#
+# Daemon = no
+Daemon = yes
+
+## whether to test signature of files (init/check/none)
+## - if 'none', then we have to decide this on the command line -
+#
+# ChecksumTest = none
+ChecksumTest=check
+
+## Set nice level (-19 to 19, see 'man nice'),
+## and I/O limit (kilobytes per second; 0 == off)
+## to reduce load on host.
+#
+# SetNiceLevel = 0
+# SetIOLimit = 0
+
+## The version string to embed in file signature databases
+#
+# VersionString = NULL
+
+## Interval between time stamp messages
+#
+# SetLoopTime = 60
+SetLoopTime = 600
+
+## Interval between file checks 
+#
+# SetFileCheckTime = 600
+SetFileCheckTime = 7200
+
+## Alternative: crontab-like schedule
+#
+# FileCheckScheduleOne = NULL
+
+## Alternative: crontab-like schedule(2)
+#
+# FileCheckScheduleTwo = NULL
+
+## Report only once on modified files 
+## Setting this to 'FALSE' will generate a report for any policy 
+## violation (old and new ones) each time the daemon checks the file system.
+#
+# ReportOnlyOnce = True
+
+## Report in full detail
+#
+# ReportFullDetail = False
+
+## Report file timestamps in local time rather than GMT
+#
+# UseLocalTime = No
+
+## The console device (can also be a file or named pipe)
+## - There are two console devices. Accordingly, you can use
+##   this directive a second time to set the second console device.
+##   If you have not defined the second device at compile time,
+##   and you don't want to use it, then:
+##   setting it to /dev/null is less effective than just leaving
+##   it alone (setting to /dev/null will waste time by opening
+##   /dev/null and writing to it)
+#
+# SetConsole = /dev/console
+
+## Activate the SysV IPC message queue
+#
+# MessageQueueActive = False
+
+
+## If false, skip reverse lookup when connecting to a host known 
+## by name rather than IP address (i.e. trust the DNS)
+#
+# SetReverseLookup = True
+
+## --- E-Mail ---
+
+# Only highest-level (alert) reports will be mailed immediately,
+# others will be queued. Here you can define, when the queue will
+# be flushed (Note: the queue is automatically flushed after
+# completing a file check).
+#
+# SetMailTime = 86400
+
+## Maximum number of mails to queue
+#
+# SetMailNum = 10
+
+## Recipient (max. 8)
+#
+# SetMailAddress=root@localhost
+
+## Mail relay (IP address)
+#
+# SetMailRelay = NULL
+
+## Custom subject format
+#
+# MailSubject = NULL
+
+## --- end E-Mail ---
+
+## Path to the prelink executable
+#
+# SetPrelinkPath = /usr/sbin/prelink
+
+## TIGER192 checksum of the prelink executable
+#
+# SetPrelinkChecksum = (no default)
+
+
+## Path to the executable. If set, will be checksummed after startup
+## and before exit.
+#
+# SamhainPath = (no default)
+
+
+## The IP address of the log server
+#
+# SetLogServer = (default: compiled-in)
+
+## The IP address of the time server
+#
+# SetTimeServer = (default: compiled-in)
+
+## Trusted Users (comma delimited list of user names) 
+#
+# TrustedUser = (no default; this adds to the compiled-in list)
+
+## Path to the file signature database
+#
+# SetDatabasePath = (default: compiled-in)
+
+## Path to the log file
+#
+# SetLogfilePath = (default: compiled-in)
+
+## Path to the PID file
+#
+# SetLockPath = (default: compiled-in)
+
+
+## The digest/checksum/hash algorithm
+#
+# DigestAlgo = TIGER192
+
+
+## Custom format for message header. 
+## CAREFUL if you use XML logfile format.
+##
+## %S severity
+## %T timestamp
+## %C class
+##
+## %F source file
+## %L source line
+#
+# MessageHeader="%S %T "
+
+
+## Don't log path to config/database file on startup
+#
+# HideSetup = False
+
+## The syslog facility, if you log to syslog
+#
+# SyslogFacility = LOG_AUTHPRIV
+SyslogFacility=LOG_LOCAL2
+
+## The message authentication method
+## - If you change this, you *must* change it
+##   on client *and* server
+#
+# MACType = HMAC-TIGER
+
+
+## The Prelude-IDS profile to use for reporting
+## default value is "samhain"
+#
+# PreludeProfile = samhain
+
+## Map these samhain severities to impact severity 'info' severity
+#
+# PreludeMapToInfo =
+
+## Map these samhain severities to impact severity 'low' severity
+#
+# PreludeMapToLow = debug info
+
+## Map these samhain severities to impact severity 'medium' severity
+#
+# PreludeMapToMedium = notice warn err
+
+## Map these samhain severities to impact severity 'high' severity
+#
+# PreludeMapToHigh = crit alert
+
+
+## everything below is ignored
+[EOF]
+
+#####################################################################
+# This would be the proper syntax for parts that should only be
+#    included for certain hosts.
+# You may enclose anything in a @HOSTNAME/@end bracket, as long as the
+#    result still has the proper syntax for the config file.
+# You may have any number of @HOSTNAME/@end brackets.
+# HOSTNAME should be the fully qualified 'official' name 
+#    (e.g. 'nixon.watergate.com', not 'nixon'), no aliases. 
+#    No IP number - except if samhain cannot determine the 
+#    fully qualified hostname.
+#
+# @HOSTNAME
+# file=/foo/bar
+# @end
+#
+# These are two examples for conditional inclusion/exclusion
+# of a machine based on the output from 'uname -srm'
+# $Linux:2.*.7:i666
+# file=/foo/bar3
+# $end
+#
+# !$Linux:2.*.7:i686
+# file=/foo/bar2
+# $end
+#
+#####################################################################
