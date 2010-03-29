@@ -14,7 +14,13 @@ execute "unpack_versioned_tarball" do
 	action :run
 end
 
-if (node[:samhain][:master_server])
+if (node[:samhain][:master_server] === "localhost.localdomain")
+	ruby_block do
+		block do
+			Chef::Log.error("Can not compile Samhain without Master_Server defined")
+		end
+	end
+else
 	bash "install_samhain_client" do
 		user "root"
 		cwd "/tmp/samhain-2.6.4"
@@ -27,24 +33,26 @@ if (node[:samhain][:master_server])
 		make install-boot
 		EOH
 	end
-	log "You will need to run the following steps to complete the installation of Samhaim - Client:" { level :info }
-	log "On the Master: /usr/local/sbin/yule --gen-password" { level :info }
-	log "On the Client: " { level :info}
-	log "	/usr/local/sbin/samhain_setpwd samhain asdf <16 digit hex>" { level :info }
-	log "	mv samhain.asdf /usr/local/sbin/samhain"" { level :info }
-	log "On the Master:" { level :info }
-	log "	/usr/local/sbin/yule -P <16 digit hex> >> /etc/yulerc" { level :info }
-	log "	service yule restart" { level :info }
-	log "On the Client:" { level :info }
-	log "	/usr/local/sbin/samhain -t init" { level :info }
-	log "	SCP this file to the Master_Server, place it in /var/lib/yule/file.<client_hostname>" { level :info }
-	log "On the Master:" { level :info }
-	log "	chown daemon:daemon /var/lib/yule/file.<client_hostname>" { level :info }
-	log "	chmod 640 /var/lib/yule/file.<client_hostname>" { level :info }
-	log "On the Client:" { level :info }
-	log "	service samhain start" { level :info }
-else
-	log "Can not compile Samhain without \"Master Server\" defined" { level :error }
+	ruby_block do
+		block do
+			Chef::Log.info("You will need to run the following steps to complete the installation of Samhaim - Client")
+			Chef::Log.info("On the Master: /usr/local/sbin/yule --gen-password")
+			Chef::Log.info("On the Client: ")
+			Chef::Log.info("	/usr/local/sbin/samhain_setpwd samhain asdf <16 digit hex>")
+			Chef::Log.info("	mv samhain.asdf /usr/local/sbin/samhain")
+			Chef::Log.info("On the Master:")
+			Chef::Log.info("	/usr/local/sbin/yule -P <16 digit hex> >> /etc/yulerc")
+			Chef::Log.info("	service yule restart")
+			Chef::Log.info("On the Client:")
+			Chef::Log.info("	/usr/local/sbin/samhain -t init")
+			Chef::Log.info("	SCP this file to the Master_Server, place it in /var/lib/yule/file.<client_hostname>")
+			Chef::Log.info("On the Master:")
+			Chef::Log.info("	chown daemon:daemon /var/lib/yule/file.<client_hostname>")
+			Chef::Log.info("	chmod 640 /var/lib/yule/file.<client_hostname>")
+			Chef::Log.info("On the Client:")
+			Chef::Log.info("	service samhain start")
+		end
+	end
 end
 
 service "samhain" do
@@ -60,6 +68,7 @@ file "/tmp/samhain-2.6.4.tar.gz" do
 	action :delete
 end
 
-file "/tmp/samhain-2.6.4" do
+directory "/tmp/samhain-2.6.4" do
+	recursive true
 	action :delete
 end
