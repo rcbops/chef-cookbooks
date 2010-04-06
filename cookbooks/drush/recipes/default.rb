@@ -20,10 +20,9 @@ execute "extract_drush" do
 	action :run
 end
 
-execute "symlink_drush" do
-	command "/bin/ln -s /opt/drush/drush /usr/local/bin/drush"
-	action :run
-	not_if do File.symlink?("/usr/local/bin/drush") end
+link "/usr/local/bin/drush" do
+	to "/opt/drush/drush"
+        not_if do File.symlink?("/usr/local/bin/drush") end
 end
 
 file "/tmp/drush-All-versions-3.0-beta1.tar.gz" do
