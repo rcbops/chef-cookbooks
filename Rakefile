@@ -64,3 +64,9 @@ task :bundle_cookbook, :cookbook do |t, args|
   FileUtils.rm_rf temp_dir
 end
 
+desc "Create a cookbook.tgz from the cookbooks directory"
+task :tarball do
+	tarball_name = "cookbooks.tgz"
+	cookbook_dir = "cookbooks"
+	system("tar", "-czvf", tarball_name, cookbook_dir)
+end
