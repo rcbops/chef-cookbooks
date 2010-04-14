@@ -1,7 +1,0 @@
-{ 
-  "httpd": {
-    "php_memory_limit": "32M",
-    "max_clients": 512
-  },
-  "recipes": [ "httpd::php-minimal", "httpd::server" ] 
-}
