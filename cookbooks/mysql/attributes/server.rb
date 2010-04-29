@@ -31,7 +31,7 @@ set_unless[:mysql][:join_buffer_size]		= "1M"
 #
 set[:mysql][:max_join_size]	= "4294967295"
 
-set_unless[:mysql][:default_storage_engine]	= "MyISAM"
+set_unless[:mysql][:default_storage_engine]	= "InnoDB"
 
 # MyISAM Specific Values
 set_unless[:mysql][:key_buffer_size]		= "64M"
