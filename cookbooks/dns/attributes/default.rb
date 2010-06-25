@@ -27,7 +27,7 @@ dc_file = "/root/.rackspace/datacenter"
 if File.exists?(dc_file)
 	datacenter = File.read(dc_file).gsub("\n",'')
 else
-	datacehter = "default"
+	datacenter = "default"
 end
 
 set_unless[:dns][:search_domain] = "somedomain.com"
