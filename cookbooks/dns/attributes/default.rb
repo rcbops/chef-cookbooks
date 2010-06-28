@@ -4,7 +4,7 @@ dc_name_servers.store("default", Hash.new)
 dc_name_servers.store("dfw", Hash.new)
 dc_name_servers.store("iad2", Hash.new)
 dc_name_servers.store("iad1", Hash.new)
-dc_name_servers.store("ord", Hash.new)
+dc_name_servers.store("ord1", Hash.new)
 dc_name_servers.store("lon1", Hash.new)
 dc_name_servers.store("lon3", Hash.new)
 
