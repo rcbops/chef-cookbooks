@@ -24,7 +24,7 @@ package "git-core" do
 end
 
 execute "git clone nova" do
-	command "git clone https://github.com/openstack/nova.git /opt/nova"
+	command "git clone https://github.com/termie/nova.git /opt/nova"
 	action :run
 end
 
