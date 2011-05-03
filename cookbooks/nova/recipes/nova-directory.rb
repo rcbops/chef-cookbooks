@@ -26,6 +26,7 @@ end
 execute "git clone nova" do
 	command "git clone https://github.com/termie/nova.git /opt/nova"
 	action :run
+	not_if "test -d /opt/nova"
 end
 
 directory "/opt/nova/instances" do
