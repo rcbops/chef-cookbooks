@@ -17,26 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "nova::system-dependencies"
-
-package "git-core" do
+package "rabbitmq-server" do
 	action :install
 end
 
-execute "git clone nova" do
-	command "git clone https://github.com/termie/nova.git /opt/nova"
-	action :run
-end
-
-directory "/opt/nova/instances" do
-	owner "openstack"
-	group "openstack"
-	mode "0755"
-	action :create
-	not_if "test -d /opt/nova/instances"
-end
-
-execute "set permissions" do
-	command "chown -R openstack:openstack /opt/nova"
-	action :run
+service "rabbitmq-server" do
+        supports :status => true, :restart => true
+        action :enable
 end
