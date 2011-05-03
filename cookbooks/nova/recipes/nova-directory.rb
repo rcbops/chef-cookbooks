@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-# include_recipe "nova::system-dependencies"
+include_recipe "nova::system-dependencies"
 
 package "git-core" do
 	action :install
