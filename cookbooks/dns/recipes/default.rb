@@ -57,8 +57,8 @@ template "/etc/resolv.conf" do
 end
 
 directory "/var/named/chroot/var/named/masters" do
-        owner "mysql"
-        group "mysql"
+        owner "root"
+        group "root"
         mode "0755"
         action :create
         not_if "test -d /var/named/chroot/var/named/masters"
