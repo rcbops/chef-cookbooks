@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "nova::python-dependencies"
+# include_recipe "nova::python-dependencies"
 
 package "python-pip" do
 	action :install
