@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 
-# include_recipe "nova::python-dependencies"
+include_recipe "nova::python-dependencies"
 
 package "python-pip" do
 	action :install
 end
 
-execute "pip install python-novaclient"
+execute "pip install python-novaclient" do
 	command "pip install python-novaclient"
 	action :run
 end
