@@ -19,6 +19,10 @@
 
 include_recipe "nova::system-dependencies"
 
+package "euca2ools" do
+	action :install
+end
+
 package "python-boto" do
         action :install
 end
