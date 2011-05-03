@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-execute "nova-manage db sync"
+execute "nova-manage db sync" do
 	command "/opt/nova/bin/nova-manage db sync"
 	action :run
 end
