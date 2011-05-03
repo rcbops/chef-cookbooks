@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "nova::system-dependencies"
-
 package "euca2ools" do
 	action :install
 end
@@ -39,7 +37,7 @@ package "python-eventlet" do
 	action :install
 end
 
-package "python-gflags"" do
+package "python-gflags" do
         action :install
 end
 
@@ -47,7 +45,7 @@ package "python-ipy" do
         action :install
 end
 
-package "python-lockfile"" do
+package "python-lockfile" do
         action :install
 end
 
