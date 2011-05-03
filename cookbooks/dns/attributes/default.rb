@@ -4,7 +4,7 @@ dc_name_servers.store("default", Hash.new)
 dc_name_servers.store("dfw", Hash.new)
 dc_name_servers.store("iad2", Hash.new)
 dc_name_servers.store("iad1", Hash.new)
-dc_name_servers.store("ord", Hash.new)
+dc_name_servers.store("ord1", Hash.new)
 dc_name_servers.store("lon1", Hash.new)
 dc_name_servers.store("lon3", Hash.new)
 
@@ -16,8 +16,8 @@ dc_name_servers['iad1'].store("ns1","69.20.0.164")
 dc_name_servers['iad1'].store("ns2","69.20.0.196")
 dc_name_servers['iad2'].store("ns1","69.20.0.164")
 dc_name_servers['iad2'].store("ns2","69.20.0.196")
-dc_name_servers['ord'].store("ns1","173.203.4.8")
-dc_name_servers['ord'].store("ns2","173.203.4.9")
+dc_name_servers['ord1'].store("ns1","173.203.4.8")
+dc_name_servers['ord1'].store("ns2","173.203.4.9")
 dc_name_servers['lon1'].store("ns1","83.138.151.80")
 dc_name_servers['lon1'].store("ns2","83.138.151.81")
 dc_name_servers['lon3'].store("ns1","83.138.151.80")
@@ -27,7 +27,7 @@ dc_file = "/root/.rackspace/datacenter"
 if File.exists?(dc_file)
 	datacenter = File.read(dc_file).gsub("\n",'')
 else
-	datacehter = "default"
+	datacenter = "default"
 end
 
 set_unless[:dns][:search_domain] = "somedomain.com"
