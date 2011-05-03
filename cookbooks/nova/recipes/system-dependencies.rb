@@ -33,3 +33,7 @@ package "libvirt-bin" do
 	action :install
 end
 
+package "curl" do
+	action :install
+end
+
