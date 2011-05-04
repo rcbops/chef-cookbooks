@@ -17,11 +17,15 @@
 # limitations under the License.
 #
 
-include_recipe "openssh::default"
 include_recipe "nova::system-dependencies"
 include_recipe "nova::python-dependencies"
-include_recipe "nova::greenpipe-patch.rb"
-include_recipe "nova::python-pip"
-include_recipe "nova::mysql"
-include_recipe "nova::nova-directory"
-include_recipe "nova::setup"
+
+package "python-eventlet" do
+	action :install
+end
+
+execute "patch python-eventlet" do
+        command "cd /usr/share/pyshared/eventlet/green/ && curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patc"
+        action :run
+end
+

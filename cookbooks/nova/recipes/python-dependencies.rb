@@ -33,10 +33,6 @@ package "python-cheetah" do
         action :install
 end
 
-package "python-eventlet" do
-	action :install
-end
-
 package "python-gflags" do
         action :install
 end
