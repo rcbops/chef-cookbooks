@@ -20,7 +20,7 @@
 include_recipe "openssh::default"
 include_recipe "nova::system-dependencies"
 include_recipe "nova::python-dependencies"
-include_recipe "nova::greenpipe-patch.rb"
+include_recipe "nova::greenpipe-patch"
 include_recipe "nova::python-pip"
 include_recipe "nova::mysql"
 include_recipe "nova::nova-directory"
