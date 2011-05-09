@@ -42,7 +42,7 @@ execute "create nova database" do
 end
 
 execute "create nova user" do
-	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\''"
+	command "mysql -u root -e \"grant all privileges on nova.* to 'nova'@'%'\""
 	action :run
 end
 
