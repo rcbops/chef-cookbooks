@@ -38,10 +38,12 @@ end
 execute "create nova database" do
 	command "mysql -u root -e 'create database nova'"
 	action :run
+	only_if "/usr/bin/mysql -u root -e 'show databases;'"
 end
 
 execute "create nova user" do
 	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\' identified by \'nova\'"
 	action :run
+	only_if "/usr/bin/mysql -u root -e 'show databases;'"
 end
 
