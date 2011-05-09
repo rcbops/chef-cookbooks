@@ -47,6 +47,6 @@ execute "create nova user" do
 end
 
 execute "set nova user password" do
-	command "mysql -u root -e 'SET PASSWORD for \'nova\'@\'%\' = PASSWORD('nova')'"
+	command "mysql -u root -e \"SET PASSWORD for 'nova'@'%' = PASSWORD('nova')\""
 end
 
