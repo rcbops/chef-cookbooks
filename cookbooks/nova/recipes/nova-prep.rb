@@ -19,5 +19,20 @@
 
 execute "nova-manage db sync" do
 	command "/opt/nova/bin/nova-manage db sync"
-	action :run
+	action :nothing
+end
+
+directory "/etc/nova" do
+	owner "root"
+	group "root"
+	mode 0755
+	action :create
+end
+
+template "/etc/nova/nova.conf" do
+	source nova.conf.erb
+	owner "root"
+	group "root"
+	mode "0644"
+	notifies :run, resources(:execute => "nova-manage db sync"), :immediately
 end
