@@ -24,10 +24,12 @@ package "python-eventlet" do
 	action :install
 end
 
+lib_path = "/usr/share/pyshared/eventlet/green"
+
 execute "patch python-eventlet" do
-	cwd "/usr/share/pyshared/eventlet/green"
+	cwd "#{lib_path}"
         command "curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patch -b"
         action :run
-	not_if "test -e subprocess.py.orig"
+	not_if "test -e #{lib_path}/subprocess.py.orig"
 end
 
