@@ -25,7 +25,8 @@ package "python-eventlet" do
 end
 
 execute "patch python-eventlet" do
-        command "cd /usr/share/pyshared/eventlet/green/ && curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patch"
+	cwd "/usr/share/pyshared/eventlet/green"
+        command "curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patch"
         action :run
 end
 
