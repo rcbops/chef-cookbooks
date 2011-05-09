@@ -35,3 +35,13 @@ execute "configure mysql bind addr" do
 	notifies :restart, resources(:service => "mysql"), :immediately
 end
 
+execute "create nova database" do
+	command "mysql -u root -e 'create database nova'"
+	action :run
+end
+
+execute "create nova user" do
+	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\' identified by \'nova\'"
+	action :run
+end
+
