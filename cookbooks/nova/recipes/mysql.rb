@@ -38,12 +38,15 @@ end
 execute "create nova database" do
 	command "mysql -u root -e 'create database nova'"
 	action :run
-	only_if "/usr/bin/mysql -u root -e 'show databases;'"
+	only_if "/usr/bin/mysql -u root -e 'show databases;'|grep 'nova'"
 end
 
 execute "create nova user" do
-	command 'mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\' identified by "nova"''
+	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\';'"
 	action :run
-	only_if "/usr/bin/mysql -u root -e 'show databases;'"
+end
+
+execute "set nova user password" do
+	command "mysql -u root -e 'SET PASSWORD for \'nova\'@\'%\' = PASSWORD('nova');'"
 end
 
