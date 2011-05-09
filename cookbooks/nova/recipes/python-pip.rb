@@ -27,3 +27,8 @@ execute "pip install python-novaclient" do
 	command "pip install python-novaclient"
 	action :run
 end
+
+execute "pip install glance" do
+	command "pip install glance"
+	action :run
+end
