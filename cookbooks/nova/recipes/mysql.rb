@@ -38,7 +38,7 @@ end
 execute "create nova database" do
 	command "mysql -u root -e 'create database nova'"
 	action :run
-	only_if "/usr/bin/mysql -u root -e 'show databases;'|grep 'nova'"
+	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep 'nova'"
 end
 
 execute "create nova user" do
