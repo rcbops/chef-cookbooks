@@ -42,7 +42,7 @@ execute "create nova database" do
 end
 
 execute "create nova user" do
-	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\' identified by \'nova\'"
+	command "mysql -u root -e 'grant all privileges on nova.* to \'nova\'@\'%\' identified by \'nova\''"
 	action :run
 	only_if "/usr/bin/mysql -u root -e 'show databases;'"
 end
