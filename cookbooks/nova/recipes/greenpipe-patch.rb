@@ -26,7 +26,8 @@ end
 
 execute "patch python-eventlet" do
 	cwd "/usr/share/pyshared/eventlet/green"
-        command "curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patch"
+        command "curl https://bitbucket-assetroot.s3.amazonaws.com/which_linden/eventlet/20110214/77/greenpipe-wrap.patch | sudo patch -b"
         action :run
+	not_if "test -e subprocess.py.orig"
 end
 
