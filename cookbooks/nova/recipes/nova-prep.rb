@@ -30,7 +30,7 @@ directory "/etc/nova" do
 end
 
 template "/etc/nova/nova.conf" do
-	source nova.conf.erb
+	source "nova.conf.erb"
 	owner "root"
 	group "root"
 	mode "0644"
