@@ -30,14 +30,9 @@ execute "git clone nova" do
 end
 
 directory "/opt/nova/instances" do
-	owner "openstack"
-	group "openstack"
+	owner "root"
+	group "root"
 	mode "0755"
 	action :create
 	not_if "test -d /opt/nova/instances"
-end
-
-execute "set permissions" do
-	command "chown -R openstack:openstack /opt/nova"
-	action :run
 end
