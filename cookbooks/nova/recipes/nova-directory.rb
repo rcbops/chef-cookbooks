@@ -29,10 +29,11 @@ execute "git clone nova" do
 	not_if "test -d /opt/nova"
 end
 
-directory "/opt/nova/instances" do
+directory "/var/lib/nova/instances" do
 	owner "root"
 	group "root"
 	mode "0755"
 	action :create
+	recursive true
 	not_if "test -d /opt/nova/instances"
 end
