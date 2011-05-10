@@ -37,3 +37,10 @@ package "curl" do
 	action :install
 end
 
+package "git-core" do
+	action :install
+end
+
+package "bzr" do
+	action :install
+end
