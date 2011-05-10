@@ -25,5 +25,7 @@ include_recipe "nova::greenpipe-patch"
 include_recipe "nova::python-pip"
 include_recipe "nova::mysql"
 include_recipe "nova::rabbitmq"
-include_recipe "nova::nova-directory"
+# nova::nova-git confilcts with nova::nova-bzr
+# include_recipe "nova::nova-git"
+include_recipe "nova::nova-bzr"
 include_recipe "nova::nova-prep"
