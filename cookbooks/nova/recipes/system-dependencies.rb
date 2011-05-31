@@ -44,3 +44,7 @@ end
 package "bzr" do
 	action :install
 end
+
+package "lvm2" do
+	action :install
+end
