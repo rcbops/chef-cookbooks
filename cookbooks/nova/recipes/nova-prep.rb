@@ -36,6 +36,13 @@ directory "/var/lock/nova" do
 	action :create
 end
 
+directory "/var/lib/nova/images" do
+	owner "root"
+	group "root"
+	mode 0755
+	action :create
+end
+
 template "/etc/nova/nova.conf" do
 	source "nova.conf.erb"
 	owner "root"
