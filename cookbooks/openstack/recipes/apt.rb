@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-execute "apt-get update" do
-	command "apt-get update"
-	action :run
+include_recipe "apt::system-dependencies"
+
+template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
+      notifies :run, resources(:execute => "apt-get update"), :immediately
 end
