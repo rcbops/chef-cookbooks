@@ -20,4 +20,3 @@
 include_recipe "openstack::apt"
 include_recipe "openssh::default"
 
-include_recipe "openstack::compute"
