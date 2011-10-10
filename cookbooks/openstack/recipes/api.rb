@@ -21,7 +21,7 @@ include_recipe "nova::common"
 
 package "nova-api" do
   action :install
-  options "--force-yes"
+  options "--force-yes"
 end
 
 service "nova-api" do
