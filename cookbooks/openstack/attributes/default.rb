@@ -1,1 +1,6 @@
-default[:mysql][:password] = "nova"
+default[:nova][:db] = "nova"
+default[:nova][:db_user] = "nova"
+default[:nova][:db_passwd] = "nova"
+default[:glance][:db] = "glance"
+default[:glance][:db_user] = "glance"
+default[:glance][:db_passwd] = "glance"

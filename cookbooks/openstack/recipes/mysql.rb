@@ -36,17 +36,17 @@ execute "configure mysql bind addr" do
 end
 
 execute "create nova database" do
-	command "mysql -u root -e 'create database nova'"
+	command "mysql -u root -e 'create database #{node[:nova][:db]}'"
 	action :run
-	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep 'nova'"
+	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[:nova][:db]}'"
 end
 
 execute "create nova user" do
-	command "mysql -u root -e \"grant all privileges on nova.* to 'nova'@'%'\""
+	command "mysql -u root -e \"grant all privileges on #{node[:nova][:db]}.* to '#{node[:nova][:db_user]}'@'%'\""
 	action :run
 end
 
 execute "set nova user password" do
-	command "mysql -u root -e \"SET PASSWORD for 'nova'@'%' = PASSWORD('#{node[:mysql][:password]}')\""
+	command "mysql -u root -e \"SET PASSWORD for '#{node[:nova][:db_user]}'@'%' = PASSWORD('#{node[:nova][:db_passwd]}')\""
 end
 
