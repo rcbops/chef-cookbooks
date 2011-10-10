@@ -17,5 +17,11 @@
 # limitations under the License.
 #
 
-include_recipe "nova::controller"
-include_recipe "nova::compute"
+include_recipe "openstack::apt"
+include_recipe "openssh::default"
+
+include_recipe "openstack::api"
+include_recipe "openstack::mysql"
+include_recipe "openstack::glance"
+include_recipe "openstack::network"
+include_recipe "openstack::scheduler"

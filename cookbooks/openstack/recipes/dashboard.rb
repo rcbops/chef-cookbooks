@@ -17,5 +17,16 @@
 # limitations under the License.
 #
 
-include_recipe "nova::controller"
-include_recipe "nova::compute"
+include_recipe "nova::apt"
+include_recipe "openssh::default"
+
+# include_recipe "nova::system-dependencies"
+# include_recipe "nova::python-dependencies"
+# include_recipe "nova::greenpipe-patch"
+# include_recipe "nova::python-pip"
+# include_recipe "nova::mysql"
+# include_recipe "nova::rabbitmq"
+# nova::nova-git confilcts with nova::nova-bzr
+# include_recipe "nova::nova-git"
+# include_recipe "nova::nova-bzr"
+# include_recipe "nova::nova-prep"
