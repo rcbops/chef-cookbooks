@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "nova::apt"
+include_recipe "openstack::apt"
 include_recipe "openssh::default"
 
 # include_recipe "nova::system-dependencies"
