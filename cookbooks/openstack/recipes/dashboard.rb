@@ -25,7 +25,27 @@ package "openstack-dashboard" do
   options "--force-yes"
 end
 
-# service "nova-network" do
-#  supports :status => true, :restart => true
-#  action :enable
-#end
+service "apache2" do
+  supports :status => true, :reload => true, :restart => true
+  action :enable
+end
+
+execute "a2enmod rewrite" do
+        command "a2enmod rewrite"
+        action :run
+        notifies :restart, resources(:service => "apache2"), :immediately
+end
+
+execute "a2ensite dash" do
+        command "a2ensite dash"
+        action :run
+        notifies :reload, resources(:service => "apache2"), :immediately
+end
+
+execute "a2dissite default" do
+	command "a2dissite default"
+	action :run
+	notifies :reload, resources(:service => "apache2"), :immediately
+end
+
+
