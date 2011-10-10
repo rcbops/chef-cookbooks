@@ -19,6 +19,12 @@
 
 include_recipe "apt"
 
-template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
-      notifies :run, resources(:execute => "apt-get update"), :immediately
+apt_repository "zenoss" do
+      uri "http://ops.monkeypuppetlabs.com/packages"
+      components ["natty","diablo-d5"]
+      action :add
 end
+
+# template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
+#      notifies :run, resources(:execute => "apt-get update"), :immediately
+#end
