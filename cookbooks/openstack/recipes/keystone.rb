@@ -18,14 +18,13 @@
 #
 
 include_recipe "openstack::nova-common"
-include_recipe "openstack::keystone"
 
-package "openstack-dashboard" do
+package "keystone" do
   action :install
   options "--force-yes"
 end
 
-# service "nova-network" do
-#  supports :status => true, :restart => true
-#  action :enable
-#end
+service "keystone" do
+  supports :status => true, :restart => true
+  action :enable
+end
