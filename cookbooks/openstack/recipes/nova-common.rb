@@ -21,12 +21,13 @@ include_recipe "openstack::rabbitmq"
 include_recipe "openstack::mysql"
 
 package "nova-common" do
-	action :install
+  action :install
+  options "--force-yes"
 end
 
 execute "nova-manage db sync" do
-	command "/opt/nova/bin/nova-manage db sync"
-	action :nothing
+  command "/opt/nova/bin/nova-manage db sync"
+  action :nothing
 end
 
 # directory "/etc/nova" do
