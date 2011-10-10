@@ -18,15 +18,16 @@
 #
 
 package "glance" do
-	action :install
+  action :install
+  options "--force-yes"
 end
 
 service "glance-api" do
-        supports :status => true, :restart => true
-        action :enable
+  supports :status => true, :restart => true
+  action :enable
 end
 
 service "glance-registry" do
-        supports :status => true, :restart => true
-        action :enable
+  supports :status => true, :restart => true
+  action :enable
 end
