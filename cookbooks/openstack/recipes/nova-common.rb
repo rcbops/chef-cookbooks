@@ -17,6 +17,19 @@
 # limitations under the License.
 #
 
+package "nova-common" do
+	action :install
+end
+
+package "rabbitmq-server" do
+	action :install
+end
+
+service "rabbitmq-server" do
+        supports :status => true, :restart => true
+        action :enable
+end
+
 execute "nova-manage db sync" do
 	command "/opt/nova/bin/nova-manage db sync"
 	action :nothing

@@ -17,22 +17,16 @@
 # limitations under the License.
 #
 
-include_recipe "nova::python-dependencies"
-
-package "python-pip" do
+package "glance" do
 	action :install
 end
 
-execute "pip install python-novaclient" do
-	command "pip install python-novaclient"
-	action :run
+service "glance-api" do
+        supports :status => true, :restart => true
+        action :enable
 end
 
-execute "pip install nova-adminclient" do
-	command "pip install nova-adminclient"
-end
-
-execute "pip install glance" do
-	command "pip install glance"
-	action :run
+service "glance-registry" do
+        supports :status => true, :restart => true
+        action :enable
 end

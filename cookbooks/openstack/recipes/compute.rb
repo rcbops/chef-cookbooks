@@ -17,19 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "nova::system-dependencies"
+include_recipe "openstack::apt"
+include_recipe "openssh::default"
 
-execute "git clone nova" do
-	command "git clone https://github.com/termie/nova.git /opt/nova"
-	action :run
-	not_if "test -d /opt/nova"
-end
-
-directory "/var/lib/nova/instances" do
-	owner "root"
-	group "root"
-	mode "0755"
-	action :create
-	recursive true
-	not_if "test -d /opt/nova/instances"
-end
+include_recipe "openstack::compute"
