@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "apt::system-dependencies"
+include_recipe "apt"
 
 template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
       notifies :run, resources(:execute => "apt-get update"), :immediately
