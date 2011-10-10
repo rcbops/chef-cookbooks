@@ -17,17 +17,11 @@
 # limitations under the License.
 #
 
+include_recipe "nova::rabbitmq"
+include_recipe "nova::mysql"
+
 package "nova-common" do
 	action :install
-end
-
-package "rabbitmq-server" do
-	action :install
-end
-
-service "rabbitmq-server" do
-        supports :status => true, :restart => true
-        action :enable
 end
 
 execute "nova-manage db sync" do
@@ -35,31 +29,31 @@ execute "nova-manage db sync" do
 	action :nothing
 end
 
-directory "/etc/nova" do
-	owner "root"
-	group "root"
-	mode 0755
-	action :create
-end
+# directory "/etc/nova" do
+# 	owner "root"
+# 	group "root"
+# 	mode 0755
+# 	action :create
+# end
 
-directory "/var/lock/nova" do
-	owner "root"
-	group "root"
-	mode 0755
-	action :create
-end
+# directory "/var/lock/nova" do
+# 	owner "root"
+# 	group "root"
+# 	mode 0755
+# 	action :create
+# end
 
-directory "/var/lib/nova/images" do
-	owner "root"
-	group "root"
-	mode 0755
-	action :create
-end
+# directory "/var/lib/nova/images" do
+# 	owner "root"
+# 	group "root"
+# 	mode 0755
+# 	action :create
+# end
 
-template "/etc/nova/nova.conf" do
-	source "nova.conf.erb"
-	owner "root"
-	group "root"
-	mode "0644"
-	notifies :run, resources(:execute => "nova-manage db sync"), :immediately
-end
+# template "/etc/nova/nova.conf" do
+# 	source "nova.conf.erb"
+# 	owner "root"
+# 	group "root"
+# 	mode "0644"
+# 	notifies :run, resources(:execute => "nova-manage db sync"), :immediately
+# end
