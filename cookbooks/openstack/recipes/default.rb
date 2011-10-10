@@ -17,5 +17,5 @@
 # limitations under the License.
 #
 
-include_recipe "nova::controller"
-include_recipe "nova::compute"
+include_recipe "openstack::controller"
+include_recipe "openstack::compute"

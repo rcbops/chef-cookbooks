@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "nova::rabbitmq"
-include_recipe "nova::mysql"
+include_recipe "openstack::rabbitmq"
+include_recipe "openstack::mysql"
 
 package "nova-common" do
 	action :install

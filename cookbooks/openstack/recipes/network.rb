@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "nova::common"
+include_recipe "openstack::nova-common"
 
 package "nova-network" do
   action :install
