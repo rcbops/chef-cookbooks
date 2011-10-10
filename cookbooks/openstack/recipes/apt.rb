@@ -19,4 +19,4 @@
 
 template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
       notifies :run, resources(:execute => "apt-get update"), :immediately
-#end
+end
