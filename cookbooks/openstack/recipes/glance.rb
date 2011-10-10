@@ -19,7 +19,7 @@
 
 package "glance" do
   action :install
-  options "--force-yes"
+  options "--force-yes"
 end
 
 service "glance-api" do
