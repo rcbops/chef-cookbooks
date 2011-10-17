@@ -18,6 +18,7 @@
 #
 
 include_recipe "openstack::nova-common"
+include_recipe "openstack::mysql"
 
 package "keystone" do
   action :install
@@ -27,6 +28,20 @@ end
 service "keystone" do
   supports :status => true, :restart => true
   action :enable
+end
+
+template "/etc/keystone/keystone.conf" do
+  source "keystone.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :user => node[:keystone][:db_user],
+    :passwd => node[:keystone][:db_passwd],
+    :ip_address => node[:ipaddress],
+    :db_name => node[:keystone][:db]
+  )
+  notifies :restart, resources(:service => keystone), :immediately
 end
 
 execute "Keystone: add openstack tenant" do
