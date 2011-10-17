@@ -35,11 +35,19 @@ execute "configure mysql bind addr" do
 	notifies :restart, resources(:service => "mysql"), :immediately
 end
 
-execute "create nova database" do
-	command "mysql -u root -e 'create database #{node[:nova][:db]}'"
-	action :run
-	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[:nova][:db]}'"
+execute "create openstack database schemas" do
+  ["nova", "glance", "keystone"].each do |service|
+    command "mysql -u root -e 'create database #{node[service][:db]}"
+    action :run
+    not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[service][:db]}'"
+  end
 end
+
+# execute "create nova database" do
+#	command "mysql -u root -e 'create database #{node[:nova][:db]}'"
+#	action :run
+#	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[:nova][:db]}'"
+#end
 
 execute "create nova user" do
 	command "mysql -u root -e \"grant all privileges on #{node[:nova][:db]}.* to '#{node[:nova][:db_user]}'@'%'\""
@@ -48,5 +56,35 @@ end
 
 execute "set nova user password" do
 	command "mysql -u root -e \"SET PASSWORD for '#{node[:nova][:db_user]}'@'%' = PASSWORD('#{node[:nova][:db_passwd]}')\""
+end
+
+#execute "create glance database" do
+#	command "mysql -u root -e 'create database #{node[:glance][:db]}'"
+#	action :run
+#	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[:glance][:db]}'"
+#end
+
+execute "create glance user" do
+	command "mysql -u root -e \"grant all privileges on #{node[:glance][:db]}.* to '#{node[:glance][:db_user]}'@'%'\""
+	action :run
+end
+
+execute "set glance user password" do
+	command "mysql -u root -e \"SET PASSWORD for '#{node[:glance][:db_user]}'@'%' = PASSWORD('#{node[:glance][:db_passwd]}')\""
+end
+
+#execute "create keystone database" do
+#	command "mysql -u root -e 'create database #{node[:keystone][:db]}'"
+#	action :run
+#	not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[:keystone][:db]}'"
+#end
+
+execute "create glance user" do
+	command "mysql -u root -e \"grant all privileges on #{node[:keystone][:db]}.* to '#{node[:keystone][:db_user]}'@'%'\""
+	action :run
+end
+
+execute "set glance user password" do
+	command "mysql -u root -e \"SET PASSWORD for '#{node[:keystone][:db_user]}'@'%' = PASSWORD('#{node[:keystone][:db_passwd]}')\""
 end
 
