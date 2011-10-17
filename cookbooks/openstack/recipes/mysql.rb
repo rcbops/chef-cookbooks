@@ -37,7 +37,7 @@ end
 
 execute "create openstack database schemas" do
   ["nova", "glance", "keystone"].each do |service|
-    command "mysql -u root -e 'create database #{node[service][:db]}"
+    command "mysql -u root -e 'create database #{node[service][:db]}'"
     action :run
     not_if "/usr/bin/mysql -u root -e 'show databases;'|grep '#{node[service][:db]}'"
   end
