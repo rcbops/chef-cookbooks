@@ -41,7 +41,7 @@ template "/etc/keystone/keystone.conf" do
     :ip_address => node[:ipaddress],
     :db_name => node[:keystone][:db]
   )
-  notifies :restart, resources(:service => keystone), :immediately
+  notifies :restart, resources(:service => "keystone"), :immediately
 end
 
 execute "Keystone: add openstack tenant" do
