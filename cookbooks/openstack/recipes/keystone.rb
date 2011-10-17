@@ -84,7 +84,7 @@ execute "Keystone: add nova entpointTemplates" do
   node.set[:nova][:adminURL] = "http://#{node[:ipaddress]}:8774/v1.1/%tenant_id%" 
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
-  command "keystone-manage endpointTemplates add RegionOne nova #{node[nova][:publicURL]} #{node[:nova][:adminURL]} #{node[:nova][:internalURL]}"
+  command "keystone-manage endpointTemplates add RegionOne nova #{node[:nova][:publicURL]} #{node[:nova][:adminURL]} #{node[:nova][:internalURL]}"
   action :run
   not_if "keystone-manage endpointTemplates list|grep 'nova'"
 end
