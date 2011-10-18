@@ -56,6 +56,10 @@ template "/etc/keystone/keystone.conf" do
   notifies :restart, resources(:service => "keystone"), :immediately
 end
 
+execute "Keystone restart: sleep 30" do
+  command "sleep 30"
+end
+
 execute "Keystone: add openstack tenant" do
   command "keystone-manage tenant add openstack"
   action :run
