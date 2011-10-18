@@ -28,3 +28,11 @@ service "nova-api" do
   supports :status => true, :restart => true
   action :enable
 end
+
+template "/etc/nova/api-paste.ini" do
+  source "api-paste.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "nova-api"), :immediately
+end
