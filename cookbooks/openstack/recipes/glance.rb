@@ -31,3 +31,42 @@ service "glance-registry" do
   supports :status => true, :restart => true
   action :enable
 end
+
+file "/var/lib/glance/glance.sqlite" do
+    action :delete
+end
+
+template "/etc/glance/glance-registry.conf" do
+  source "glance-registry.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :user => node[:glance][:db_user],
+    :passwd => node[:glance][:db_passwd],
+    :ip_address => node[:ipaddress],
+    :db_name => node[:glance][:db]
+  )
+  notifies :restart, resources(:service => "glance-registry"), :immediately
+end
+
+template "/etc/glance/glance-api.conf" do
+  source "glance-api.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "glance-api"), :immediately
+end
+
+template "/etc/glance/glance-scrubber.conf" do
+  source "glance-scrubber.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :user => node[:glance][:db_user],
+    :passwd => node[:glance][:db_passwd],
+    :ip_address => node[:ipaddress],
+    :db_name => node[:glance][:db]
+  )
+end
