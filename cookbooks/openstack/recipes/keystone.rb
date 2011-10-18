@@ -37,6 +37,11 @@ file "/var/lib/keystone/keystone.db" do
     action :delete
 end
 
+execute "Fix Bug lp:865448" do
+  command "sed -i 's/path.abspath(sys.argv\[0\])/path.dirname(__file__)/g' /usr/share/pyshared/keystone/controllers/version.py"
+  action :run
+end
+
 template "/etc/keystone/keystone.conf" do
   source "keystone.conf.erb"
   owner "root"
@@ -79,7 +84,6 @@ execute "Keystone: grant ServiceAdmin role to admin user" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
   command "keystone-manage role grant Admin admin"
   action :run
-  not_if "keystone-manage role list openstack|grep Admin"
 end
 
 execute "Keystone: grant Admin role to admin user for openstack tenant" do
