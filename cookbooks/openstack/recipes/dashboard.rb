@@ -49,4 +49,23 @@ execute "a2dissite default" do
 	notifies :reload, resources(:service => "apache2"), :immediately
 end
 
+template "/var/lib/dash/local/local_settings.py" do
+  source "local_settings.py.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :user => node[:dash][:db_user],
+    :passwd => node[:dash][:db_passwd],
+    :ip_address => node[:ipaddress],
+    :db_name => node[:dash][:db]
+  )
+end
+
+execute "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb" do
+  cwd "/var/lib/dash"
+  command "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb"
+  action :run
+  notifies :restart, resources(:service => "apache2"), :immediately
+end
 
