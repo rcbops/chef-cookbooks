@@ -75,7 +75,14 @@ execute "Keystone: add Admin role" do
   not_if "keystone-manage role list|grep Admin"
 end
 
-execute "Keystone: grant Admin role to admin user" do
+execute "Keystone: grant ServiceAdmin role to admin user" do
+  # command syntax: role grant 'role' 'user' 'tenant (optional)'
+  command "keystone-manage role grant Admin admin"
+  action :run
+  not_if "keystone-manage role list openstack|grep Admin"
+end
+
+execute "Keystone: grant Admin role to admin user for openstack tenant" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
   command "keystone-manage role grant Admin admin openstack"
   action :run
