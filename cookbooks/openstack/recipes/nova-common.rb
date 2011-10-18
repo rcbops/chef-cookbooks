@@ -27,7 +27,7 @@ package "nova-common" do
 end
 
 execute "nova-manage db sync" do
-  command "/opt/nova/bin/nova-manage db sync"
+  command "nova-manage db sync"
   action :nothing
 end
 
