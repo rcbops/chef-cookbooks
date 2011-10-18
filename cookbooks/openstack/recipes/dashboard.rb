@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
+include_recipe "openstack::mysql"
+include_recipe "openstack::api"
 include_recipe "openstack::keystone"
 
 package "openstack-dashboard" do
