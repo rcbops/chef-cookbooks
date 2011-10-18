@@ -35,7 +35,7 @@ execute "configure mysql bind addr" do
 	notifies :restart, resources(:service => "mysql"), :immediately
 end
 
-["nova", "glance", "keystone"].each do |service|
+["nova", "glance", "keystone", "dash"].each do |service|
   execute "create #{service} database schema" do
     command "mysql -u root -e 'create database #{node[service][:db]}'"
     action :run
@@ -43,14 +43,14 @@ end
   end
 end
 
-["nova", "glance", "keystone"].each do |service|
+["nova", "glance", "keystone", "dash"].each do |service|
   execute "create #{service} user" do
     command "mysql -u root -e \"grant all privileges on #{node[service][:db]}.* to '#{node[service][:db_user]}'@'%'\""
     action :run
   end
 end
 
-["nova", "glance", "keystone"].each do |service|
+["nova", "glance", "keystone", "dash"].each do |service|
   execute "set #{service} user password" do
     command "mysql -u root -e \"SET PASSWORD for '#{node[service][:db_user]}'@'%' = PASSWORD('#{node[service][:db_passwd]}')\""
   end
