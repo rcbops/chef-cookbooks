@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
 include_recipe "openstack::mysql"
 
 package "keystone" do
@@ -28,6 +27,10 @@ end
 service "keystone" do
   supports :status => true, :restart => true
   action :enable
+end
+
+file "/var/lib/keystone/keystone.db" do
+    action :delete
 end
 
 template "/etc/keystone/keystone.conf" do
