@@ -19,6 +19,10 @@
 
 include_recipe "openstack::mysql"
 
+package "python-mysqldb" do
+  action :install
+end
+
 package "keystone" do
   action :install
   options "--force-yes"

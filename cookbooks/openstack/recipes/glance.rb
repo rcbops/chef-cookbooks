@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
+include_recipe "openstack::mysql"
+
+package "python-mysqldb" do
+  action :install
+end
+
 package "glance" do
   action :install
   options "--force-yes"
