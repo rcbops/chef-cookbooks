@@ -41,7 +41,7 @@ api_limit_max = 1000
 limit_param_default = 25
 
 [pipeline:glance-registry]
-pipeline = tokenauth keystone_shim registryapp
+pipeline = authtoken keystone_shim registryapp
 # NOTE: use the following pipeline for keystone
 # pipeline = authtoken keystone_shim context registryapp
 
@@ -60,7 +60,7 @@ service_port = 5000
 auth_host = 127.0.0.1
 auth_port = 5001
 auth_protocol = http
-auth_uri = http://127.0.0.1:5000/
+auth_uri = http://127.0.0.1:5000/v2.0
 admin_token = 999888777666
 
 [filter:keystone_shim]
