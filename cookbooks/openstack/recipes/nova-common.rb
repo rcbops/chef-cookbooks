@@ -31,31 +31,16 @@ execute "nova-manage db sync" do
   action :nothing
 end
 
-# directory "/etc/nova" do
-# 	owner "root"
-# 	group "root"
-# 	mode 0755
-# 	action :create
-# end
-
-# directory "/var/lock/nova" do
-# 	owner "root"
-# 	group "root"
-# 	mode 0755
-# 	action :create
-# end
-
-# directory "/var/lib/nova/images" do
-# 	owner "root"
-# 	group "root"
-# 	mode 0755
-# 	action :create
-# end
-
-# template "/etc/nova/nova.conf" do
-# 	source "nova.conf.erb"
-# 	owner "root"
-# 	group "root"
-# 	mode "0644"
-# 	notifies :run, resources(:execute => "nova-manage db sync"), :immediately
-# end
+template "/etc/nova/nova.conf" do
+  source "nova.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :user => node[:nova][:db_user],
+    :passwd => node[:nova][:db_passwd],
+    :ip_address => node[:ipaddress],
+    :db_name => node[:nova][:db]
+  )
+  notifies :run, resources(:execute => "nova-manage db sync"), :immediately
+end
