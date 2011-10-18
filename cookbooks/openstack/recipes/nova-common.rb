@@ -19,6 +19,7 @@
 
 include_recipe "openstack::rabbitmq"
 include_recipe "openstack::mysql"
+include_recipe "openstack::keystone"
 
 package "nova-common" do
   action :install
