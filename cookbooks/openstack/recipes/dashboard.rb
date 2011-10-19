@@ -64,7 +64,8 @@ end
 
 execute "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb" do
   cwd "/var/lib/dash"
-  command "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb"
+  environment ({'PYTHONPATH' => '/var/lib/dash/'})
+  command "python dashboard/manage.py syncdb"
   action :run
   notifies :restart, resources(:service => "apache2"), :immediately
 end
