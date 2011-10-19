@@ -17,5 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::controller"
-include_recipe "openstack::compute"
+include_recipe "openstack::allinone"

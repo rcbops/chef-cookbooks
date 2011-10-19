@@ -17,15 +17,5 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
-include_recipe "openstack::nova-common"
-
-package "nova-compute" do
-  action :install
-  options "--force-yes"
-end
-
-service "nova-compute" do
-  supports :status => true, :restart => true
-  action :enable
-end
+include_recipe "openstack::controller"
+include_recipe "openstack::compute"
