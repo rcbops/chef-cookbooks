@@ -68,5 +68,6 @@ execute "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb" do
   command "python dashboard/manage.py syncdb"
   action :run
   notifies :restart, resources(:service => "apache2"), :immediately
+  notifies :restart, resources(:service => "nova-api"), :immediately
 end
 
