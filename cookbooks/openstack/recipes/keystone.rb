@@ -136,6 +136,7 @@ execute "Keystone: add glance entpointTemplates" do
   not_if "keystone-manage endpointTemplates list|grep 'glance'"
 end
 
+# Need to find a clean way to not re-run this command, as it causes an exception
 ["identity", "nova", "glance"].each_index do |index|
   execute "Keystone: add service (index: #{index}) endpoint" do
     # command syntax: endPoint add tenant endPointTemplate
