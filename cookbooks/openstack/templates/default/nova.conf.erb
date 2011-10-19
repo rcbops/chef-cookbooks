@@ -12,8 +12,8 @@
 --rabbit_host=<%= @ip_address %>
 
 # SCHEDULER
---scheduler_manager=nova.scheduler.abstract_scheduler.AbstractScheduler
-#--scheduler_driver=nova.scheduler.simple.SimpleScheduler
+#--scheduler_manager=nova.scheduler.abstract_scheduler.AbstractScheduler
+--scheduler_driver=nova.scheduler.simple.SimpleScheduler
 
 # NETWORK
 --network_manager=nova.network.manager.FlatDHCPManager
