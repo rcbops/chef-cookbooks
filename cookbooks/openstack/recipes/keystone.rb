@@ -128,7 +128,8 @@ end
 
 execute "Keystone: add glance entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1.1/%tenant_id%" 
+  # node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1.1/%tenant_id%" 
+  node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1.1" 
   node.set[:glance][:internalURL] = node[:glance][:adminURL] 
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
   command "keystone-manage endpointTemplates add RegionOne glance #{node[:glance][:publicURL]} #{node[:glance][:adminURL]} #{node[:glance][:internalURL]} 1 1"
@@ -136,11 +137,11 @@ execute "Keystone: add glance entpointTemplates" do
   not_if "keystone-manage endpointTemplates list|grep 'glance'"
 end
 
-# Need to find a clean way to not re-run this command, as it causes an exception
-["identity", "nova", "glance"].each_index do |index|
-  execute "Keystone: add service (index: #{index}) endpoint" do
-    # command syntax: endPoint add tenant endPointTemplate
-    command "keystone-manage endpoint add 1 #{index+1}"
-    action :run
-  end
-end
+# Looks like you dont need these if endpointTemplates are defined as global
+#["identity", "nova", "glance"].each_index do |index|
+#  execute "Keystone: add service (index: #{index}) endpoint" do
+#    # command syntax: endPoint add tenant endPointTemplate
+#    command "keystone-manage endpoint add 1 #{index+1}"
+#    action :run
+#  end
+#end
