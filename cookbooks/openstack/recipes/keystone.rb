@@ -128,8 +128,8 @@ end
 
 execute "Keystone: add glance entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  # node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1.1/%tenant_id%" 
-  node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1.1" 
+  # node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1/%tenant_id%" 
+  node.set[:glance][:adminURL] = "http://#{node[:ipaddress]}:9292/v1" 
   node.set[:glance][:internalURL] = node[:glance][:adminURL] 
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
   command "keystone-manage endpointTemplates add RegionOne glance #{node[:glance][:publicURL]} #{node[:glance][:adminURL]} #{node[:glance][:internalURL]} 1 1"
