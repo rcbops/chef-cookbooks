@@ -77,7 +77,7 @@ template "/etc/glance/glance-scrubber.conf" do
   variables(
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
-    :ip_address => node[:ipaddress],
+    :ip_address => node[:controller][:ipaddress],
     :db_name => node[:glance][:db]
   )
 end
