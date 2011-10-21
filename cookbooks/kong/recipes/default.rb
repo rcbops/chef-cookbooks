@@ -78,4 +78,5 @@ execute "Kong: Nova test suite" do
   command "./run_tests.sh -V --nova"
   cwd "/opt/kong"
   user "root"
+  action :nothing
 end
