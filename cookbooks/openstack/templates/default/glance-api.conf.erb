@@ -14,13 +14,13 @@ default_store = file
 bind_host = 0.0.0.0
 
 # Port the bind the API server to
-bind_port = 9292
+bind_port = <%= @api_port %>
 
 # Address to find the registry server
 registry_host = 0.0.0.0
 
 # Port the registry server is listening on
-registry_port = 9191
+registry_port = <%= @registry_port %>
 
 # Log to this file. Make sure you do not set the same log
 # file for both the API and registry servers!

@@ -48,6 +48,7 @@ template "/etc/glance/glance-registry.conf" do
   group "root"
   mode "0644"
   variables(
+    :registry_port => node[:glance][:registry_port],
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
     :ip_address => node[:ipaddress],
@@ -61,6 +62,10 @@ template "/etc/glance/glance-api.conf" do
   owner "root"
   group "root"
   mode "0644"
+  variables(
+    :api_port => node[:glance][:api_port],
+    :registry_port => node[:glance][:registry_port]
+  )
   notifies :restart, resources(:service => "glance-api"), :immediately
 end
 
