@@ -24,7 +24,7 @@
 
 # GLANCE
 --image_service=nova.image.glance.GlanceImageService
---glance_api_servers=<%= @ip_address %>:9292
+--glance_api_servers=<%= @ip_address %>:<%= @api_port %>
 
 # COMPUTE
 --compute_manager=nova.compute.manager.ComputeManager

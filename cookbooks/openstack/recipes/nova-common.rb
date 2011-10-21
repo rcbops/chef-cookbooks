@@ -40,7 +40,8 @@ template "/etc/nova/nova.conf" do
     :user => node[:nova][:db_user],
     :passwd => node[:nova][:db_passwd],
     :ip_address => node[:ipaddress],
-    :db_name => node[:nova][:db]
+    :db_name => node[:nova][:db],
+    :api_port => node[:glance][:api_port]
   )
   notifies :run, resources(:execute => "nova-manage db sync"), :immediately
 end
