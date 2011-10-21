@@ -3,6 +3,10 @@ package "git" do
   action :install
 end
 
+package "curl" do
+  action :install
+end
+
 package "python-virtualenv" do
   action :install
 end
