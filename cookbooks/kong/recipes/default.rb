@@ -43,6 +43,33 @@ execute "install virtualenv" do
   user "root"
 end
 
+template "/root/kong/etc/config.ini" do
+  source "config.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    node[:keystone][:host],
+    node[:keystone][:service_port],
+    node[:keystone][:admin_port],
+    node[:keystone][:api_version],
+    node[:keystone][:user],
+    node[:keystone][:password],
+    node[:keystone][:tenantid],
+    node[:keystone][:region],
+    node[:nova][:network_label],
+    node[:rabbitmq][:host],
+    node[:rabbitmq][:user],
+    :swift_auth_host => node[:swift][:auth_host],
+    :swift_auth_port => node[:swift][:auth_port],
+    :swift_auth_prefix => node[:swift][:auth_prefix],
+    :swift_ssl => node[:swift][:auth_ssl],
+    :swift_account => node[:swift][:account],
+    :swift_user => node[:swift][:username],
+    :swift_pass => node[:swift][:password]
+  )
+end
+
 execute "run kong" do
   command "./run_tests.sh -V"
   cwd "/root/kong"
