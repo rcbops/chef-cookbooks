@@ -87,7 +87,7 @@ bash "default image setup" do
   user "root"
   code <<-EOH
       mkdir images
-      wget #{node[:image][:ubuntu-11.04]} | tar -zxv -C images/
+      wget #{node[:image][:natty]} | tar -zxv -C images/
       glance -A 999888777666 add name="ubuntu-11.04-kernel" disk_format=aki container_format=aki < images/natty-server-uec-amd64-vmlinuz-virtual
       glance -A 999888777666 add name="ubuntu-11.04-initrd" disk_format=ari container_format=ari < images/natty-server-uec-amd64-loader
       glance -A 999888777666 add name="ubuntu-11.04-server" disk_format=ami container_format=ami kernel_id=1 ramdisk_id=2 < images/natty-server-uec-amd64.img
