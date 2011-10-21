@@ -4,28 +4,28 @@ initrd = include/sample_vm/natty-server-uec-amd64-loader
 image = include/sample_vm/natty-server-uec-amd64.img
 
 [swift]
-auth_host = 127.0.0.1
-auth_port = 443
-auth_prefix = /auth/
-auth_ssl = yes
-account = system
-username = root
-password = password
+auth_host = <%= @swift_auth_host %>
+auth_port = <%= @swift_auth_port %>
+auth_prefix = <%= @swift_auth_prefix %>
+auth_ssl = <%= @swift_ssl %>
+account = <%= @swift_account %>
+username = <%= @swift_user %>
+password = <%= @swift_pass %>
 
 [rabbitmq]
-host = 127.0.0.1
-user = guest
+host = <%= @rabbit_host %>
+user = <%= @rabbit_user %>
 password = 
 
 [nova]
-network_label = public
+network_label = <%= @nova_network_label %>
 
 [keystone]
-host = 127.0.0.1
-port = 5000
-admin_port = 5001
-apiver = v2.0
-user = admin
-password = password
-tenantid = tenant
-region = RegionOne
+host = <%= @keystone_host %>
+port = <%= @keystone_service_port %>
+admin_port = <%= @keystone_admin_port %>
+apiver = <%= @keystone_apiver %>
+user = <%= @keystone_user %>
+password = <%= @keystone_pass %>
+tenantid = <%= @keystone_tenantid %>
+region = <%= @keystone_region %>
