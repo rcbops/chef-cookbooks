@@ -74,8 +74,8 @@ template "/opt/kong/etc/config.ini" do
   )
 end
 
-execute "run kong" do
-  command "./run_tests.sh -V"
+execute "Kong: Nova test suite" do
+  command "./run_tests.sh -V --nova"
   cwd "/opt/kong"
   user "root"
 end
