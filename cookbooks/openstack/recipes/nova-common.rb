@@ -39,7 +39,7 @@ template "/etc/nova/nova.conf" do
   variables(
     :user => node[:nova][:db_user],
     :passwd => node[:nova][:db_passwd],
-    :ip_address => node[:ipaddress],
+    :ip_address => node[:controller][:ipaddress],
     :db_name => node[:nova][:db],
     :api_port => node[:glance][:api_port]
   )
