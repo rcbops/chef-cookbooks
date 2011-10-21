@@ -19,6 +19,10 @@
 
 include_recipe "openstack::mysql"
 
+package "curl" do
+  action :install
+end
+
 package "python-mysqldb" do
   action :install
 end
@@ -87,7 +91,7 @@ bash "default image setup" do
   user "root"
   code <<-EOH
       mkdir images
-      wget #{node[:image][:natty]} | tar -zxv -C images/
+      curl #{node[:image][:natty]} | tar -zx -C images/
       glance -A 999888777666 add name="ubuntu-11.04-kernel" disk_format=aki container_format=aki < images/natty-server-uec-amd64-vmlinuz-virtual
       glance -A 999888777666 add name="ubuntu-11.04-initrd" disk_format=ari container_format=ari < images/natty-server-uec-amd64-loader
       glance -A 999888777666 add name="ubuntu-11.04-server" disk_format=ami container_format=ami kernel_id=1 ramdisk_id=2 < images/natty-server-uec-amd64.img
