@@ -16,5 +16,5 @@ default[:dash][:db] = "dash"
 default[:dash][:db_user] = "dash"
 default[:dash][:db_passwd] = "dash"
 
-default[:image][:ubuntu-11.04] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-server-uec-amd64.tar.gz"
-default[:image][:ubuntu-10.10] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-10.10-server-uec-amd64.tar.gz"
+default[:image][:natty] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-server-uec-amd64.tar.gz"
+default[:image][:maverick] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-10.10-server-uec-amd64.tar.gz"
