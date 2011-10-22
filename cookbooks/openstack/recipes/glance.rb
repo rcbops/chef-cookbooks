@@ -55,7 +55,7 @@ template "/etc/glance/glance-registry.conf" do
     :registry_port => node[:glance][:registry_port],
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
-    :ip_address => node[:ipaddress],
+    :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db]
   )
   notifies :restart, resources(:service => "glance-registry"), :immediately
@@ -81,7 +81,7 @@ template "/etc/glance/glance-scrubber.conf" do
   variables(
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
-    :ip_address => node[:controller][:ipaddress],
+    :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db]
   )
 end
