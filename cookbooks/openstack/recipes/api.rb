@@ -35,7 +35,7 @@ template "/etc/nova/api-paste.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => node[:ipaddress]
+    :ip_address => node[:controller_ipaddress]
   )
   notifies :restart, resources(:service => "nova-api"), :immediately
 end
