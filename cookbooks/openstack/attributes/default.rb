@@ -19,4 +19,4 @@ default[:dash][:db_passwd] = "dash"
 default[:image][:natty] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-server-uec-amd64.tar.gz"
 default[:image][:maverick] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-10.10-server-uec-amd64.tar.gz"
 
-default[:controller][:ipaddress] = node[:ipaddress]
+default[:controller_ipaddress] = node[:ipaddress]
