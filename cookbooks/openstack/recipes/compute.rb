@@ -17,8 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
+include_recipe "openstack::apt"
 include_recipe "openstack::nova-common"
+
+package "mysql-client" do
+	action :install
+end
 
 package "nova-compute" do
   action :install
