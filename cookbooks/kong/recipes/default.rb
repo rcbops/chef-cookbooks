@@ -15,30 +15,35 @@ execute "git clone https://github.com/cloudbuilders/kong" do
   command "git clone https://github.com/cloudbuilders/kong"
   cwd "/opt"
   user "root"
+  not_if do File.exists?("/opt/kong") end
 end
 
 execute "generate swift_small object" do
   command "dd if=/dev/zero of=swift_small bs=512 count=1024"
   cwd "/opt/kong/include/swift_objects"
   user "root"
+  not_if do File.exists?("/opt/kong/include/swift_objects/swift_small") end
 end
 
 execute "generate swift_medium object" do
   command "dd if=/dev/zero of=swift_medium bs=512 count=1024000"
   cwd "/opt/kong/include/swift_objects"
   user "root"
+  not_if do File.exists?("/opt/kong/include/swift_objects/swift_medium") end
 end
 
 execute "generate swift_large object" do
   command "dd if=/dev/zero of=swift_large bs=1024 count=1024"
   cwd "/opt/kong/include/swift_objects"
   user "root"
+  not_if do File.exists?("/opt/kong/include/swift_objects/swift_large") end
 end
 
 execute "grab the sample_vm" do
   cwd "/opt/kong/include/sample_vm"
   user "root"
   command "curl http://c250663.r63.cf1.rackcdn.com/ttylinux.tgz | tar -zx"
+  not_if do File.exists?("/opt/kong/include/sample_vm/ttylinux.img") end
 end
 
 execute "install virtualenv" do
