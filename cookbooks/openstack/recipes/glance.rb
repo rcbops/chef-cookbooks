@@ -18,6 +18,7 @@
 #
 
 include_recipe "openstack::mysql"
+include_recipe "openstack::keystone"
 
 package "curl" do
   action :install
