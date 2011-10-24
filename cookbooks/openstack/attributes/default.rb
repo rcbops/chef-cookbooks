@@ -20,20 +20,20 @@ default[:image][:natty] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-serve
 default[:image][:maverick] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-10.10-server-uec-amd64.tar.gz"
 
 default[:public][:label] = "public"
-default[:public][:ipv4_cidr] = "10.100.100.0/24"
+default[:public][:ipv4_cidr] = "192.168.100.0/24"
 default[:public][:num_networks] = "1"
 default[:public][:network_size] = "255"
 default[:public][:bridge] = "br100"
-default[:public][:bridge_dev] = "eth1"
+default[:public][:bridge_dev] = "eth2"
 default[:public][:dns1] = "8.8.8.8"
 default[:public][:dns2] = "8.8.4.4"
 
 default[:private][:label] = "private"
-default[:private][:ipv4_cidr] = "10.200.200.0/24"
+default[:private][:ipv4_cidr] = "192.168.200.0/24"
 default[:private][:num_networks] = "1"
 default[:private][:network_size] = "255"
 default[:private][:bridge] = "br200"
-default[:private][:bridge_dev] = "eth2"
+default[:private][:bridge_dev] = "eth3"
 
 
 default[:controller_ipaddress] = node[:ipaddress]
