@@ -37,3 +37,4 @@ default[:private][:bridge_dev] = "eth2"
 
 
 default[:controller_ipaddress] = node[:ipaddress]
+default[:virt_type] = "kvm"
