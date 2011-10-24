@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
-template "/etc/apt/sources.list.d/ops.monkeypuppetlabs.com.list" do
-      notifies :run, resources(:execute => "apt-get update"), :immediately
+template "/etc/apt/sources.list.d/rcb-packages.list" do
+  variables(
+    :url => node[:package_url],
+    :release => node[:packate_release],
+    :component => node[:package_component]
+  )
+  notifies :run, resources(:execute => "apt-get update"), :immediately
 end
