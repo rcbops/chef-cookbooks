@@ -38,7 +38,7 @@ end
 execute "grab the sample_vm" do
   cwd "/opt/kong/include/sample_vm"
   user "root"
-  command "curl http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-server-uec-amd64.tar.gz | tar -zx"
+  command "curl http://c250663.r63.cf1.rackcdn.com/ttylinux.tgz | tar -zx"
 end
 
 execute "install virtualenv" do
