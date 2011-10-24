@@ -33,5 +33,5 @@ end
 service "nova-compute" do
   supports :status => true, :restart => true
   action :enable
-  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :immediately
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
