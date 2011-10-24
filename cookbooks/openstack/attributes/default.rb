@@ -35,6 +35,9 @@ default[:private][:network_size] = "255"
 default[:private][:bridge] = "br200"
 default[:private][:bridge_dev] = "eth3"
 
+default[:package_url] => "http://ops.monkeypuppetlabs.com/packages"
+default[:packate_release] => node[:lsb][:codename]
+default[:package_component] => "diablo-d5"
 
 default[:controller_ipaddress] = node[:ipaddress]
 default[:virt_type] = "kvm"

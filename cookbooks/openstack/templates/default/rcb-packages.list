@@ -1,0 +1,1 @@
+deb <%= @url %> <%= @release %> <%= @component %>
