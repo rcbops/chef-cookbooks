@@ -33,6 +33,7 @@ template "/etc/nova/nova.conf" do
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:nova][:db],
     :api_port => node[:glance][:api_port],
+    :ipv4_cidr => node[:public][:ipv4_cidr],
     :virt_type => node[:virt_type]
   )
 end
