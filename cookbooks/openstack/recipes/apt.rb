@@ -18,6 +18,7 @@
 #
 
 template "/etc/apt/sources.list.d/rcb-packages.list" do
+  source "rcb-packages.list.erb"
   variables(
     :url => node[:package_url],
     :release => node[:packate_release],
