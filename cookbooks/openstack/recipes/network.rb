@@ -27,4 +27,5 @@ end
 service "nova-network" do
   supports :status => true, :restart => true
   action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :immediately
 end
