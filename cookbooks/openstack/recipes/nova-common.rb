@@ -17,16 +17,9 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
-
 package "nova-common" do
   action :install
   options "--force-yes"
-end
-
-execute "nova-manage db sync" do
-  command "nova-manage db sync"
-  action :nothing
 end
 
 template "/etc/nova/nova.conf" do
@@ -41,5 +34,4 @@ template "/etc/nova/nova.conf" do
     :db_name => node[:nova][:db],
     :api_port => node[:glance][:api_port]
   )
-  notifies :run, resources(:execute => "nova-manage db sync"), :immediately
 end
