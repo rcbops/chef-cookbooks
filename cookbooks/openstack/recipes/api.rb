@@ -27,6 +27,7 @@ end
 service "nova-api" do
   supports :status => true, :restart => true
   action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :immediately
 end
 
 template "/etc/nova/api-paste.ini" do
