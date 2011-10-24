@@ -28,10 +28,11 @@ end
 execute "nova-manage network create --label=public" do
   command "nova-manage network create --multi_host='T' --label=#{node[:public][:label]} --fixed_range_v4=#{node[:public][:ipv4_cidr]} --num_networks=#{node[:public][:num_networks]} --network_size=#{node[:public][:network_size]} --bridge=#{node[:public][:bridge]} --bridge_interface=#{node[:public][:bridge_dev]} --dns1=#{node[:public][:dns1]} --dns2=#{node[:public][:dns2]}"
   action :run
-end
+  not_if "nova-manage network list | grep #{node[:public][:ipv4_cidr]}nd
 
 execute "nova-manage network create --label=private" do
   command "nova-manage network create --multi_host='T' --label=#{node[:private][:label]} --fixed_range_v4=#{node[:private][:ipv4_cidr]} --num_networks=#{node[:private][:num_networks]} --network_size=#{node[:private][:network_size]} --bridge=#{node[:private][:bridge]} --bridge_interface=#{node[:private][:bridge_dev]}"
   action :run
+  not_if "nova-manage network list | grep #{node[:private][:ipv4_cidr]}"
 end
 
