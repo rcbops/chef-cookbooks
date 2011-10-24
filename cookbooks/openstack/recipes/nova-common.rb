@@ -32,6 +32,7 @@ template "/etc/nova/nova.conf" do
     :passwd => node[:nova][:db_passwd],
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:nova][:db],
-    :api_port => node[:glance][:api_port]
+    :api_port => node[:glance][:api_port],
+    :virt_type => node[:virt_type]
   )
 end

@@ -29,7 +29,7 @@
 # COMPUTE
 --compute_manager=nova.compute.manager.ComputeManager
 --sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
---libvirt_type=kvm
+--libvirt_type=<%= @virt_type %>
 
 # MISC
 --use_deprecated_auth=false
