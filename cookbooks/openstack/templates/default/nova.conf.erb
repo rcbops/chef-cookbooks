@@ -33,6 +33,10 @@
 --sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
 --libvirt_type=<%= @virt_type %>
 
+# VNCPROXY
+--vncproxy_url=http://<%= @ip_address %>:6080
+--vncproxy_wwwroot=/var/lib/nova/noVNC
+
 # MISC
 --use_deprecated_auth=false
 --allow_admin_api=true
