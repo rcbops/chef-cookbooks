@@ -19,7 +19,7 @@
 
 include_recipe "openstack::apt"
 include_recipe "openstack::nova-common"
-include_recipe "openstack::nova-api"
+include_recipe "openstack::api"
 include_recipe "openstack::network"
 
 package "mysql-client" do
