@@ -19,6 +19,11 @@
 
 include_recipe "openstack::nova-common"
 
+package "python-keystone" do
+  action :install
+  options "--force-yes"
+end
+
 package "nova-api" do
   action :install
   options "--force-yes"
