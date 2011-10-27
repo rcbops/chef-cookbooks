@@ -30,7 +30,7 @@ package "nova-vncproxy" do
 end
 
 execute "Fix permission Bug" do
-  command "sed -i 's/nova/root/g' /etc/init/nova-vncproxy.conf"
+  command "sed -i 's/nova$/root/g' /etc/init/nova-vncproxy.conf"
   action :run
 end
 
