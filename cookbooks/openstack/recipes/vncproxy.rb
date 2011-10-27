@@ -17,15 +17,25 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::apt"
-include_recipe "openssh::default"
+include_recipe "openstack::nova-common"
 
-include_recipe "openstack::rabbitmq"
-include_recipe "openstack::mysql"
-include_recipe "openstack::keystone"
-include_recipe "openstack::glance"
-include_recipe "openstack::nova-setup"
-include_recipe "openstack::scheduler"
-include_recipe "openstack::api"
-include_recipe "openstack::vncproxy"
-include_recipe "openstack::dashboard"
+package "nova-novnc" do
+  action :install
+  options "--force-yes"
+end
+
+package "nova-vncproxy" do
+  action :install
+  options "--force-yes"
+end
+
+execute "Fix permission Bug" do
+  command "sed -i 's/nova/root/g' /etc/init/nova-vncproxy.conf"
+  action :run
+end
+
+service "nova-vncproxy" do
+  supports :status => true, :restart => true
+  action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
+end
