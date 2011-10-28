@@ -1,0 +1,23 @@
+{
+  "controller_ip": "192.168.10.10",
+  "virt_type": "qemu",
+  "public": {
+    "label": "public",
+    "ipv4_cidr": "192.168.100.0/24",
+    "num_networks": "1",
+    "network_size": "255",
+    "bridge": "br100",
+    "bridge_dev": "eth1",
+    "dns1": "8.8.8.8",
+    "dns2": "8.8.4.4"
+  },
+  "private": {
+    "label": "public",
+    "ipv4_cidr": "192.168.200.0/24",
+    "num_networks": "1",
+    "network_size": "255",
+    "bridge": "br200",
+    "bridge_dev": "eth2"
+  },
+  "run_list": [ "recipe[apt]", "recipe[openstack::allinone]" ]
+}
