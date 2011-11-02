@@ -103,13 +103,10 @@ execute "Keystone: grant Admin role to admin user for openstack tenant" do
   not_if "keystone-manage role list openstack|grep Admin"
 end
 
-["identity", "nova", "glance"].each do |name|
-  execute "Keystone: add #{name} service" do
-    # command syntax: service add 'service'
-    command "keystone-manage service add #{name}" 
-    action :run
-    not_if "keystone-manage service list|grep #{name}"
-  end
+execute "Keystone: service add keystone identity" do
+  command "keystone-manage service add keystone identity"
+  action :run
+  not_if "keystone-manage service list|grep identity"
 end
 
 execute "Keystone: add identity entpointTemplates" do
@@ -122,6 +119,12 @@ execute "Keystone: add identity entpointTemplates" do
   not_if "keystone-manage endpointTemplates list|grep 'identity'"
 end
 
+execute "Keystone: service add nova compute" do
+  command "keystone-manage service add nova compute"
+  action :run
+  not_if "keystone-manage service list|grep compute"
+end
+
 execute "Keystone: add nova entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
   node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%" 
@@ -130,6 +133,12 @@ execute "Keystone: add nova entpointTemplates" do
   command "keystone-manage endpointTemplates add RegionOne nova #{node[:nova][:publicURL]} #{node[:nova][:adminURL]} #{node[:nova][:internalURL]} 1 1"
   action :run
   not_if "keystone-manage endpointTemplates list|grep 'nova'"
+end
+
+execute "Keystone: service add glance image" do
+  command "keystone-manage service add glance image"
+  action :run
+  not_if "keystone-manage service list|grep image"
 end
 
 execute "Keystone: add glance entpointTemplates" do
