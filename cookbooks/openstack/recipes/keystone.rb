@@ -114,9 +114,9 @@ execute "Keystone: add identity entpointTemplates" do
   node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:5001/v2.0" 
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:5000/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
-  command "keystone-manage endpointTemplates add RegionOne identity #{node[:keystone][:publicURL]} #{node[:keystone][:adminURL]} #{node[:keystone][:internalURL]} 1 1"
+  command "keystone-manage endpointTemplates add RegionOne keystone #{node[:keystone][:publicURL]} #{node[:keystone][:adminURL]} #{node[:keystone][:internalURL]} 1 1"
   action :run
-  not_if "keystone-manage endpointTemplates list|grep 'identity'"
+  not_if "keystone-manage endpointTemplates list|grep 'keystone'"
 end
 
 execute "Keystone: service add nova compute" do
