@@ -21,7 +21,7 @@ template "/etc/apt/sources.list.d/rcb-packages.list" do
   source "rcb-packages.list.erb"
   variables(
     :url => node[:package_url],
-    :release => node[:packate_release],
+    :release => node[:package_release],
     :component => node[:package_component]
   )
   notifies :run, resources(:execute => "apt-get update"), :immediately
