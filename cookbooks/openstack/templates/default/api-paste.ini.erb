@@ -124,7 +124,11 @@ paste.app_factory = nova.api.openstack.versions:Versions.factory
 ##########
 
 [filter:keystonecontext]
+<% if @component == "diablo-d5" -%>
 paste.filter_factory = nova.api.auth:KeystoneContext.factory
+<% elsif @component == "diablo-final" -%>
+paste.filter_factory = keystone.middleware.nova_keystone_context:NovaKeystoneContext.factory
+<% end -%>
 
 [filter:authtoken]
 paste.filter_factory = keystone.middleware.auth_token:filter_factory
