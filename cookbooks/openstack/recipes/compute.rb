@@ -27,7 +27,7 @@ package "mysql-client" do
 end
 
 package "nova-compute" do
-  action :install
+  action :upgrade
 end
 
 service "nova-compute" do

@@ -20,7 +20,7 @@
 include_recipe "openstack::nova-common"
 
 package "nova-network" do
-  action :install
+  action :upgrade
 end
 
 service "nova-network" do
