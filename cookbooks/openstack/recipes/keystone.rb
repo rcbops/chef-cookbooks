@@ -26,6 +26,7 @@ end
 
 package "keystone" do
   action :upgrade
+  options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
 service "keystone" do
