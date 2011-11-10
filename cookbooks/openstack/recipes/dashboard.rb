@@ -22,7 +22,7 @@ include_recipe "openstack::api"
 include_recipe "openstack::keystone"
 
 package "openstack-dashboard" do
-  action :install
+  action :upgrade
 end
 
 service "apache2" do
