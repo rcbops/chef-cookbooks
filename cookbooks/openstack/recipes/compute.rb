@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::apt"
 include_recipe "openstack::nova-common"
 include_recipe "openstack::api"
 include_recipe "openstack::network"

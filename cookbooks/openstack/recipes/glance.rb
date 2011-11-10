@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 include_recipe "openstack::keystone"
 
