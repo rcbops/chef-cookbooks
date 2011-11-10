@@ -17,13 +17,6 @@
 # limitations under the License.
 #
 
-# Install the rcbops keyring
-package "rcbops-keyring" do
-  action :install
-  options "--force-yes"
-end
-
-
 template "/etc/apt/sources.list.d/rcb-packages.list" do
   source "rcb-packages.list.erb"
   variables(
@@ -32,4 +25,10 @@ template "/etc/apt/sources.list.d/rcb-packages.list" do
     :component => node[:package_component]
   )
   notifies :run, resources(:execute => "apt-get update"), :immediately
+end
+
+# Install the rcbops keyring
+package "rcbops-keyring" do
+  action :install
+  options "--force-yes"
 end
