@@ -23,7 +23,6 @@ include_recipe "openstack::keystone"
 
 package "openstack-dashboard" do
   action :install
-  options "--force-yes"
 end
 
 service "apache2" do

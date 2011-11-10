@@ -28,7 +28,6 @@ end
 
 package "nova-compute" do
   action :install
-  options "--force-yes"
 end
 
 service "nova-compute" do
