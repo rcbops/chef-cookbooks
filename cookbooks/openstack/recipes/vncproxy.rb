@@ -21,12 +21,10 @@ include_recipe "openstack::nova-common"
 
 package "nova-novnc" do
   action :install
-  options "--force-yes"
 end
 
 package "nova-vncproxy" do
   action :install
-  options "--force-yes"
 end
 
 execute "Fix permission Bug" do

@@ -25,7 +25,6 @@ end
 
 package "keystone" do
   action :install
-  options "--force-yes"
 end
 
 service "keystone" do
