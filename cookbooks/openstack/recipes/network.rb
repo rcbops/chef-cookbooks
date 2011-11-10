@@ -21,7 +21,6 @@ include_recipe "openstack::nova-common"
 
 package "nova-network" do
   action :install
-  options "--force-yes"
 end
 
 service "nova-network" do

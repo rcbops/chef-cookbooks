@@ -19,7 +19,6 @@
 
 package "nova-common" do
   action :install
-  options "--force-yes"
 end
 
 template "/etc/nova/nova.conf" do
