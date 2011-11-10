@@ -17,6 +17,13 @@
 # limitations under the License.
 #
 
+# Install the rcbops keyring
+package "rcbops-keyring" do
+  action :install
+  options "--force-yes"
+end
+
+
 template "/etc/apt/sources.list.d/rcb-packages.list" do
   source "rcb-packages.list.erb"
   variables(

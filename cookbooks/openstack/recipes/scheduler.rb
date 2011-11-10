@@ -21,7 +21,6 @@ include_recipe "openstack::nova-common"
 
 package "nova-scheduler" do
   action :install
-  options "--force-yes"
 end
 
 service "nova-scheduler" do
