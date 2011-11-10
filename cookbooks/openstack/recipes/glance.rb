@@ -29,7 +29,7 @@ package "python-mysqldb" do
 end
 
 package "glance" do
-  action :install
+  action :upgrade
 end
 
 service "glance-api" do
