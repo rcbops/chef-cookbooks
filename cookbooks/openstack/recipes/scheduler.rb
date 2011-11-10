@@ -20,7 +20,7 @@
 include_recipe "openstack::nova-common"
 
 package "nova-scheduler" do
-  action :install
+  action :upgrade
 end
 
 service "nova-scheduler" do
