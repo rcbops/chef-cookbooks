@@ -18,7 +18,7 @@
 #
 
 package "nova-common" do
-  action :install
+  action :upgrade
 end
 
 template "/etc/nova/nova.conf" do

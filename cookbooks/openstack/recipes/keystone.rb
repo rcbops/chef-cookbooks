@@ -24,7 +24,7 @@ package "python-mysqldb" do
 end
 
 package "keystone" do
-  action :install
+  action :upgrade
 end
 
 service "keystone" do

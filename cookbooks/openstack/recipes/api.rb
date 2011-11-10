@@ -20,11 +20,11 @@
 include_recipe "openstack::nova-common"
 
 package "python-keystone" do
-  action :install
+  action :upgrade
 end
 
 package "nova-api" do
-  action :install
+  action :upgrade
 end
 
 service "nova-api" do
