@@ -31,4 +31,5 @@ end
 package "rcbops-keyring" do
   action :install
   options "--force-yes"
+  notifies :run, resources(:execute => "apt-get update"), :immediately
 end
