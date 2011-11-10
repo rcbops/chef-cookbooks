@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "openstack::apt"
+
 package "nova-common" do
   action :upgrade
 end
