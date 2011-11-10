@@ -36,10 +36,10 @@ file "/var/lib/keystone/keystone.db" do
     action :delete
 end
 
-execute "Fix Bug lp:865448" do
-  command "sed -i 's/path.abspath(sys.argv\[0\])/path.dirname(__file__)/g' /usr/share/pyshared/keystone/controllers/version.py"
-  action :run
-end
+#execute "Fix Bug lp:865448" do
+#  command "sed -i 's/path.abspath(sys.argv\[0\])/path.dirname(__file__)/g' /usr/share/pyshared/keystone/controllers/version.py"
+#  action :run
+#end
 
 template "/etc/keystone/keystone.conf" do
   source "keystone.conf.erb"
