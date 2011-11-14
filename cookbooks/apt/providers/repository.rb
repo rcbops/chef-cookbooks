@@ -58,7 +58,8 @@ action :add do
       ignore_failure true
       action :nothing
     end.run_action(:run)
-    new_resource.updated_by_last_action(true)
+    # This line seems to be throwing an error
+    # new_resource.updated_by_last_action(true)
   end
 end
 
