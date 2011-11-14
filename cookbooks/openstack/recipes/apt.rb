@@ -30,7 +30,7 @@
 apt_repository "rcb-packages" do
   uri node[:package_url]
   distribution node['lsb']['codename']
-  components node[:package_component]
+  components [node[:package_component]]
   keyserver "keyserver.ubuntu.com"
   key "F87CBDE0"
   action :add
