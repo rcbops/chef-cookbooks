@@ -28,18 +28,17 @@
 #end
 
 apt_repository "rcb-packages" do
-  uri node[:package_url]
+  uri "#{node[:package_url]}"
   distribution node['lsb']['codename']
   components [node[:package_component]]
   keyserver "keyserver.ubuntu.com"
   key "F87CBDE0"
   action :add
-#  notifies :run, resources(:execute => "apt-get update"), :immediately
 end
 
-# Install the rcbops keyring
-package "rcbops-keyring" do
-  action :install
-  options "--force-yes"
-  notifies :run, resources(:execute => "apt-get update"), :immediately
-end
+## Install the rcbops keyring
+#package "rcbops-keyring" do
+#  action :install
+#  options "--force-yes"
+#  notifies :run, resources(:execute => "apt-get update"), :immediately
+#end
