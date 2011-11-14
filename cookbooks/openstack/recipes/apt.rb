@@ -17,16 +17,6 @@
 # limitations under the License.
 #
 
-#template "/etc/apt/sources.list.d/rcb-packages.list" do
-#  source "rcb-packages.list.erb"
-#  variables(
-#    :url => node[:package_url],
-#    :release => node[:package_release],
-#    :component => node[:package_component]
-#  )
-#  notifies :run, resources(:execute => "apt-get update"), :immediately
-#end
-
 apt_repository "rcb-packages" do
   uri "#{node[:package_url]}"
   distribution node['lsb']['codename']
@@ -35,10 +25,3 @@ apt_repository "rcb-packages" do
   key "F87CBDE0"
   action :add
 end
-
-## Install the rcbops keyring
-#package "rcbops-keyring" do
-#  action :install
-#  options "--force-yes"
-#  notifies :run, resources(:execute => "apt-get update"), :immediately
-#end
