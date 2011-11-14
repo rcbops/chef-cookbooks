@@ -55,7 +55,6 @@ action :add do
     end.run_action(:create)
     execute "update package index" do
       command "apt-get update"
-      ignore_failure true
       action :nothing
     end.run_action(:run)
     new_resource.updated_by_last_action(true)

@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: apt
-# Resource:: repository
+# Recipe:: default
 #
-# Copyright 2010-2011, Opscode, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,14 +17,17 @@
 # limitations under the License.
 #
 
-actions :add, :remove
+e = execute "apt-get update" do
+  action :nothing
+end
 
-#name of the repo, used for source.list filename
-attribute :repo_name, :kind_of => String, :name_attribute => true
-attribute :uri, :kind_of => String
-attribute :distribution, :kind_of => String
-attribute :components, :kind_of => Array, :default => []
-#whether or not to add the repository as a source repo as well
-attribute :deb_src, :default => false
-attribute :keyserver, :kind_of => String, :default => nil
-attribute :key, :kind_of => String, :default => nil
+e.run_action(:run)
+
+%w{/var/cache/local /var/cache/local/preseeding}.each do |dirname|
+  directory dirname do
+    owner "root"
+    group "root"
+    mode  0755
+    action :create
+  end
+end
