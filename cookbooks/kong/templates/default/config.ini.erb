@@ -4,7 +4,7 @@ initrd = include/sample_vm/ttylinux-initrd
 image = include/sample_vm/ttylinux.img
 
 [swift]
-auth_host = <%= @swift_auth_host %>
+auth_host = <%= @ip_address %>
 auth_port = <%= @swift_auth_port %>
 auth_prefix = <%= @swift_auth_prefix %>
 auth_ssl = <%= @swift_ssl %>
@@ -13,7 +13,7 @@ username = <%= @swift_user %>
 password = <%= @swift_pass %>
 
 [rabbitmq]
-host = <%= @rabbit_host %>
+host = <%= @ip_address %>
 user = <%= @rabbit_user %>
 password = 
 
@@ -21,7 +21,7 @@ password =
 network_label = <%= @nova_network_label %>
 
 [keystone]
-host = <%= @keystone_host %>
+host = <%= @ip_address %>
 port = <%= @keystone_service_port %>
 admin_port = <%= @keystone_admin_port %>
 apiver = <%= @keystone_apiver %>
