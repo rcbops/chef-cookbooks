@@ -58,7 +58,7 @@ template "/opt/kong/etc/config.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => node[:controller_ipaddress]
+    :ip_address => node[:controller_ipaddress],
     # :keystone_host => node[:keystone][:host],
     :keystone_service_port => node[:keystone][:service_port],
     :keystone_admin_port => node[:keystone][:admin_port],
