@@ -1,6 +1,6 @@
 default[:keystone][:host] = "127.0.0.1"
 default[:keystone][:service_port] = "5000"
-default[:keystone][:admin_port] = "5000"
+default[:keystone][:admin_port] = "35357"
 default[:keystone][:api_version] = "v2.0"
 default[:keystone][:user] = "admin"
 default[:keystone][:password] = "secrete"
