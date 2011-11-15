@@ -37,3 +37,13 @@ execute "nova-manage network create --label=private" do
   not_if "nova-manage network list | grep #{node[:private][:ipv4_cidr]}"
 end
 
+
+if node.has_key?(:floating) and node[:floating].has_key?(:ipv4_cidr) 
+  execute "nova-manage floating create" do
+    command "nova-manage floating create --ip_range=#{node[:floating][:ipv4_cidr]}"
+    action :run
+    not_if "nova-manage floating list"
+  end
+end
+
+
