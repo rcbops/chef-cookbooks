@@ -57,7 +57,9 @@ template "/etc/glance/glance-registry.conf" do
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
     :ip_address => node[:controller_ipaddress],
-    :db_name => node[:glance][:db]
+    :db_name => node[:glance][:db],
+    :admin_port => node[:keystone][:admin_port],
+    :service_port => node[:keystone][:service_port]
   )
   notifies :restart, resources(:service => "glance-registry"), :immediately
 end
@@ -69,7 +71,10 @@ template "/etc/glance/glance-api.conf" do
   mode "0644"
   variables(
     :api_port => node[:glance][:api_port],
-    :registry_port => node[:glance][:registry_port]
+    :registry_port => node[:glance][:registry_port],
+    :ip_address => node[:controller_ipaddress],
+    :admin_port => node[:keystone][:admin_port],
+    :service_port => node[:keystone][:service_port]
   )
   notifies :restart, resources(:service => "glance-api"), :immediately
 end
