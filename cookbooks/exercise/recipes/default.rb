@@ -2,8 +2,8 @@ package "git" do
     action :install
 end
 
-execute "git clone git@github.com:jcannava/exercise.git" do
-    command "git clone git@github.com:jcannava/exercise.git"
+execute "git clone git@github.com:rcbops/exercise.git" do
+    command "git clone git@github.com:rcbops/exercise.git"
     cwd "/opt"
     user "root"
     not_if do File.exists?("/opt/exercise") end
