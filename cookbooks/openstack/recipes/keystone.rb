@@ -112,7 +112,7 @@ end
 
 execute "Keystone: add identity entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:5001/v2.0" 
+  node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:35357/v2.0" 
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:5000/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
   command "keystone-manage endpointTemplates add RegionOne keystone #{node[:keystone][:publicURL]} #{node[:keystone][:adminURL]} #{node[:keystone][:internalURL]} 1 1"
