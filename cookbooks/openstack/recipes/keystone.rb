@@ -49,10 +49,14 @@ template "/etc/keystone/keystone.conf" do
   group "root"
   mode "0644"
   variables(
+    :debug => node[:keystone][:debug],
+    :verbose => node[:keystone][:verbose],
     :user => node[:keystone][:db_user],
     :passwd => node[:keystone][:db_passwd],
     :ip_address => node[:controller_ipaddress],
-    :db_name => node[:keystone][:db]
+    :db_name => node[:keystone][:db],
+    :service_port => node[:keystone][:service_port],
+    :admin_port => node[:keystone][:admin_port]
   )
   notifies :restart, resources(:service => "keystone"), :immediately
 end
