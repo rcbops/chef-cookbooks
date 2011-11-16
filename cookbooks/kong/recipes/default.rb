@@ -11,8 +11,8 @@ package "python-virtualenv" do
   action :install
 end
 
-execute "git clone https://github.com/cloudbuilders/kong" do
-  command "git clone https://github.com/cloudbuilders/kong"
+execute "git clone https://github.com/rcbops/kong" do
+  command "git clone https://github.com/rcbops/kong"
   cwd "/opt"
   user "root"
   not_if do File.exists?("/opt/kong") end
@@ -59,7 +59,6 @@ template "/opt/kong/etc/config.ini" do
   mode "0644"
   variables(
     :ip_address => node[:controller_ipaddress],
-    # :keystone_host => node[:keystone][:host],
     :keystone_service_port => node[:keystone][:service_port],
     :keystone_admin_port => node[:keystone][:admin_port],
     :keystone_apiver => node[:keystone][:api_version],
@@ -68,9 +67,7 @@ template "/opt/kong/etc/config.ini" do
     :keystone_tenantid => node[:keystone][:tenantid],
     :keystone_region => node[:keystone][:region],
     :nova_network_label => node[:nova][:network_label],
-    # :rabbit_host => node[:rabbitmq][:host],
     :rabbit_user => node[:rabbitmq][:user],
-    # :swift_auth_host => node[:swift][:auth_host],
     :swift_auth_port => node[:swift][:auth_port],
     :swift_auth_prefix => node[:swift][:auth_prefix],
     :swift_ssl => node[:swift][:auth_ssl],
