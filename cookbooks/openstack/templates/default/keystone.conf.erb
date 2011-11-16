@@ -12,7 +12,8 @@ default_store = sqlite
 
 # Log to this file. Make sure you do not set the same log
 # file for both the API and registry servers!
-log_file = /var/log/keystone/keystone.log
+log_dir = /var/log/keystone
+log_file = keystone.log
 
 # List of backends to be configured
 backends = keystone.backends.sqlalchemy
