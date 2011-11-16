@@ -42,7 +42,8 @@ template "/etc/nova/api-paste.ini" do
     :ip_address => node[:controller_ipaddress],
     :component  => node[:package_component],
     :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port]
+    :admin_port => node[:keystone][:admin_port],
+    :admin_token => node[:keystone][:admin_token]
   )
   notifies :restart, resources(:service => "nova-api"), :immediately
 end
