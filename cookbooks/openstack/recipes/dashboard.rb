@@ -58,7 +58,9 @@ template "/var/lib/dash/local/local_settings.py" do
     :user => node[:dash][:db_user],
     :passwd => node[:dash][:db_passwd],
     :ip_address => node[:controller_ipaddress],
-    :db_name => node[:dash][:db]
+    :db_name => node[:dash][:db],
+    :service_port => node[:keystone][:service_port]
+    :admin_token => node[:keystone][:admin_token]
   )
 end
 
