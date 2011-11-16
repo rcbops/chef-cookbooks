@@ -35,8 +35,8 @@ MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 # EMAIL_HOST_PASSWORD = 'top-secret!'
 
 
-OPENSTACK_ADMIN_TOKEN = "999888777666"
-OPENSTACK_KEYSTONE_URL = "http://<%= @ip_address %>:5000/v2.0/"
+OPENSTACK_ADMIN_TOKEN = "<%= @admin_token %>"
+OPENSTACK_KEYSTONE_URL = "http://<%= @ip_address %>:<%= @service_port %>/v2.0/"
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "Member"
 
 # NOTE(tres): Available services should come from the service
