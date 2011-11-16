@@ -78,9 +78,9 @@ execute "Keystone: add admin user" do
 end
 
 execute "Keystone: add admin user token" do
-  command "keystone-manage token add 999888777666 admin openstack 2015-02-05T00:0"
+  command "keystone-manage token add #{node[:keystone][:admin_token]} admin openstack 2015-02-05T00:0"
   action :run
-  not_if "keystone-manage token list | grep 999888777666"
+  not_if "keystone-manage token list | grep #{node[:keystone][:admin_token]}"
 end
 
 execute "Keystone: add Admin role" do
