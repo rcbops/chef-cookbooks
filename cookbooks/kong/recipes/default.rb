@@ -12,7 +12,7 @@ package "python-virtualenv" do
 end
 
 execute "git clone https://github.com/rcbops/kong" do
-  command "git clone https://github.com/rcbops/kong"
+  command "git clone https://github.com/rcbops/kong #{node[:kong_branch]}"
   cwd "/opt"
   user "root"
   not_if do File.exists?("/opt/kong") end
