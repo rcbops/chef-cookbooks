@@ -18,6 +18,12 @@ execute "git clone https://github.com/rcbops/kong" do
   not_if do File.exists?("/opt/kong") end
 end
 
+execute "checkout kong branch" do
+  command "git checkout #{node[:kong][:branch]}"
+  cwd "/opt/kong"
+  user "root"
+end
+
 execute "generate swift_small object" do
   command "dd if=/dev/zero of=swift_small bs=512 count=1024"
   cwd "/opt/kong/include/swift_objects"
