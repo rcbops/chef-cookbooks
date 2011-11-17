@@ -19,7 +19,7 @@ execute "git clone https://github.com/rcbops/kong" do
 end
 
 execute "checkout kong branch" do
-  command "git checkout #{node[:kong_branch]}"
+  command "git checkout #{node[:kong][:branch]}"
   cwd "/opt/kong"
   user "root"
 end
