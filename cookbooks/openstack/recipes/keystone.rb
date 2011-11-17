@@ -111,7 +111,7 @@ end
 execute "Keystone: service add keystone identity" do
   command "keystone-manage service add keystone identity"
   action :run
-  not_if "keystone-manage service list|grep identity"
+  not_if "keystone-manage service list|grep keystone"
 end
 
 execute "Keystone: add identity entpointTemplates" do
@@ -127,7 +127,7 @@ end
 execute "Keystone: service add nova compute" do
   command "keystone-manage service add nova compute"
   action :run
-  not_if "keystone-manage service list|grep compute"
+  not_if "keystone-manage service list|grep nova"
 end
 
 execute "Keystone: add nova entpointTemplates" do
@@ -143,7 +143,7 @@ end
 execute "Keystone: service add glance image" do
   command "keystone-manage service add glance image"
   action :run
-  not_if "keystone-manage service list|grep image"
+  not_if "keystone-manage service list|grep glance"
 end
 
 execute "Keystone: add glance entpointTemplates" do
