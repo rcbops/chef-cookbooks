@@ -21,4 +21,4 @@ default[:swift][:account] = "system"
 default[:swift][:username] = "root"
 default[:swift][:password] = "password"
 
-default[:kong_branch] = "master"
+default[:kong][:branch] = "master"
