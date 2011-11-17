@@ -20,3 +20,5 @@ default[:swift][:auth_ssl] = "yes"
 default[:swift][:account] = "system"
 default[:swift][:username] = "root"
 default[:swift][:password] = "password"
+
+default[:kong_branch] = "master"
