@@ -12,10 +12,17 @@ package "python-virtualenv" do
 end
 
 execute "git clone https://github.com/rcbops/kong" do
-  command "git clone https://github.com/rcbops/kong #{node[:kong_branch]}"
+  command "git clone https://github.com/rcbops/kong"
   cwd "/opt"
   user "root"
   not_if do File.exists?("/opt/kong") end
+end
+
+execute "checkout kong branch" do
+  command "git checkout #{node[:kong_branch]}; touch /opt/kong/.correct_branch"
+  cwd "/opt/kong"
+  user "root"
+  not_if do File.exists?("/opt/kong/.correct_branch") end
 end
 
 execute "generate swift_small object" do
