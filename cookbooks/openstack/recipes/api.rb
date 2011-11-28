@@ -25,6 +25,7 @@ end
 
 package "nova-api" do
   action :upgrade
+  options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
 service "nova-api" do
