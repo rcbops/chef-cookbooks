@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -116,7 +116,7 @@ end
 
 execute "Keystone: add identity entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0" 
+  node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
   command "keystone-manage endpointTemplates add RegionOne keystone #{node[:keystone][:publicURL]} #{node[:keystone][:adminURL]} #{node[:keystone][:internalURL]} 1 1"
@@ -132,7 +132,7 @@ end
 
 execute "Keystone: add nova entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%" 
+  node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
   command "keystone-manage endpointTemplates add RegionOne nova #{node[:nova][:publicURL]} #{node[:nova][:adminURL]} #{node[:nova][:internalURL]} 1 1"
@@ -148,10 +148,17 @@ end
 
 execute "Keystone: add glance entpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
-  node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1" 
-  node.set[:glance][:internalURL] = node[:glance][:adminURL] 
+  node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
+  node.set[:glance][:internalURL] = node[:glance][:adminURL]
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
   command "keystone-manage endpointTemplates add RegionOne glance #{node[:glance][:publicURL]} #{node[:glance][:adminURL]} #{node[:glance][:internalURL]} 1 1"
   action :run
   not_if "keystone-manage endpointTemplates list|grep 'glance'"
+end
+
+execute "Keystone: add ec2 credentials" do
+  # command syntax: keystone-manage credentials add 'role? (admin)' EC2 'user' 'secret' 'project'
+  command "keystone-manage credentials add admin EC2 admin secrete openstack"
+  action :run
+  not_if "keystone-manage credentials list | grep 'admin'"
 end
