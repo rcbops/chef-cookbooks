@@ -27,6 +27,7 @@ end
 
 package "nova-compute" do
   action :upgrade
+  options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
 service "nova-compute" do
