@@ -33,12 +33,6 @@ package "glance" do
   action :upgrade
 end
 
-execute "glance-manage db_sync" do
-        command "glance-manage db_sync"
-        action :nothing
-        notifies :restart, resources(:service => "glance-registry"), :immediately
-end
-
 service "glance-api" do
   supports :status => true, :restart => true
   action :enable
@@ -47,6 +41,12 @@ end
 service "glance-registry" do
   supports :status => true, :restart => true
   action :enable
+end
+
+execute "glance-manage db_sync" do
+        command "glance-manage db_sync"
+        action :nothing
+        notifies :restart, resources(:service => "glance-registry"), :immediately
 end
 
 file "/var/lib/glance/glance.sqlite" do
