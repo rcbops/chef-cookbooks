@@ -69,7 +69,7 @@ template "/etc/glance/glance-registry.conf" do
     :admin_token => node[:keystone][:admin_token]
   )
   notifies :stop, resources(:service => "glance-registry"), :immediately
-  notifies :run, resources(:execute => "glance-manage db_version"), :immediately
+  notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
 end
 
 template "/etc/glance/glance-api.conf" do
