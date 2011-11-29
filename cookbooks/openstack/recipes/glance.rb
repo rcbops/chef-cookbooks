@@ -33,6 +33,12 @@ package "glance" do
   action :upgrade
 end
 
+execute "glance-manage db_sync" do
+        command "glance-manage db_sync"
+        action :nothing
+        notifies :restart, resources(:service => "glance-registry"), :immediately
+end
+
 service "glance-api" do
   supports :status => true, :restart => true
   action :enable
@@ -62,7 +68,9 @@ template "/etc/glance/glance-registry.conf" do
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
   )
-  notifies :restart, resources(:service => "glance-registry"), :immediately
+  # notifies :restart, resources(:service => "glance-registry"), :immediately
+  notifies :stop, resources(:service => "glance-registry"), :immediately
+  notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
 end
 
 template "/etc/glance/glance-api.conf" do
