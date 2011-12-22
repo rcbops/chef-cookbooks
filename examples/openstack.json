@@ -12,7 +12,7 @@
     "dns2": "8.8.4.4"
   },
   "private": {
-    "label": "public",
+    "label": "private",
     "ipv4_cidr": "192.168.200.0/24",
     "num_networks": "1",
     "network_size": "255",
