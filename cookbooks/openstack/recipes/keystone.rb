@@ -114,7 +114,7 @@ execute "Keystone: service add keystone identity" do
   not_if "keystone-manage service list|grep keystone"
 end
 
-execute "Keystone: add identity entpointTemplates" do
+execute "Keystone: add identity endpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
   node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
@@ -130,7 +130,7 @@ execute "Keystone: service add nova compute" do
   not_if "keystone-manage service list|grep nova"
 end
 
-execute "Keystone: add nova entpointTemplates" do
+execute "Keystone: add nova endpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
   node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
@@ -146,7 +146,7 @@ execute "Keystone: service add glance image" do
   not_if "keystone-manage service list|grep glance"
 end
 
-execute "Keystone: add glance entpointTemplates" do
+execute "Keystone: add glance endpointTemplates" do
   # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
   node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
   node.set[:glance][:internalURL] = node[:glance][:adminURL]
