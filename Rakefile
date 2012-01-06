@@ -19,7 +19,7 @@
 #
 
 require 'rubygems'
-require 'chef'
+#require 'chef'
 require 'json'
 
 # Load constants from rake config file.
@@ -40,7 +40,7 @@ end
 # Load common, useful tasks from Chef.
 # rake -T to see the tasks this loads.
 
-load 'chef/tasks/chef_repo.rake'
+#load 'chef/tasks/chef_repo.rake'
 
 desc "Bundle a single cookbook for distribution"
 task :bundle_cookbook => [ :metadata ]
