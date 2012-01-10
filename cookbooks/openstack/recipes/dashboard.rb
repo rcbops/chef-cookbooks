@@ -34,6 +34,12 @@ end
 execute "a2enmod rewrite" do
         command "a2enmod rewrite"
         action :run
+        notifies :restart, resources(:service => "apache2"), :delayed
+end
+
+execute "a2enmod wsgi" do
+        command "a2enmod wsgi"
+        action :run
         notifies :restart, resources(:service => "apache2"), :immediately
 end
 
