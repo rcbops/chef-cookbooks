@@ -50,11 +50,13 @@ end
   execute "create #{service} user" do
     command "mysql -u root -e \"grant all privileges on #{node[service][:db]}.* to '#{node[service][:db_user]}'@'%'\""
     action :run
+    not_if "mysql -u root -e \"show grants for '#{node[service][:db_user]}'@'%'\""
   end
 end
 
 ["nova", "glance", "keystone", "dash"].each do |service|
   execute "set #{service} user password" do
     command "mysql -u root -e \"SET PASSWORD for '#{node[service][:db_user]}'@'%' = PASSWORD('#{node[service][:db_passwd]}')\""
+    not_if "mysql -u root -e \"select * from mysql.user where user='#{node[service][:db_user]}' and password=PASSWORD('#{node[service][:db_passwd]}')\""
   end
 end
