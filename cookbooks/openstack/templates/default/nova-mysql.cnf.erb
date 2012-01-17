@@ -1,0 +1,8 @@
+#
+# This forces bind to the admin ip, necessary for nova
+#
+# This file is controlled by Chef.  Do not edit.
+#
+
+[mysqld]
+bind-address = <%= node[:controller_ipaddress] %>
