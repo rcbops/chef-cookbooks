@@ -18,8 +18,18 @@
 # limitations under the License.
 #
 
+have_chef=false
+
+
 require 'rubygems'
-#require 'chef'
+
+begin
+  require 'chef'
+  have_chef=true
+rescue Exception
+end
+
+
 require 'json'
 
 # Load constants from rake config file.
@@ -40,7 +50,7 @@ end
 # Load common, useful tasks from Chef.
 # rake -T to see the tasks this loads.
 
-#load 'chef/tasks/chef_repo.rake'
+load 'chef/tasks/chef_repo.rake' if have_chef
 
 desc "Bundle a single cookbook for distribution"
 task :bundle_cookbook => [ :metadata ]
