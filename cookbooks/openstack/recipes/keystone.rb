@@ -31,11 +31,11 @@ end
 
 service "keystone" do
   supports :status => true, :restart => true
-  action :enable
+  action [ :enable, :start ]
 end
 
 file "/var/lib/keystone/keystone.db" do
-    action :delete
+  action :delete
 end
 
 #execute "Fix Bug lp:865448" do
@@ -43,26 +43,28 @@ end
 #  action :run
 #end
 
+execute "Keystone: sleep" do
+  command "sleep 10s"
+  action :nothing
+end
+
 template "/etc/keystone/keystone.conf" do
   source "keystone.conf.erb"
   owner "root"
   group "root"
   mode "0644"
   variables(
-    :debug => node[:keystone][:debug],
-    :verbose => node[:keystone][:verbose],
-    :user => node[:keystone][:db_user],
-    :passwd => node[:keystone][:db_passwd],
-    :ip_address => node[:controller_ipaddress],
-    :db_name => node[:keystone][:db],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port]
-  )
+            :debug => node[:keystone][:debug],
+            :verbose => node[:keystone][:verbose],
+            :user => node[:keystone][:db_user],
+            :passwd => node[:keystone][:db_passwd],
+            :ip_address => node[:controller_ipaddress],
+            :db_name => node[:keystone][:db],
+            :service_port => node[:keystone][:service_port],
+            :admin_port => node[:keystone][:admin_port]
+            )
   notifies :restart, resources(:service => "keystone"), :immediately
-end
-
-execute "Keystone restart: sleep 10" do
-  command "sleep 10s"
+  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
 end
 
 execute "Keystone: add openstack tenant" do
@@ -97,7 +99,8 @@ end
 
 execute "Keystone: grant ServiceAdmin role to admin user" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage role grant Admin admin"
+  command "keystone-manage role grant Admin admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
+  not_if "test -f /var/lib/keystone/keystone_why_you_so_broken.semaphore"
   action :run
 end
 
