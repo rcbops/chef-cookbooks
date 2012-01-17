@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,22 +17,25 @@
 # limitations under the License.
 
 package "mysql-server" do
-	action :install
+  action :install
 end
 
 service "mysql" do
-	supports :status => true, :restart => true
-        action :enable
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
 end
 
 package "mysql-client" do
-	action :install
+  action :install
 end
 
-execute "configure mysql bind addr" do
-	command "perl -pi -e 's/127.0.0.1/0.0.0.0/g' /etc/mysql/my.cnf"
-	action :run
-	notifies :restart, resources(:service => "mysql"), :immediately
+template "/etc/mysql/conf.d/nova-mysql.cnf" do
+  # conf.d settings will override my.cnf settings
+  source "nova-mysql.cnf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "mysql"), :immediately
 end
 
 ["nova", "glance", "keystone", "dash"].each do |service|
@@ -47,11 +50,13 @@ end
   execute "create #{service} user" do
     command "mysql -u root -e \"grant all privileges on #{node[service][:db]}.* to '#{node[service][:db_user]}'@'%'\""
     action :run
+    not_if "mysql -u root -e \"show grants for '#{node[service][:db_user]}'@'%'\""
   end
 end
 
 ["nova", "glance", "keystone", "dash"].each do |service|
   execute "set #{service} user password" do
     command "mysql -u root -e \"SET PASSWORD for '#{node[service][:db_user]}'@'%' = PASSWORD('#{node[service][:db_passwd]}')\""
+    not_if "mysql -u root -e \"select * from mysql.user where user='#{node[service][:db_user]}' and password=PASSWORD('#{node[service][:db_passwd]}')\""
   end
 end
