@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,6 +23,7 @@ include_recipe "openstack::nova-common"
 execute "nova-manage db sync" do
   command "nova-manage db sync"
   action :run
+  not_if "nova-manage db version && test $(nova-manage db version) -gt 0"
 end
 
 execute "nova-manage network create --label=public" do
@@ -38,7 +39,7 @@ execute "nova-manage network create --label=private" do
 end
 
 
-if node.has_key?(:floating) and node[:floating].has_key?(:ipv4_cidr) 
+if node.has_key?(:floating) and node[:floating].has_key?(:ipv4_cidr)
   execute "nova-manage floating create" do
     command "nova-manage floating create --ip_range=#{node[:floating][:ipv4_cidr]}"
     action :run
