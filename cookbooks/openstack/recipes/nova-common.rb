@@ -39,3 +39,20 @@ template "/etc/nova/nova.conf" do
     :virt_type => node[:virt_type]
   )
 end
+
+template "/root/.novarc" do
+  source "novarc.erb"
+  owner "root"
+  group "root"
+  mode "0600"
+  variables(
+    :user => 'admin',
+    :tenant => 'openstack',
+    :password => 'secrete',
+    :keystone_api_ip => node[:controller_ipaddress],
+    :keystone_service_port => node[:keystone][:service_port],
+    :nova_api_version => '1.1',
+    :keystone_region => 'RegionOne",
+    :auth_strategy => 'keystone'
+  )
+end
