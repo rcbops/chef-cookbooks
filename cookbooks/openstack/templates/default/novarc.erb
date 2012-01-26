@@ -1,0 +1,15 @@
+# COMMON OPENSTACK ENVS
+export OS_AUTH_USER=<%= @user %>
+export OS_AUTH_KEY=<%= @password %>
+export OS_AUTH_TENANT=<%= @tenant %>
+export OS_AUTH_URL=http://<%= @keystone_api_ip %>:<%= @keystone_service_port %>/v2.0/
+export OS_AUTH_STRATEGY=<%= @auth_strategy %>
+
+# LEGACY NOVA ENVS
+export NOVA_USERNAME=${OS_AUTH_USER}
+export NOVA_PROJECT_ID=${OS_AUTH_TENANT}
+export NOVA_PASSWORD=${OS_AUTH_KEY}
+export NOVA_API_KEY=${OS_AUTH_KEY}
+export NOVA_URL=${OS_AUTH_URL}
+export NOVA_VERSION=<%= @nova_api_version %>
+export NOVA_REGION_NAME=<%= @keystone_region %>
