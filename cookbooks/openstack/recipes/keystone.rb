@@ -38,11 +38,6 @@ file "/var/lib/keystone/keystone.db" do
   action :delete
 end
 
-#execute "Fix Bug lp:865448" do
-#  command "sed -i 's/path.abspath(sys.argv\[0\])/path.dirname(__file__)/g' /usr/share/pyshared/keystone/controllers/version.py"
-#  action :run
-#end
-
 execute "Keystone: sleep" do
   command "sleep 10s"
   action :nothing
@@ -68,53 +63,58 @@ template "/etc/keystone/keystone.conf" do
 end
 
 execute "Keystone: add openstack tenant" do
-  command "keystone-manage tenant add openstack"
+  command "keystone-manage create_tenant --name openstack --id openstack"
   action :run
-  not_if "keystone-manage tenant list|grep openstack"
+  not_if "keystone-manage list_tenants|grep openstack"
 end
 
 execute "Keystone: add admin user" do
-  command "keystone-manage user add admin secrete openstack"
+  command "keystone-manage create_user --id admin --name admin --password secrete --tenant-id openstack"
   action :run
-  not_if "keystone-manage user list|grep admin"
+  not_if "keystone-manage list_users |grep admin"
 end
 
 execute "Keystone: add admin user token" do
-  command "keystone-manage token add #{node[:keystone][:admin_token]} admin openstack 2015-02-05T00:0"
+  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
   action :run
-  not_if "keystone-manage token list | grep #{node[:keystone][:admin_token]}"
+  not_if "keystone-manage list_tokens |grep #{node[:keystone][:admin_token]}"
 end
 
+# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 1
 execute "Keystone: add Admin role" do
-  command "keystone-manage role add Admin"
+  command "keystone-manage create_role --name Admin"
   action :run
-  not_if "keystone-manage role list|grep Admin"
+  not_if "keystone-manage list_roles |grep Admin"
 end
 
+# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 2
 execute "Keystone: add Member role" do
-  command "keystone-manage role add Member"
+  command "keystone-manage create_role --name Member"
   action :run
-  not_if "keystone-manage role list|grep Member"
+  not_if "keystone-manage list_roles grep Member"
 end
 
+# I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
 execute "Keystone: grant ServiceAdmin role to admin user" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage role grant Admin admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
+  command "keystone-manage grant_role --role-id 1 --user-id admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
   not_if "test -f /var/lib/keystone/keystone_why_you_so_broken.semaphore"
   action :run
 end
 
+# I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
 execute "Keystone: grant Admin role to admin user for openstack tenant" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage role grant Admin admin openstack"
+  command "keystone-manage role grant --role-id 1 --user-id admin --tenant-id openstack && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
-  not_if "keystone-manage role list openstack|grep Admin"
+  not_if "test -f /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
 end
 
+# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 1
 execute "Keystone: service add keystone identity" do
-  command "keystone-manage service add keystone identity"
+  command "keystone-manage create_service --name keystone --type identity"
   action :run
-  not_if "keystone-manage service list|grep keystone"
+  not_if "keystone-manage list_services |grep keystone"
 end
 
 execute "Keystone: add identity endpointTemplates" do
@@ -122,15 +122,16 @@ execute "Keystone: add identity endpointTemplates" do
   node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
-  command "keystone-manage endpointTemplates add RegionOne keystone #{node[:keystone][:publicURL]} #{node[:keystone][:adminURL]} #{node[:keystone][:internalURL]} 1 1"
+  command "keystone-manage create_endpoint_template --region RegionOne --service-id 1 --public-url #{node[:keystone][:publicURL]} --admin-url #{node[:keystone][:adminURL]} --internal-url #{node[:keystone][:internalURL]} --global"
   action :run
-  not_if "keystone-manage endpointTemplates list|grep 'keystone'"
+  not_if "keystone-manage list_endpoint_template |grep '1'"
 end
 
+# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 2
 execute "Keystone: service add nova compute" do
-  command "keystone-manage service add nova compute"
+  command "keystone-manage create_service --name nova --type compute"
   action :run
-  not_if "keystone-manage service list|grep nova"
+  not_if "keystone-manage list_services |grep nova"
 end
 
 execute "Keystone: add nova endpointTemplates" do
@@ -138,15 +139,16 @@ execute "Keystone: add nova endpointTemplates" do
   node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
-  command "keystone-manage endpointTemplates add RegionOne nova #{node[:nova][:publicURL]} #{node[:nova][:adminURL]} #{node[:nova][:internalURL]} 1 1"
+  command "keystone-manage create_endpoint_template --region RegionOne --service-id 2 --public-url #{node[:nova][:publicURL]} --admin-url #{node[:nova][:adminURL]} --internal-url #{node[:nova][:internalURL]} --global"
   action :run
-  not_if "keystone-manage endpointTemplates list|grep 'nova'"
+  not_if "keystone-manage list_endpoint_templates |grep '2'"
 end
 
+# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 3
 execute "Keystone: service add glance image" do
-  command "keystone-manage service add glance image"
+  command "keystone-manage create_service --name glance --type image"
   action :run
-  not_if "keystone-manage service list|grep glance"
+  not_if "keystone-manage list_services |grep glance"
 end
 
 execute "Keystone: add glance endpointTemplates" do
@@ -154,9 +156,9 @@ execute "Keystone: add glance endpointTemplates" do
   node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
   node.set[:glance][:internalURL] = node[:glance][:adminURL]
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
-  command "keystone-manage endpointTemplates add RegionOne glance #{node[:glance][:publicURL]} #{node[:glance][:adminURL]} #{node[:glance][:internalURL]} 1 1"
+  command "keystone-manage create_endpoint_template --region RegionOne --service-id 3 --public-url #{node[:glance][:publicURL]} --admin-url #{node[:glance][:adminURL]} --internal-url #{node[:glance][:internalURL]} --global"
   action :run
-  not_if "keystone-manage endpointTemplates list|grep 'glance'"
+  not_if "keystone-manage list_endpoint_templates |grep '3'"
 end
 
 execute "Keystone: add ec2 credentials" do
