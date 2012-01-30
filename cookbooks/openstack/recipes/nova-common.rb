@@ -52,7 +52,7 @@ template "/root/.novarc" do
     :keystone_api_ip => node[:controller_ipaddress],
     :keystone_service_port => node[:keystone][:service_port],
     :nova_api_version => '1.1',
-    :keystone_region => 'RegionOne",
+    :keystone_region => 'RegionOne',
     :auth_strategy => 'keystone'
   )
 end
