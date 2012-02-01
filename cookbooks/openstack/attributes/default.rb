@@ -1,3 +1,5 @@
+default[:mysql][:root_pass] = "secrete"
+
 default[:nova][:db] = "nova"
 default[:nova][:db_user] = "nova"
 default[:nova][:db_passwd] = "nova"
