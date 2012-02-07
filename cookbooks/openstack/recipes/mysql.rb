@@ -86,6 +86,6 @@ end
 ["nova", "glance", "keystone", "dash"].each do |service|
   execute "set #{service} user password" do
     command "mysql -u root -p#{root_pass} -e \"SET PASSWORD for '#{node[service][:db_user]}'@'%' = PASSWORD('#{node[service][:db_passwd]}')\""
-    not_if "mysql -u root -e -p#{root_pass}\"select * from mysql.user where user='#{node[service][:db_user]}' and password=PASSWORD('#{node[service][:db_passwd]}')\""
+    not_if "mysql -u root -e -p#{root_pass}\"select * from mysql.user where user='#{node[service][:db_user]}' and password=PASSWORD('#{node[service][:db_passwd]}')\\G\"| grep #{node[service][:db_user]}"
   end
 end
