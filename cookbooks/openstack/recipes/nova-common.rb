@@ -49,6 +49,7 @@ template "/root/.novarc" do
     :user => 'admin',
     :tenant => 'openstack',
     :password => 'secrete',
+    :nova_api_ip => node[:controller_ipaddress],
     :keystone_api_ip => node[:controller_ipaddress],
     :keystone_service_port => node[:keystone][:service_port],
     :nova_api_version => '1.1',
