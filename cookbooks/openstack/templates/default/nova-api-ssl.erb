@@ -1,0 +1,15 @@
+Listen 8774
+<VirtualHost *:8774>
+  WSGIScriptAlias / /var/lib/nova/nova-api.wsgi
+  WSGIDaemonProcess nova user=nova group=nogroup processes=3 threads=10 python-path=/usr/share/pyshared/nova
+  WSGIProcessGroup nova
+
+  # SSL Config
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+
+  ErrorLog /var/log/nova/nova-api.log
+  LogLevel warn
+  CustomLog /var/log/nova/nova-api.log combined
+</VirtualHost>
