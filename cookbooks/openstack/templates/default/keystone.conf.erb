@@ -61,14 +61,18 @@ sql_idle_timeout = 30
 [pipeline:admin]
 pipeline =
 	urlrewritefilter
-    d5_compat
+<% if node[:package_release] > "diablo-d5" then -%>
+        d5_compat
+<% end -%>
 	admin_api
 
 [pipeline:keystone-legacy-auth]
 pipeline =
-	urlrewritefilter
+    urlrewritefilter
     legacy_auth
+<% if node[:package_release] > "diablo-d5" then -%>
     d5_compat
+<% end -%>
     RAX-KEY-extension
     service_api
 
