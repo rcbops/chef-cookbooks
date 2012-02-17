@@ -80,7 +80,7 @@ end
 execute "a2enmod wsgi" do
   command "a2enmod wsgi"
   action :run
-  notifies :restart, resources(:services => "apache2"), :immediately
+  notifies :restart, resources(:service => "apache2"), :immediately
   not_if "test -L /etc/apache2/mods-enabled/wsgi.load"
 end
 
