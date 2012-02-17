@@ -1,0 +1,16 @@
+import os
+import sys
+from nova import log
+from nova import utils
+from paste.deploy.loadwsgi import loadapp
+
+sys.path.insert(0,(os.path.dirname(os.path.realpath(__file__))))
+sys.stdout = sys.stderr
+
+flags = utils.default_flagfile()
+from nova import flags
+flags.FLAGS(sys.argv)
+log.setup()
+
+config = '/etc/nova/api-paste.ini'
+application = loadapp('config:%s' % config, name = 'osapi_compute')
