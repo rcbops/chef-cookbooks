@@ -70,11 +70,6 @@ template "/var/lib/nova/nova-api.wsgi" do
   mode "0644"
 end
 
-service "apache2" do
-  supports :status => true, :reload => true, :restart => true
-  action :enable
-end
-
 service "nova-api" do
   supports :status => true, :restart => true
   action :disable
