@@ -28,6 +28,11 @@ package "nova-api" do
   options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
+service "apache2" do
+  supports :status => true, :reload => true, :restart => true
+  action :enable
+end
+
 template "/etc/nova/api-paste.ini" do
   source "api-paste.ini.erb"
   owner "root"
