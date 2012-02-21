@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export HOST_IP=<%= node[:controller_ipaddress] %>
+export NOVA_PROJECT_ID=<%= node[:keystone][:tenantid] %>
+export NOVA_USERNAME=<%= node[:keystone][:user] %>
+export NOVA_PASSWORD=<%= node[:keystone][:password] %>
+export NOVA_REGION_NAME=<%= node[:keystone][:region] %>
+export PACKAGESET=<%= node[:package_component] %>
+
