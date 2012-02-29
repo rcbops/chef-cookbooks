@@ -105,7 +105,7 @@ end
 # I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
 execute "Keystone: grant Admin role to admin user for openstack tenant" do
   # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage role grant --role-id 1 --user-id admin --tenant-id openstack && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
+  command "keystone-manage grant_role --role-id 1 --user-id admin --tenant-id openstack && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
   not_if "test -f /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
 end
