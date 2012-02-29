@@ -124,7 +124,7 @@ execute "Keystone: add identity endpointTemplates" do
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
   command "keystone-manage create_endpoint_template --region RegionOne --service-id 1 --public-url #{node[:keystone][:publicURL]} --admin-url #{node[:keystone][:adminURL]} --internal-url #{node[:keystone][:internalURL]} --global"
   action :run
-  not_if "keystone-manage list_endpoint_template |grep '1'"
+  not_if "keystone-manage list_endpoint_templates |grep #{node[:keystone][:adminURL]}"
 end
 
 # THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 2
@@ -141,7 +141,7 @@ execute "Keystone: add nova endpointTemplates" do
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
   command "keystone-manage create_endpoint_template --region RegionOne --service-id 2 --public-url #{node[:nova][:publicURL]} --admin-url #{node[:nova][:adminURL]} --internal-url #{node[:nova][:internalURL]} --global"
   action :run
-  not_if "keystone-manage list_endpoint_templates |grep '2'"
+  not_if "keystone-manage list_endpoint_templates |grep #{node[:nova][:adminURL]}"
 end
 
 # THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 3
@@ -158,7 +158,7 @@ execute "Keystone: add glance endpointTemplates" do
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
   command "keystone-manage create_endpoint_template --region RegionOne --service-id 3 --public-url #{node[:glance][:publicURL]} --admin-url #{node[:glance][:adminURL]} --internal-url #{node[:glance][:internalURL]} --global"
   action :run
-  not_if "keystone-manage list_endpoint_templates |grep '3'"
+  not_if "keystone-manage list_endpoint_templates |grep #{node[:glance][:adminURL]}"
 end
 
 execute "Keystone: add ec2 credentials" do
