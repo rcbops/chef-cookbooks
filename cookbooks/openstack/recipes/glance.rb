@@ -71,6 +71,20 @@ template "/etc/glance/glance-registry.conf" do
   notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
 end
 
+template "/etc/glance/glance-registry-paste.ini" do
+  source "glance-registry-paste.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :ip_address => node[:controller_ipaddress],
+    :service_port => node[:keystone][:service_port],
+    :admin_port => node[:keystone][:admin_port],
+    :admin_token => node[:keystone][:admin_token]
+  )
+  notifies :restart, resources(:service => "glance-registry"), :immediately
+end
+
 template "/etc/glance/glance-api.conf" do
   source "glance-api.conf.erb"
   owner "root"
@@ -93,8 +107,6 @@ template "/etc/glance/glance-api-paste.ini" do
   group "root"
   mode "0644"
   variables(
-    :api_port => node[:glance][:api_port],
-    :registry_port => node[:glance][:registry_port],
     :ip_address => node[:controller_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
