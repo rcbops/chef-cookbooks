@@ -87,6 +87,22 @@ template "/etc/glance/glance-api.conf" do
   notifies :restart, resources(:service => "glance-api"), :immediately
 end
 
+template "/etc/glance/glance-api-paste.ini" do
+  source "glance-api-paste.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables(
+    :api_port => node[:glance][:api_port],
+    :registry_port => node[:glance][:registry_port],
+    :ip_address => node[:controller_ipaddress],
+    :service_port => node[:keystone][:service_port],
+    :admin_port => node[:keystone][:admin_port],
+    :admin_token => node[:keystone][:admin_token]
+  )
+  notifies :restart, resources(:service => "glance-api"), :immediately
+end
+
 template "/etc/glance/glance-scrubber.conf" do
   source "glance-scrubber.conf.erb"
   owner "root"
