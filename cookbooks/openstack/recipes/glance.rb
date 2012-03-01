@@ -159,9 +159,9 @@ node[:glance][:images].each do |img|
 
       kernel=$(ls images/*.img | head -n1)
 
-      kid=$(glance -A #{node[:keystone][:admin_token]} add name="${image_name}-kernel" disk_format=aki container_format=aki < ${kernel_file} | cut -d: -f2 | sed 's/ //')
-      rid=$(glance -A #{node[:keystone][:admin_token]} add name="${image_name}-initrd" disk_format=ari container_format=ari < ${ramdisk} | cut -d: -f2 | sed 's/ //')
-      glance -A #{node[:keystone][:admin_token]} add name="#{img.to_s}-image" disk_format=ami container_format=ami kernel_id=$kid ramdisk_id=$rid < ${kernel}
+      kid=$(glance --silent-upload -A #{node[:keystone][:admin_token]} add name="${image_name}-kernel" disk_format=aki container_format=aki < ${kernel_file} | cut -d: -f2 | sed 's/ //')
+      rid=$(glance --silent-upload -A #{node[:keystone][:admin_token]} add name="${image_name}-initrd" disk_format=ari container_format=ari < ${ramdisk} | cut -d: -f2 | sed 's/ //')
+      glance --silent-upload -A #{node[:keystone][:admin_token]} add name="#{img.to_s}-image" disk_format=ami container_format=ami kernel_id=$kid ramdisk_id=$rid < ${kernel}
   EOH
     not_if "glance -A #{node[:keystone][:admin_token]} index | grep #{img.to_s}-image"
   end
