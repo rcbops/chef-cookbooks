@@ -45,12 +45,12 @@ execute "a2enmod wsgi" do
   not_if "test -L /etc/apache2/mods-enabled/wsgi.load"
 end
 
-execute "a2ensite dash" do
-  command "a2ensite dash"
-  action :run
-  notifies :reload, resources(:service => "apache2"), :immediately
-  not_if "test -L /etc/apache2/sites-enabled/dash"
-end
+#execute "a2ensite dash" do
+#  command "a2ensite dash"
+#  action :run
+#  notifies :reload, resources(:service => "apache2"), :immediately
+#  not_if "test -L /etc/apache2/sites-enabled/dash"
+#end
 
 execute "a2dissite default" do
   command "a2dissite default"
@@ -59,7 +59,8 @@ execute "a2dissite default" do
   only_if "test -L /etc/apache2/sites-enabled/000-default"
 end
 
-template "/var/lib/dash/local/local_settings.py" do
+# template "/var/lib/dash/local/local_settings.py" do
+template "/etc/openstack-dashboard/local_settings.py" do
   source "local_settings.py.erb"
   owner "root"
   group "root"
@@ -75,11 +76,18 @@ template "/var/lib/dash/local/local_settings.py" do
   notifies :restart, resources(:service => "apache2")
 end
 
+link "/usr/share/openstack-dashboard/local/local_settings.py" do
+  to "/etc/openstack-dashboard/local_settings.py"
+  not_if "test -L /usr/share/openstack-dashboard/local/local_settings.py"
+  notifies :restart, resources(:service => "apache2")
+end
+
+# I can not even find a manage.py with the ubuntu packages
 execute "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb" do
   cwd "/var/lib/dash"
   environment ({'PYTHONPATH' => '/var/lib/dash/'})
   command "python dashboard/manage.py syncdb"
-  action :run
+  action :none
   not_if "/usr/bin/mysql -u root -e 'describe #{node["dash"][:db]}.django_content_type'"
   notifies :restart, resources(:service => "apache2")
   notifies :restart, resources(:service => "nova-api"), :immediately
