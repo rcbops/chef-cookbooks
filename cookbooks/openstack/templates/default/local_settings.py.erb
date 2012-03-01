@@ -34,24 +34,41 @@ MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 # EMAIL_HOST_USER = 'djangomail'
 # EMAIL_HOST_PASSWORD = 'top-secret!'
 
+HORIZON_CONFIG = {
+    'dashboards': ('nova', 'syspanel', 'settings',),
+    'default_dashboard': 'nova',
+    'user_home': 'dashboard.views.user_home',
+}
 
-OPENSTACK_ADMIN_TOKEN = "<%= @admin_token %>"
-OPENSTACK_KEYSTONE_URL = "http://<%= @ip_address %>:<%= @service_port %>/v2.0/"
+# For multiple regions uncomment this configuration, and add (endpoint, title).
+# AVAILABLE_REGIONS = [
+#     ('http://cluster1.example.com:5000/v2.0', 'cluster1'),
+#     ('http://cluster2.example.com:5000/v2.0', 'cluster2'),
+# ]
+
+OPENSTACK_HOST = "<%= @ip_address %>"
+OPENSTACK_KEYSTONE_URL = "http://%s:<%= @service_port %>/v2.0/" % OPENSTACK_HOST
+# FIXME: this is only needed until keystone fixes its GET /tenants call
+# so that it doesn't return everything for admins
+OPENSTACK_KEYSTONE_ADMIN_URL = "http://%s:<%= @admin_port %>/v2.0" % OPENSTACK_HOST
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "Member"
+# Looks like Horizon no longer needs a Long-Lived Token
+# OPENSTACK_ADMIN_TOKEN = "<%= @admin_token %>"
+
+# The number of Swift containers and objects to display on a single page before
+# providing a paging element (a "more" link) to paginate results.
+API_RESULT_LIMIT = 1000
+SWIFT_ENABLED = False
 
 # NOTE(tres): Available services should come from the service
 #             catalog in Keystone.
-SWIFT_ENABLED = False
 QUANTUM_ENABLED = False
 
 # If you have external monitoring links
-EXTERNAL_MONITORING = [
-    ['Nagios','http://foo.com'],
-    ['Ganglia','http://bar.com'],
-]
-
-# If you do not have external monitoring links
-# EXTERNAL_MONITORING = []
+# EXTERNAL_MONITORING = [
+#     ['Nagios','http://foo.com'],
+#     ['Ganglia','http://bar.com'],
+# ]
 
 # Uncomment the following segment to silence most logging
 # django.db and boto DEBUG logging is extremely verbose.
@@ -85,4 +102,4 @@ EXTERNAL_MONITORING = [
 #}
 
 # How much ram on each compute host?
-COMPUTE_HOST_RAM_GB = 32
+# COMPUTE_HOST_RAM_GB = 32
