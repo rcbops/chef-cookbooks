@@ -92,7 +92,7 @@ execute "PYTHONPATH=/var/lib/dash/ python dashboard/manage.py syncdb" do
   cwd "/var/lib/dash"
   environment ({'PYTHONPATH' => '/var/lib/dash/'})
   command "python dashboard/manage.py syncdb"
-  action :none
+  action :nothing
   not_if "/usr/bin/mysql -u root -e 'describe #{node["dash"][:db]}.django_content_type'"
   notifies :restart, resources(:service => "apache2")
   notifies :restart, resources(:service => "nova-api"), :immediately
