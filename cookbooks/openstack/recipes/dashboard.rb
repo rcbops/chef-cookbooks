@@ -26,6 +26,11 @@ package "openstack-dashboard" do
   action :upgrade
 end
 
+# https://bugs.launchpad.net/ubuntu/+source/openstack-dashboard/+bug/944235
+package "python-django-nose" do
+  action :install
+end
+
 service "apache2" do
   supports :status => true, :reload => true, :restart => true
   action :enable
