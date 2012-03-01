@@ -21,7 +21,7 @@ include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 
 ##### NOTE #####
-https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236
+# https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236
 ################
 
 package "python-mysqldb" do
