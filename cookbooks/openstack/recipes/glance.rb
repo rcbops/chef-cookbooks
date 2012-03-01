@@ -29,6 +29,11 @@ package "python-mysqldb" do
   action :install
 end
 
+# Fixes issue https://bugs.launchpad.net/ubuntu/+source/glance/+bug/943748
+package "python-dateutil" do
+  action :install
+end
+
 package "glance" do
   action :upgrade
 end
