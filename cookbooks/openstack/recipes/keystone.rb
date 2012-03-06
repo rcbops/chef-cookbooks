@@ -81,6 +81,7 @@ end
 
 tenant_uuid = ""
 user_uuid = ""
+admin_uuid = ""
 
 ruby_block "Grab tenant_uuid" do
   block do
