@@ -79,106 +79,156 @@ execute "Keystone: add openstack tenant" do
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
 
-# Need the tenant-id UUID
 execute "Keystone: add admin user" do
-  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | cut -d' ' -f2")
+  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
   tenant = cmd.run_command
   Chef::Log.info tenant.stdout
   command "#{keystone_cmd} user-create --name admin --pass secrete --tenant_id #{tenant.stdout.chomp} --enabled true"
   action :run
-  not_if "#{keystone_cmd} user-list |grep admin"
+  not_if "#{keystone_cmd} user-list #{tenant.stdout.chomp} |grep admin"
 end
 
-execute "Keystone: add admin user token" do
-  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
+#execute "Keystone: add admin user token" do
+#  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
+#  action :run
+#  not_if "keystone-manage list_tokens |grep #{node[:keystone][:admin_token]}"
+#end
+
+execute "Keystone: add admin role" do
+  command "#{keystone_cmd} role-create --name admin"
   action :run
-  not_if "keystone-manage list_tokens |grep #{node[:keystone][:admin_token]}"
+  not_if "#{keystone_cmd} role-list |grep admin"
 end
 
-# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 1
-execute "Keystone: add Admin role" do
-  command "keystone-manage create_role --name Admin"
-  action :run
-  not_if "keystone-manage list_roles |grep Admin"
-end
-
-# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 2
 execute "Keystone: add Member role" do
-  command "keystone-manage create_role --name Member"
+  command "#{keystone_cmd} role-create --name Member"
   action :run
-  not_if "keystone-manage list_roles grep Member"
+  not_if "#{keystone_cmd} role-list | grep Member"
+end
+
+execute "Keystone: add KeystoneAdmin role" do
+  command "#{keystone_cmd} role-create --name KeystoneAdmin"
+  action :run
+  not_if "#{keystone_cmd} role-list | grep KeystoneAdmin"
+end
+
+execute "Keystone: add KeystoneServiceAdmin role" do
+  command "#{keystone_cmd} role-create --name KeystoneServiceAdmin"
+  action :run
+  not_if "#{keystone_cmd} role-list | grep KeystoneServiceAdmin"
+end
+
+execute "Keystone: add sysadmin role" do
+  command "#{keystone_cmd} role-create --name sysadmin"
+  action :run
+  not_if "#{keystone_cmd} role-list | grep sysadmin"
+end
+
+execute "Keystone: add netadmin role" do
+  command "#{keystone_cmd} role-create --name netadmin"
+  action :run
+  not_if "#{keystone_cmd} role-list | grep netadmin"
 end
 
 # I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
-execute "Keystone: grant ServiceAdmin role to admin user" do
-  # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage grant_role --role-id 1 --user-id admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
-  not_if "test -f /var/lib/keystone/keystone_why_you_so_broken.semaphore"
-  action :run
-end
+#execute "Keystone: grant ServiceAdmin role to admin user" do
+#  command "keystone-manage grant_role --role-id 1 --user-id admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
+#  not_if "test -f /var/lib/keystone/keystone_why_you_so_broken.semaphore"
+#  action :run
+#end
 
 # I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
-execute "Keystone: grant Admin role to admin user for openstack tenant" do
-  # command syntax: role grant 'role' 'user' 'tenant (optional)'
-  command "keystone-manage grant_role --role-id 1 --user-id admin --tenant-id openstack && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
+execute "Keystone: user-role-add --user admin --role admin --tenant openstack" do
+  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
+  tmp = cmd.run_command
+  tenant_uuid = tmp.stdout.chomp
+  Chef::Log.info "Tenant ID: #{tenant_uuid}"
+  cmd = Chef::ShellOut.new("#{keystone_cmd} user-list | grep admin | awk '{print $2}'")
+  tmp = cmd.run_command
+  user_uuid = tmp.stdout.chomp
+  Chef::Log.info "User ID: #{user_uuid}"
+  cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep admin | awk '{print $2}'")
+  tmp = cmd.run_command
+  role_uuid = tmp.stdout.chomp
+  Chef::Log.info "Role ID: #{role_uuid}"
+  command "#{keystone_cmd} user-role-add --user #{user_uuid} --role #{role_uuid} --tenant #{tenant_uuid} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
-  not_if "test -f /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
+  not_if { File.exists?("/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore") }
 end
 
-# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 1
-execute "Keystone: service add keystone identity" do
-  command "keystone-manage create_service --name keystone --type identity"
+execute "Keystone: service-create --name keystone --type identity" do
+  command "${keystone_cmd} service-create --name keystone --type identity --description='Keystone Identity Service'"
   action :run
-  not_if "keystone-manage list_services |grep keystone"
+  not_if "${keystone_cmd} service-list |grep keystone"
 end
 
-execute "Keystone: add identity endpointTemplates" do
-  # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
+execute "Keystone: create identity endpoint" do
+  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep keystone | awk '{print $2}'")
+  tmp = cmd.run_command
+  service_uuid = tmp.stdout.chomp
+  Chef::Log.info "Keystone Service ID: #{service_uuid}"
   node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
-  command "keystone-manage create_endpoint_template --region RegionOne --service-id 1 --public-url #{node[:keystone][:publicURL]} --admin-url #{node[:keystone][:adminURL]} --internal-url #{node[:keystone][:internalURL]} --global"
+  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}"
   action :run
-  not_if "keystone-manage list_endpoint_templates |grep #{node[:keystone][:adminURL]}"
+  not_if "${keystone_cmd} endpoint-list |grep #{node[:keystone][:adminURL]}"
 end
 
-# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 2
-execute "Keystone: service add nova compute" do
-  command "keystone-manage create_service --name nova --type compute"
+execute "Keystone: service-create --name nova --type compute" do
+  command "${keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
   action :run
-  not_if "keystone-manage list_services |grep nova"
+  not_if "${keystone_cmd} service-list |grep nova"
 end
 
-execute "Keystone: add nova endpointTemplates" do
-  # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
+execute "Keystone: create compute endpoint" do
+  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep nova | awk '{print $2}'")
+  tmp = cmd.run_command
+  service_uuid = tmp.stdout.chomp
+  Chef::Log.info "Nova Service ID: #{service_uuid}"
   node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
-  command "keystone-manage create_endpoint_template --region RegionOne --service-id 2 --public-url #{node[:nova][:publicURL]} --admin-url #{node[:nova][:adminURL]} --internal-url #{node[:nova][:internalURL]} --global"
+  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:nova][:publicURL]} --adminurl #{node[:nova][:adminURL]} --internalurl #{node[:nova][:internalURL]}"
   action :run
-  not_if "keystone-manage list_endpoint_templates |grep #{node[:nova][:adminURL]}"
+  not_if "${keystone_cmd} endpoint-list |grep #{node[:nova][:adminURL]}"
 end
 
-# THIS COMMAND RETURNS AN AUTO-INC INTEGER: e.g. 3
-execute "Keystone: service add glance image" do
-  command "keystone-manage create_service --name glance --type image"
+execute "Keystone: service-create --name glance --type image" do
+  command "${keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
   action :run
-  not_if "keystone-manage list_services |grep glance"
+  not_if "${keystone_cmd} service-list |grep glance"
 end
 
-execute "Keystone: add glance endpointTemplates" do
-  # command syntax: endpointTemplates add 'region' 'service' 'publicURL' 'adminURL' 'internalURL' 'enabled' 'global'
+execute "Keystone: create image endpoint" do
+  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep glance | awk '{print $2}'")
+  tmp = cmd.run_command
+  service_uuid = tmp.stdout.chomp
+  Chef::Log.info "Glance Service ID: #{service_uuid}"
   node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
   node.set[:glance][:internalURL] = node[:glance][:adminURL]
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
-  command "keystone-manage create_endpoint_template --region RegionOne --service-id 3 --public-url #{node[:glance][:publicURL]} --admin-url #{node[:glance][:adminURL]} --internal-url #{node[:glance][:internalURL]} --global"
+  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:glance][:publicURL]} --adminurl #{node[:glance][:adminURL]} --internalurl #{node[:glance][:internalURL]}"
   action :run
-  not_if "keystone-manage list_endpoint_templates |grep #{node[:glance][:adminURL]}"
+  not_if "${keystone_cmd} endpoint-list |grep #{node[:glance][:adminURL]}"
 end
 
-execute "Keystone: add ec2 credentials" do
-  # command syntax: keystone-manage credentials add 'role? (admin)' EC2 'user' 'secret' 'project'
-  command "keystone-manage credentials add admin EC2 admin secrete openstack"
+execute "Keystone: service-create --name ec2 --type ec2" do
+  command "${keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
   action :run
-  not_if "keystone-manage credentials list | grep 'admin'"
+  not_if "${keystone_cmd} service-list |grep ec2"
+end
+
+execute "Keystone: ec2-credentials create --user admin --tenant_id openstack" do
+  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
+  tmp = cmd.run_command
+  tenant_uuid = tmp.stdout.chomp
+  Chef::Log.info "Tenant ID: #{tenant_uuid}"
+  cmd = Chef::ShellOut.new("#{keystone_cmd} user-list | grep admin | awk '{print $2}'")
+  tmp = cmd.run_command
+  user_uuid = tmp.stdout.chomp
+  Chef::Log.info "User ID: #{user_uuid}"
+  command "${keystone_cmd} ec2-credentials-create --user #{user_uuid} --tenant_id #{tenant_uuid}"
+  action :run
+  not_if "${keystone_cmd} ec2-credentials-list --user #{user_uuid} | grep 'admin'"
 end
