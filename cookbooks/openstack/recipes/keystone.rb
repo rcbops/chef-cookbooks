@@ -80,6 +80,7 @@ execute "Keystone: add openstack tenant" do
 end
 
 tenant_uuid = ""
+user_uuid = ""
 
 ruby_block "Grab tenant_uuid" do
   block do
