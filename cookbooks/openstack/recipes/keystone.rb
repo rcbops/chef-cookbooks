@@ -85,11 +85,7 @@ admin_uuid = ""
 
 ruby_block "Grab tenant_uuid" do
   block do
-    cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
-    tmp = cmd.run_command
-    tenant_uuid = tmp.stdout.chomp
-    #tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
-    #node['tenant_uuid'] = tenant_uuid
+    tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
   end
   action :create
 end
@@ -103,12 +99,7 @@ end
 
 ruby_block "Grap user_uuid" do
   block do
-    cmd = Chef::ShellOut.new("#{keystone_cmd} user-list | grep admin | awk '{print $2}'")
-    tmp = cmd.run_command
-    node['user_uuid'] = tmp.stdout.chomp
-    user_uuid = tmp.stdout.chomp
-    #user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
-    #node.set['user_uuid'] = user_uuid
+    user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
   end
   action :create
 end
