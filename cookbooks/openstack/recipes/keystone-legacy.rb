@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-require 'chef/shell_out'
-
 include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 
@@ -26,9 +24,9 @@ include_recipe "openstack::mysql"
 # https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236
 ################
 
-#package "python-mysqldb" do
-#  action :install
-#end
+package "python-mysqldb" do
+  action :install
+end
 
 package "keystone" do
   action :upgrade
@@ -44,8 +42,8 @@ file "/var/lib/keystone/keystone.db" do
   action :delete
 end
 
-execute "keystone-manage db_sync" do
-  command "keystone-manage db_sync"
+execute "Keystone: sleep" do
+  command "sleep 10s"
   action :nothing
 end
 
@@ -65,26 +63,19 @@ template "/etc/keystone/keystone.conf" do
             :admin_port => node[:keystone][:admin_port]
             )
   notifies :restart, resources(:service => "keystone"), :immediately
-  notifies :run, resources(:execute => "keystone-manage db_sync"), :immediately
+  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
 end
-
-token = "#{node[:keystone][:admin_token]}"
-admin_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
-keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
 execute "Keystone: add openstack tenant" do
-  command "#{keystone_cmd} tenant-create --name openstack --description openstack_tenant --enabled true"
+  command "keystone-manage create_tenant --name openstack --id openstack"
   action :run
-  not_if "#{keystone_cmd} tenant-list|grep openstack"
+  not_if "keystone-manage list_tenants|grep openstack"
 end
 
-# Need the tenant-id UUID
 execute "Keystone: add admin user" do
-  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | cut -d' ' -f2")
-  tenant = cmd.run_command
-  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant-id #{tenant.stdout} --enabled true"
+  command "keystone-manage create_user --id admin --name admin --password secrete --tenant-id openstack"
   action :run
-  not_if "#{keystone_cmd} user-list |grep admin"
+  not_if "keystone-manage list_users |grep admin"
 end
 
 execute "Keystone: add admin user token" do
