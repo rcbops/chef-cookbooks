@@ -212,7 +212,7 @@ end
 #end
 
 execute "Keystone: user-role-add --user admin --role admin --tenant openstack" do
-  command "#{keystone_cmd} user-role-add --user #{node[:user_uuid]} --role #{node[:role][:admin][:uuid]} --tenant #{node[:tenant_uuid]} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
+  command "#{keystone_cmd} user-role-add --user #{node['user_uuid']} --role #{node['role']['admin']['uuid']} --tenant #{node['tenant_uuid']} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
   not_if { File.exists?("/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore") }
 end
