@@ -79,8 +79,13 @@ execute "Keystone: add openstack tenant" do
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
 
-tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
-node.set['tenant_uuid'] = tenant_uuid
+ruby_block "Grab tenant_uuid" do
+  block do
+    tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
+    node.set['tenant_uuid'] = tenant_uuid
+  end
+  action :create
+end
 
 execute "Keystone: add admin user" do
   Chef::Log.info "Tenant ID: #{node['tenant_uuid']}"
@@ -89,8 +94,13 @@ execute "Keystone: add admin user" do
   not_if "#{keystone_cmd} user-list #{node['tenant_id']} |grep admin"
 end
 
-user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
-node.set['user_uuid'] = user_uuid
+ruby_block "Grap user_uuid" do
+  block do
+    user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
+    node.set['user_uuid'] = user_uuid
+  end
+  action :create
+end
 
 #execute "Keystone: add admin user token" do
 #  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
@@ -104,8 +114,14 @@ execute "Keystone: add admin role" do
   not_if "#{keystone_cmd} role-list |grep admin"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep admin | awk '{print $2}'].chomp()
-node.set['role']['admin']['uuid'] = role_uuid
+ruby_block "Grab admin role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep admin | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['admin']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 execute "Keystone: add Member role" do
   command "#{keystone_cmd} role-create --name Member"
@@ -113,8 +129,14 @@ execute "Keystone: add Member role" do
   not_if "#{keystone_cmd} role-list | grep Member"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep Member | awk '{print $2}'].chomp()
-node.set['role']['Member']['uuid'] = role_uuid
+ruby_block "Grab Member role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep Member | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['Member']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 execute "Keystone: add KeystoneAdmin role" do
   command "#{keystone_cmd} role-create --name KeystoneAdmin"
@@ -122,8 +144,14 @@ execute "Keystone: add KeystoneAdmin role" do
   not_if "#{keystone_cmd} role-list | grep KeystoneAdmin"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep KeystoneAdmin | awk '{print $2}'].chomp()
-node.set['role']['KeystoneAdmin']['uuid'] = role_uuid
+ruby_block "Grab KeystoneAdmin role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneAdmin | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['KeystoneAdmin']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 execute "Keystone: add KeystoneServiceAdmin role" do
   command "#{keystone_cmd} role-create --name KeystoneServiceAdmin"
@@ -131,8 +159,14 @@ execute "Keystone: add KeystoneServiceAdmin role" do
   not_if "#{keystone_cmd} role-list | grep KeystoneServiceAdmin"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep KeystoneServiceAdmin | awk '{print $2}'].chomp()
-node.set['role']['KeystoneServiceAdmin']['uuid'] = role_uuid
+ruby_block "Grab KeystoneServiceAdmin role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneServiceAdmin | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['KeystoneServiceAdmin']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 execute "Keystone: add sysadmin role" do
   command "#{keystone_cmd} role-create --name sysadmin"
@@ -140,8 +174,14 @@ execute "Keystone: add sysadmin role" do
   not_if "#{keystone_cmd} role-list | grep sysadmin"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep sysadmin | awk '{print $2}'].chomp()
-node.set['role']['sysadmin']['uuid'] = role_uuid
+ruby_block "Grab sysadmin role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep sysadmin | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['sysadmin']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 execute "Keystone: add netadmin role" do
   command "#{keystone_cmd} role-create --name netadmin"
@@ -149,8 +189,14 @@ execute "Keystone: add netadmin role" do
   not_if "#{keystone_cmd} role-list | grep netadmin"
 end
 
-role_uuid = %x[#{keystone_cmd} role-list | grep netadmin | awk '{print $2}'].chomp()
-node.set['role']['netadmin']['uuid'] = role_uuid
+ruby_block "Grab netadmin role uuid" do
+  block do
+    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep netadmin | awk '{print $2}'")
+    tmp = cmd.run_command
+    node.set['role']['netadmin']['uuid'] = tmp.stdout.chomp
+  end
+  action :create
+end
 
 # I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
 #execute "Keystone: grant ServiceAdmin role to admin user" do
