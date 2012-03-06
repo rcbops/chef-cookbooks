@@ -26,9 +26,9 @@ include_recipe "openstack::mysql"
 # https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236
 ################
 
-#package "python-mysqldb" do
-#  action :install
-#end
+package "python-mysqldb" do
+  action :install
+end
 
 package "keystone" do
   action :upgrade
