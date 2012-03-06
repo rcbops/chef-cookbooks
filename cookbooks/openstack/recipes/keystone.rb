@@ -84,7 +84,7 @@ execute "Keystone: add admin user" do
   cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | cut -d' ' -f2")
   tenant = cmd.run_command
   Chef::Log.info tenant.stdout
-  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant-id #{tenant.stdout} --enabled true"
+  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant-id #{tenant.stdout.chomp} --enabled true"
   action :run
   not_if "#{keystone_cmd} user-list |grep admin"
 end
