@@ -83,7 +83,7 @@ ruby_block "Grab tenant_uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['tenant_uuid'] = tmp.stdout.chomp
+    node['tenant_uuid'] = tmp.stdout.chomp
     #tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
     #node.set['tenant_uuid'] = tenant_uuid
   end
@@ -101,7 +101,7 @@ ruby_block "Grap user_uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} user-list | grep admin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['user_uuid'] = tmp.stdout.chomp
+    node['user_uuid'] = tmp.stdout.chomp
     #user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
     #node.set['user_uuid'] = user_uuid
   end
@@ -124,7 +124,7 @@ ruby_block "Grab admin role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep admin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['admin_uuid'] = tmp.stdout.chomp
+    node['admin_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
@@ -139,7 +139,7 @@ ruby_block "Grab Member role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep Member | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['member_uuid'] = tmp.stdout.chomp
+    node['member_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
@@ -154,7 +154,7 @@ ruby_block "Grab KeystoneAdmin role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneAdmin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['keystoneadmin_uuid'] = tmp.stdout.chomp
+    node['keystoneadmin_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
@@ -169,7 +169,7 @@ ruby_block "Grab KeystoneServiceAdmin role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneServiceAdmin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['keystoneserviceadmin_uuid'] = tmp.stdout.chomp
+    node['keystoneserviceadmin_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
@@ -184,7 +184,7 @@ ruby_block "Grab sysadmin role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep sysadmin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['sysadmin_uuid'] = tmp.stdout.chomp
+    node['sysadmin_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
@@ -199,7 +199,7 @@ ruby_block "Grab netadmin role uuid" do
   block do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep netadmin | awk '{print $2}'")
     tmp = cmd.run_command
-    node.set['netadmin_uuid'] = tmp.stdout.chomp
+    node['netadmin_uuid'] = tmp.stdout.chomp
   end
   action :create
 end
