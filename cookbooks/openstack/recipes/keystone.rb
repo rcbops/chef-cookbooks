@@ -91,7 +91,7 @@ ruby_block "Grab tenant_uuid" do
 end
 
 execute "Keystone: add admin user" do
-  Chef::Log.info "Tenant ID: #{node['tenant_uuid']}"
+  Chef::Log.debug "Tenant ID: #{node['tenant_uuid']}"
   command "#{keystone_cmd} user-create --name admin --pass secrete --tenant_id #{node['tenant_id']} --enabled true"
   action :run
   not_if "#{keystone_cmd} user-list #{node['tenant_id']} |grep admin"
