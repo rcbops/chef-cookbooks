@@ -63,7 +63,7 @@ template "/etc/keystone/keystone.conf" do
             :db_name => node[:keystone][:db],
             :service_port => node[:keystone][:service_port],
             :admin_port => node[:keystone][:admin_port],
-            :admin_token = node[:keystone][:admin_token]
+            :admin_token => node[:keystone][:admin_token]
             )
   notifies :restart, resources(:service => "keystone"), :immediately
   notifies :run, resources(:execute => "keystone-manage db_sync"), :immediately
