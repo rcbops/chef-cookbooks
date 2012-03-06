@@ -79,7 +79,7 @@ execute "Keystone: add openstack tenant" do
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
 
-tenant_uuid = ""
+# tenant_uuid = ""
 user_uuid = ""
 admin_uuid = ""
 
