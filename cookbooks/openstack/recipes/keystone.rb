@@ -81,11 +81,11 @@ end
 
 ruby_block "Grab tenant_uuid" do
   block do
-    cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
-    tmp = cmd.run_command
-    node['tenant_uuid'] = tmp.stdout.chomp
-    #tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
-    #node.set['tenant_uuid'] = tenant_uuid
+    #cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
+    #tmp = cmd.run_command
+    #node['tenant_uuid'] = tmp.stdout.chomp
+    tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
+    node['tenant_uuid'] = tenant_uuid
   end
   action :create
 end
@@ -230,7 +230,7 @@ execute "Keystone: create identity endpoint" do
   cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep keystone | awk '{print $2}'")
   tmp = cmd.run_command
   service_uuid = tmp.stdout.chomp
-  Chef::Log.info "Keystone Service ID: #{service_uuid}"
+#  Chef::Log.info "Keystone Service ID: #{service_uuid}"
   node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
   node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
   node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
@@ -249,7 +249,7 @@ execute "Keystone: create compute endpoint" do
   cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep nova | awk '{print $2}'")
   tmp = cmd.run_command
   service_uuid = tmp.stdout.chomp
-  Chef::Log.info "Nova Service ID: #{service_uuid}"
+#  Chef::Log.info "Nova Service ID: #{service_uuid}"
   node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
   node.set[:nova][:internalURL] = node[:nova][:adminURL]
   node.set[:nova][:publicURL] = node[:nova][:adminURL]
@@ -268,7 +268,7 @@ execute "Keystone: create image endpoint" do
   cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep glance | awk '{print $2}'")
   tmp = cmd.run_command
   service_uuid = tmp.stdout.chomp
-  Chef::Log.info "Glance Service ID: #{service_uuid}"
+#  Chef::Log.info "Glance Service ID: #{service_uuid}"
   node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
   node.set[:glance][:internalURL] = node[:glance][:adminURL]
   node.set[:glance][:publicURL] = node[:glance][:adminURL]
@@ -287,11 +287,11 @@ execute "Keystone: ec2-credentials create --user admin --tenant_id openstack" do
   cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
   tmp = cmd.run_command
   tenant_uuid = tmp.stdout.chomp
-  Chef::Log.info "Tenant ID: #{tenant_uuid}"
+#  Chef::Log.info "Tenant ID: #{tenant_uuid}"
   cmd = Chef::ShellOut.new("#{keystone_cmd} user-list | grep admin | awk '{print $2}'")
   tmp = cmd.run_command
   user_uuid = tmp.stdout.chomp
-  Chef::Log.info "User ID: #{user_uuid}"
+#  Chef::Log.info "User ID: #{user_uuid}"
   command "${keystone_cmd} ec2-credentials-create --user #{user_uuid} --tenant_id #{tenant_uuid}"
   action :run
   not_if "${keystone_cmd} ec2-credentials-list --user #{user_uuid} | grep 'admin'"
