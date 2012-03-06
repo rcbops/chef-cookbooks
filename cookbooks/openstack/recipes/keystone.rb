@@ -79,17 +79,17 @@ execute "Keystone: add openstack tenant" do
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
 
-# tenant_uuid = ""
+tenant_uuid = ""
 user_uuid = ""
 admin_uuid = ""
 
 ruby_block "Grab tenant_uuid" do
   block do
-    #cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
-    #tmp = cmd.run_command
-    #node['tenant_uuid'] = tmp.stdout.chomp
-    tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
-    node['tenant_uuid'] = tenant_uuid
+    cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
+    tmp = cmd.run_command
+    tenant_uuid = tmp.stdout.chomp
+    #tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
+    #node['tenant_uuid'] = tenant_uuid
   end
   action :create
 end
