@@ -125,6 +125,7 @@ ruby_block "Grab admin role uuid" do
     cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep admin | awk '{print $2}'")
     tmp = cmd.run_command
     node['admin_uuid'] = tmp.stdout.chomp
+    admin_uuid = tmp.stdout.chomp
   end
   action :create
 end
@@ -215,7 +216,7 @@ execute "Keystone: user-role-add --user admin --role admin --tenant openstack" d
   Chef::Log.info "User ID: #{node['user_uuid']}"
   Chef::Log.info "Tenant ID: #{node['tenant_uuid']}"
   Chef::Log.info "Admin Role ID: #{node['admin_uuid']}"
-  #command "#{keystone_cmd} user-role-add --user #{node['user_uuid']} --role #{node['admin_uuid']} --tenant #{node['tenant_uuid']} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
+  command "#{keystone_cmd} user-role-add --user #{user_uuid} --role #{admin_uuid} --tenant #{tenant_uuid} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
   not_if { File.exists?("/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore") }
 end
