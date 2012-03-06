@@ -207,9 +207,6 @@ end
 
 # I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
 execute "Keystone: user-role-add --user admin --role admin --tenant openstack" do
-  Chef::Log.info "Tenant ID: #{node['tenant_uuid']}"
-  Chef::Log.info "User ID: #{node['user_uuid']}"
-  Chef::Log.info "Role ID: #{node['role']['admin']['uuid']}"
   command "#{keystone_cmd} user-role-add --user #{node['user_uuid']} --role #{node['role']['admin']['uuid']} --tenant #{node['tenant_uuid']} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
   action :run
   not_if { File.exists?("/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore") }
