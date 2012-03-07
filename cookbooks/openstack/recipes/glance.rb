@@ -134,6 +134,10 @@ template "/etc/glance/glance-scrubber.conf" do
   )
 end
 
+# This is a dirty hack for now.. NEED TO BE FIXED
+keystone_auth_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
+
 node[:glance][:images].each do |img|
   bash "default image setup for #{img.to_s}" do
     cwd "/tmp"
@@ -160,10 +164,10 @@ node[:glance][:images].each do |img|
 
       kernel=$(ls images/*.img | head -n1)
 
-      kid=$(glance --silent-upload -A #{node[:keystone][:admin_token]} add name="${image_name}-kernel" disk_format=aki container_format=aki < ${kernel_file} | cut -d: -f2 | sed 's/ //')
-      rid=$(glance --silent-upload -A #{node[:keystone][:admin_token]} add name="${image_name}-initrd" disk_format=ari container_format=ari < ${ramdisk} | cut -d: -f2 | sed 's/ //')
-      glance --silent-upload -A #{node[:keystone][:admin_token]} add name="#{img.to_s}-image" disk_format=ami container_format=ami kernel_id=$kid ramdisk_id=$rid < ${kernel}
+      kid=$(glance #{extra_opts} --silent-upload add name="${image_name}-kernel" disk_format=aki container_format=aki < ${kernel_file} | cut -d: -f2 | sed 's/ //')
+      rid=$(glance #{extra_opts} --silent-upload add name="${image_name}-initrd" disk_format=ari container_format=ari < ${ramdisk} | cut -d: -f2 | sed 's/ //')
+      glance #{extra_opts} --silent-upload add name="#{img.to_s}-image" disk_format=ami container_format=ami kernel_id=$kid ramdisk_id=$rid < ${kernel}
   EOH
-    not_if "glance -A #{node[:keystone][:admin_token]} index | grep #{img.to_s}-image"
+    not_if "glance #{extra_opts} index | grep #{img.to_s}-image"
   end
 end
