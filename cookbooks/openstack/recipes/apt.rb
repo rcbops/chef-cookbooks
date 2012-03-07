@@ -20,13 +20,3 @@
 execute "apt-get update" do
   command "apt-get update"
 end
-
-# This is no longer required since we are testing Cannonicals packages
-#apt_repository "rcb-packages" do
-#  uri "#{node[:package_url]}"
-#  distribution node['lsb']['codename']
-#  components [node[:package_component]]
-#  keyserver "keyserver.ubuntu.com"
-#  key "F87CBDE0"
-#  action :add
-#end
