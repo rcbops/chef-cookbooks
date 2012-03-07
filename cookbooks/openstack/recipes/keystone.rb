@@ -73,11 +73,17 @@ token = "#{node[:keystone][:admin_token]}"
 admin_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
 keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
+
+## Add openstack tenant ##
+
 execute "Keystone: add openstack tenant" do
   command "#{keystone_cmd} tenant-create --name openstack --description openstack_tenant --enabled true"
   action :run
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
+
+
+## Add admin user ##
 
 bash "Keystone: add admin user" do
   user "root"
@@ -90,14 +96,7 @@ bash "Keystone: add admin user" do
 end
 
 
-
-#ruby_block "Grap user_uuid" do
-#  block do
-#    user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
-#  end
-#  action :create
-#end
-
+## Add Roles ##
 
 execute "Keystone: add admin role" do
   command "#{keystone_cmd} role-create --name admin"
@@ -135,6 +134,10 @@ execute "Keystone: add netadmin role" do
   not_if "#{keystone_cmd} role-list | grep netadmin"
 end
 
+
+## Add Admin role to admin user ##
+
+# for keystone-2012.1~e4-0ubuntu2, this actually does nothing in the db
 bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>" do
   user "root"
   code <<-EOH
@@ -149,19 +152,49 @@ bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid
   EOH
 end
 
-##execute "Keystone: user-role-add --user admin --role admin --tenant openstack" do
-##  Chef::Log.info "User ID: #{node['user_uuid']}"
-##  Chef::Log.info "Tenant ID: #{node['tenant_uuid']}"
-##  Chef::Log.info "Admin Role ID: #{node['admin_uuid']}"
-##  command "#{keystone_cmd} user-role-add --user #{user_uuid} --role #{admin_uuid} --tenant #{tenant_uuid} && touch /var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore"
-##  action :run
-##  not_if { File.exists?("/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore") }
-##end
+
+## Add Services ##
 
 execute "Keystone: service-create --name keystone --type identity" do
   command "#{keystone_cmd} service-create --name keystone --type identity --description='Keystone Identity Service'"
   action :run
   not_if "#{keystone_cmd} service-list |grep keystone"
+end
+
+execute "Keystone: service-create --name nova --type compute" do
+  command "#{keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
+  action :run
+  not_if "#{keystone_cmd} service-list |grep nova"
+end
+
+execute "Keystone: service-create --name ec2 --type ec2" do
+  command "#{keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
+  action :run
+  not_if "#{keystone_cmd} service-list |grep ec2"
+end
+
+execute "Keystone: service-create --name glance --type image" do
+  command "#{keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
+  action :run
+  not_if "#{keystone_cmd} service-list |grep glance"
+end
+
+
+## Add Endpoints ##
+
+node[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+node[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
+node[:keystone][:publicURL] = node[:keystone][:internalURL]
+
+bash "Keystone: create identity endpoint" do
+  user "root"
+  code <<-EOH
+    SERVICE_UUID=$(#{keystone_cmd} service-list|grep keystone|awk '{print $2}')
+    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:adminURL]; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl {node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{no
+de[:keystone][:internalURL]}
+    fi
+  EOH
 end
 
 ##execute "Keystone: create identity endpoint" do
@@ -177,12 +210,6 @@ end
 ##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:keystone][:adminURL]}"
 ##end
 
-execute "Keystone: service-create --name nova --type compute" do
-  command "#{keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep nova"
-end
-
 ##execute "Keystone: create compute endpoint" do
 ##  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep nova | awk '{print $2}'")
 ##  tmp = cmd.run_command
@@ -196,12 +223,6 @@ end
 ##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:nova][:adminURL]}"
 ##end
 
-execute "Keystone: service-create --name glance --type image" do
-  command "#{keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep glance"
-end
-
 ##execute "Keystone: create image endpoint" do
 ##  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep glance | awk '{print $2}'")
 ##  tmp = cmd.run_command
@@ -214,12 +235,6 @@ end
 ##  action :run
 ##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:glance][:adminURL]}"
 ##end
-
-execute "Keystone: service-create --name ec2 --type ec2" do
-  command "#{keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep ec2"
-end
 
 ##execute "Keystone: ec2-credentials create --user admin --tenant_id openstack" do
 ##  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
