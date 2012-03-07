@@ -69,6 +69,14 @@ template "/etc/keystone/keystone.conf" do
   notifies :run, resources(:execute => "keystone-manage db_sync"), :immediately
 end
 
+template "/etc/keystone/logging.conf" do
+  source "keystone-logging.conf.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => "keystone"), :immediately
+end
+
 token = "#{node[:keystone][:admin_token]}"
 admin_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
 keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
@@ -200,7 +208,7 @@ bash "Keystone: create identity endpoint" do
   EOH
 end
 
-node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
+node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%(tenant_id)s"
 node[:nova][:internalURL] = node[:nova][:adminURL]
 node[:nova][:publicURL] = node[:nova][:adminURL]
 
