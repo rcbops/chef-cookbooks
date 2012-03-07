@@ -79,30 +79,31 @@ execute "Keystone: add openstack tenant" do
   not_if "#{keystone_cmd} tenant-list|grep openstack"
 end
 
-tenant_uuid = ""
-user_uuid = ""
-admin_uuid = ""
-
-ruby_block "Grab tenant_uuid" do
-  block do
-    tenant_uuid = %x[#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}'].chomp()
-  end
-  action :create
+bash "Keystone: add admin user" do
+  user "root"
+  code <<-EOH
+    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
+    if ! #{keystone_cmd} user-list ${TENANT_UUID}|grep admin; then
+        #{keystone_cmd} user-create --name admin --pass secrete --tenant_id ${TENANT_UUID} --enabled true
+    fi
+  EOH
 end
 
-execute "Keystone: add admin user" do
-  Chef::Log.debug "Tenant ID: #{node['tenant_uuid']}"
-  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant_id #{tenant_uuid} --enabled true"
-  action :run
-  not_if "#{keystone_cmd} user-list #{node['tenant_id']} |grep admin"
-end
+#execute "Keystone: add admin user" do
+#  Chef::Log.debug "Tenant ID: #{node['tenant_uuid']}"
+#  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant_id #{tenant_uuid} --enabled true"
+#  action :run
+#  not_if "#{keystone_cmd} user-list #{node['tenant_id']} |grep admin"
+#end
 
-ruby_block "Grap user_uuid" do
-  block do
-    user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
-  end
-  action :create
-end
+
+
+#ruby_block "Grap user_uuid" do
+#  block do
+#    user_uuid = %x[#{keystone_cmd} user-list | grep admin | awk '{print $2}'].chomp()
+#  end
+#  action :create
+#end
 
 #execute "Keystone: add admin user token" do
 #  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
