@@ -186,54 +186,50 @@ node[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keys
 node[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
 node[:keystone][:publicURL] = node[:keystone][:internalURL]
 
+Chef::Log.info "Keystone AdminURL: #{node[:keystone][:adminURL]}"
+Chef::Log.info "Keystone InternalURL: #{node[:keystone][:internalURL]}"
+Chef::Log.info "Keystone PublicURL: #{node[:keystone][:publicURL]}"
+
 bash "Keystone: create identity endpoint" do
   user "root"
   code <<-EOH
-    SERVICE_UUID=$(#{keystone_cmd} service-list|grep keystone|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:adminURL]}; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl {node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}
+    SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
+    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:publicURL]}; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}
     fi
   EOH
 end
 
-##execute "Keystone: create identity endpoint" do
-##  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep keystone | awk '{print $2}'")
-##  tmp = cmd.run_command
-##  service_uuid = tmp.stdout.chomp
-#  Chef::Log.info "Keystone Service ID: #{service_uuid}"
-##  node.set[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
-##  node.set[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
-##  node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
-##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}"
-##  action :run
-##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:keystone][:adminURL]}"
-##end
+node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
+node[:nova][:internalURL] = node[:nova][:adminURL]
+node[:nova][:publicURL] = node[:nova][:adminURL]
 
-##execute "Keystone: create compute endpoint" do
-##  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep nova | awk '{print $2}'")
-##  tmp = cmd.run_command
-##  service_uuid = tmp.stdout.chomp
-#  Chef::Log.info "Nova Service ID: #{service_uuid}"
-##  node.set[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%tenant_id%"
-##  node.set[:nova][:internalURL] = node[:nova][:adminURL]
-##  node.set[:nova][:publicURL] = node[:nova][:adminURL]
-##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:nova][:publicURL]} --adminurl #{node[:nova][:adminURL]} --internalurl #{node[:nova][:internalURL]}"
-##  action :run
-##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:nova][:adminURL]}"
-##end
+bash "Keystone: create compute endpoint" do
+  user "root"
+  code <<-EOH
+    SERVICE_UUID=$(#{keystone_cmd} service-list|grep compute|awk '{print $2}')
+    if ! #{keystone_cmd} endpoint-list | grep #{node[:nova][:publicURL]}; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:nova][:publicURL]} --adminurl #{node[:nova][:adminURL]} --internalurl #{node[:nova][:internalURL]}
+    fi
+  EOH
+end
 
-##execute "Keystone: create image endpoint" do
-##  cmd = Chef::ShellOut.new("#{keystone_cmd} service-list | grep glance | awk '{print $2}'")
-##  tmp = cmd.run_command
-##  service_uuid = tmp.stdout.chomp
-#  Chef::Log.info "Glance Service ID: #{service_uuid}"
-##  node.set[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
-##  node.set[:glance][:internalURL] = node[:glance][:adminURL]
-##  node.set[:glance][:publicURL] = node[:glance][:adminURL]
-##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:glance][:publicURL]} --adminurl #{node[:glance][:adminURL]} --internalurl #{node[:glance][:internalURL]}"
-##  action :run
-##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:glance][:adminURL]}"
-##end
+node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
+node[:glance][:internalURL] = node[:glance][:adminURL]
+node[:glance][:publicURL] = node[:glance][:adminURL]
+
+bash "Keystone: create image endpoint" do
+  user "root"
+  code <<-EOH
+    SERVICE_UUID=$(#{keystone_cmd} service-list|grep image|awk '{print $2}')
+    if ! #{keystone_cmd} endpoint-list | grep #{node[:glance][:publicURL]}; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:glance][:publicURL]} --adminurl #{node[:glance][:adminURL]} --internalurl #{node[:glance][:internalURL]}
+    fi
+  EOH
+end
+
+
+## Create EC2 credentials ##
 
 ##execute "Keystone: ec2-credentials create --user admin --tenant_id openstack" do
 ##  cmd = Chef::ShellOut.new("#{keystone_cmd} tenant-list | grep openstack | awk '{print $2}'")
