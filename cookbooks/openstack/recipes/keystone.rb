@@ -135,7 +135,7 @@ execute "Keystone: add netadmin role" do
   not_if "#{keystone_cmd} role-list | grep netadmin"
 end
 
-bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>
+bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>" do
   user "root"
   code <<-EOH
     TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
