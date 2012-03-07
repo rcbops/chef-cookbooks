@@ -89,13 +89,6 @@ bash "Keystone: add admin user" do
   EOH
 end
 
-#execute "Keystone: add admin user" do
-#  Chef::Log.debug "Tenant ID: #{node['tenant_uuid']}"
-#  command "#{keystone_cmd} user-create --name admin --pass secrete --tenant_id #{tenant_uuid} --enabled true"
-#  action :run
-#  not_if "#{keystone_cmd} user-list #{node['tenant_id']} |grep admin"
-#end
-
 
 
 #ruby_block "Grap user_uuid" do
@@ -105,11 +98,6 @@ end
 #  action :create
 #end
 
-#execute "Keystone: add admin user token" do
-#  command "keystone-manage create_token --id #{node[:keystone][:admin_token]} --user-id admin --tenant-id openstack --expires 2015-02-05T00:0"
-#  action :run
-#  not_if "keystone-manage list_tokens |grep #{node[:keystone][:admin_token]}"
-#end
 
 execute "Keystone: add admin role" do
   command "#{keystone_cmd} role-create --name admin"
@@ -117,30 +105,11 @@ execute "Keystone: add admin role" do
   not_if "#{keystone_cmd} role-list |grep admin"
 end
 
-#ruby_block "Grab admin role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep admin | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['admin_uuid'] = tmp.stdout.chomp
-#    admin_uuid = tmp.stdout.chomp
-#  end
-#  action :create
-#end
-
 execute "Keystone: add Member role" do
   command "#{keystone_cmd} role-create --name Member"
   action :run
   not_if "#{keystone_cmd} role-list | grep Member"
 end
-
-#ruby_block "Grab Member role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep Member | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['member_uuid'] = tmp.stdout.chomp
-#  end
-#  action :create
-#end
 
 execute "Keystone: add KeystoneAdmin role" do
   command "#{keystone_cmd} role-create --name KeystoneAdmin"
@@ -148,29 +117,11 @@ execute "Keystone: add KeystoneAdmin role" do
   not_if "#{keystone_cmd} role-list | grep KeystoneAdmin"
 end
 
-#ruby_block "Grab KeystoneAdmin role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneAdmin | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['keystoneadmin_uuid'] = tmp.stdout.chomp
-#  end
-#  action :create
-#end
-
 execute "Keystone: add KeystoneServiceAdmin role" do
   command "#{keystone_cmd} role-create --name KeystoneServiceAdmin"
   action :run
   not_if "#{keystone_cmd} role-list | grep KeystoneServiceAdmin"
 end
-
-#ruby_block "Grab KeystoneServiceAdmin role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep KeystoneServiceAdmin | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['keystoneserviceadmin_uuid'] = tmp.stdout.chomp
-#  end
-#  action :create
-#end
 
 execute "Keystone: add sysadmin role" do
   command "#{keystone_cmd} role-create --name sysadmin"
@@ -178,36 +129,25 @@ execute "Keystone: add sysadmin role" do
   not_if "#{keystone_cmd} role-list | grep sysadmin"
 end
 
-#ruby_block "Grab sysadmin role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep sysadmin | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['sysadmin_uuid'] = tmp.stdout.chomp
-#  end
-#  action :create
-#end
-
 execute "Keystone: add netadmin role" do
   command "#{keystone_cmd} role-create --name netadmin"
   action :run
   not_if "#{keystone_cmd} role-list | grep netadmin"
 end
 
-#ruby_block "Grab netadmin role uuid" do
-#  block do
-#    cmd = Chef::ShellOut.new("#{keystone_cmd} role-list | grep netadmin | awk '{print $2}'")
-#    tmp = cmd.run_command
-#    node['netadmin_uuid'] = tmp.stdout.chomp
-#  end
-#  action :create
-#end
-
-# I CANT SEEM TO FIND ANY LIST_GRANT COMMAND
-#execute "Keystone: grant ServiceAdmin role to admin user" do
-#  command "keystone-manage grant_role --role-id 1 --user-id admin && touch /var/lib/keystone/keystone_why_you_so_broken.semaphore"
-#  not_if "test -f /var/lib/keystone/keystone_why_you_so_broken.semaphore"
-#  action :run
-#end
+bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>
+  user "root"
+  code <<-EOH
+    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
+    USER_UUID=$(#{keystone_cmd} user-list ${TENANT_UUID}|grep admin|awk '{print $2}')
+    ROLE_UUID=$(#{keystone_cmd} role-list|grep admin | head -1 |awk '{print $2}')
+    semaphore=/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore
+    if [ ! -e ${semaphore} ];
+        #{keystone_cmd} user-role-add --user ${USER_UUID} --role ${ROLE_UUID} --tenant_id ${TENANT_UUID}
+        touch ${semaphore}
+    fi
+  EOH
+end
 
 ##execute "Keystone: user-role-add --user admin --role admin --tenant openstack" do
 ##  Chef::Log.info "User ID: #{node['user_uuid']}"
