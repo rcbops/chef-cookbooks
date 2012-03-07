@@ -142,7 +142,7 @@ bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid
     USER_UUID=$(#{keystone_cmd} user-list ${TENANT_UUID}|grep admin|awk '{print $2}')
     ROLE_UUID=$(#{keystone_cmd} role-list|grep admin | head -1 |awk '{print $2}')
     semaphore=/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore
-    if [ ! -e ${semaphore} ];
+    if [ ! -e ${semaphore} ]; then
         #{keystone_cmd} user-role-add --user ${USER_UUID} --role ${ROLE_UUID} --tenant_id ${TENANT_UUID}
         touch ${semaphore}
     fi
