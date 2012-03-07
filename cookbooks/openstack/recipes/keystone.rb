@@ -202,8 +202,8 @@ bash "Keystone: create identity endpoint" do
   user "root"
   code <<-EOH
     SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:publicURL]}; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}
+    if ! #{keystone_cmd} endpoint-list | grep "#{node[:keystone][:publicURL]}"; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:keystone][:publicURL]}" --adminurl "#{node[:keystone][:adminURL]}" --internalurl "#{node[:keystone][:internalURL]}"
     fi
   EOH
 end
@@ -216,8 +216,8 @@ bash "Keystone: create compute endpoint" do
   user "root"
   code <<-EOH
     SERVICE_UUID=$(#{keystone_cmd} service-list|grep compute|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep #{node[:nova][:publicURL]}; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:nova][:publicURL]} --adminurl #{node[:nova][:adminURL]} --internalurl #{node[:nova][:internalURL]}
+    if ! #{keystone_cmd} endpoint-list | grep "#{node[:nova][:publicURL]}"; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:nova][:publicURL]}" --adminurl "#{node[:nova][:adminURL]}" --internalurl "#{node[:nova][:internalURL]}"
     fi
   EOH
 end
@@ -230,8 +230,8 @@ bash "Keystone: create image endpoint" do
   user "root"
   code <<-EOH
     SERVICE_UUID=$(#{keystone_cmd} service-list|grep image|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep #{node[:glance][:publicURL]}; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl #{node[:glance][:publicURL]} --adminurl #{node[:glance][:adminURL]} --internalurl #{node[:glance][:internalURL]}
+    if ! #{keystone_cmd} endpoint-list | "grep #{node[:glance][:publicURL]}"; then
+        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:glance][:publicURL]}" --adminurl "#{node[:glance][:adminURL]}" --internalurl "#{node[:glance][:internalURL]}"
     fi
   EOH
 end
