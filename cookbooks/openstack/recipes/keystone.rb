@@ -219,9 +219,9 @@ end
 ##end
 
 execute "Keystone: service-create --name keystone --type identity" do
-  command "${keystone_cmd} service-create --name keystone --type identity --description='Keystone Identity Service'"
+  command "#{keystone_cmd} service-create --name keystone --type identity --description='Keystone Identity Service'"
   action :run
-  not_if "${keystone_cmd} service-list |grep keystone"
+  not_if "#{keystone_cmd} service-list |grep keystone"
 end
 
 ##execute "Keystone: create identity endpoint" do
@@ -234,13 +234,13 @@ end
 ##  node.set[:keystone][:publicURL] = node[:keystone][:internalURL]
 ##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{node[:keystone][:internalURL]}"
 ##  action :run
-##  not_if "${keystone_cmd} endpoint-list |grep #{node[:keystone][:adminURL]}"
+##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:keystone][:adminURL]}"
 ##end
 
 execute "Keystone: service-create --name nova --type compute" do
-  command "${keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
+  command "#{keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
   action :run
-  not_if "${keystone_cmd} service-list |grep nova"
+  not_if "#{keystone_cmd} service-list |grep nova"
 end
 
 ##execute "Keystone: create compute endpoint" do
@@ -253,13 +253,13 @@ end
 ##  node.set[:nova][:publicURL] = node[:nova][:adminURL]
 ##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:nova][:publicURL]} --adminurl #{node[:nova][:adminURL]} --internalurl #{node[:nova][:internalURL]}"
 ##  action :run
-##  not_if "${keystone_cmd} endpoint-list |grep #{node[:nova][:adminURL]}"
+##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:nova][:adminURL]}"
 ##end
 
 execute "Keystone: service-create --name glance --type image" do
-  command "${keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
+  command "#{keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
   action :run
-  not_if "${keystone_cmd} service-list |grep glance"
+  not_if "#{keystone_cmd} service-list |grep glance"
 end
 
 ##execute "Keystone: create image endpoint" do
@@ -272,13 +272,13 @@ end
 ##  node.set[:glance][:publicURL] = node[:glance][:adminURL]
 ##  command "#{keystone_cmd} endpoint-create --region RegionOne --service_id #{service_uuid} --publicurl #{node[:glance][:publicURL]} --adminurl #{node[:glance][:adminURL]} --internalurl #{node[:glance][:internalURL]}"
 ##  action :run
-##  not_if "${keystone_cmd} endpoint-list |grep #{node[:glance][:adminURL]}"
+##  not_if "#{keystone_cmd} endpoint-list |grep #{node[:glance][:adminURL]}"
 ##end
 
 execute "Keystone: service-create --name ec2 --type ec2" do
-  command "${keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
+  command "#{keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
   action :run
-  not_if "${keystone_cmd} service-list |grep ec2"
+  not_if "#{keystone_cmd} service-list |grep ec2"
 end
 
 ##execute "Keystone: ec2-credentials create --user admin --tenant_id openstack" do
@@ -290,7 +290,7 @@ end
 ##  tmp = cmd.run_command
 ##  user_uuid = tmp.stdout.chomp
 #  Chef::Log.info "User ID: #{user_uuid}"
-##  command "${keystone_cmd} ec2-credentials-create --user #{user_uuid} --tenant_id #{tenant_uuid}"
+##  command "#{keystone_cmd} ec2-credentials-create --user #{user_uuid} --tenant_id #{tenant_uuid}"
 ##  action :run
-##  not_if "${keystone_cmd} ec2-credentials-list --user #{user_uuid} | grep 'admin'"
+##  not_if "#{keystone_cmd} ec2-credentials-list --user #{user_uuid} | grep 'admin'"
 ##end
