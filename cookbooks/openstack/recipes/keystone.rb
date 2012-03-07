@@ -190,7 +190,7 @@ bash "Keystone: create identity endpoint" do
   user "root"
   code <<-EOH
     SERVICE_UUID=$(#{keystone_cmd} service-list|grep keystone|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:adminURL]; then
+    if ! #{keystone_cmd} endpoint-list | grep #{node[:keystone][:adminURL]}; then
         #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl {node[:keystone][:publicURL]} --adminurl #{node[:keystone][:adminURL]} --internalurl #{no
 de[:keystone][:internalURL]}
     fi
