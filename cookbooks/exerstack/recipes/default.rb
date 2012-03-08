@@ -6,8 +6,8 @@
   end
 end
 
-execute "git clone https://github.com/rpedde/exerstack" do
-  command "git clone https://github.com/rpedde/exerstack"
+execute "git clone https://github.com/rcbops/exerstack" do
+  command "git clone https://github.com/rcbops/exerstack"
   cwd "/opt"
   user "root"
   not_if do File.exists?("/opt/exerstack") end
