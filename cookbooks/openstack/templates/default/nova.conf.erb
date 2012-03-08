@@ -5,6 +5,7 @@
 --logdir=/var/log/nova
 --state_path=/var/lib/nova
 --lock_path=/var/lock/nova
+--iscsi_helper=tgtadm
 
 # RABBITMQ
 --rabbit_password=guest
@@ -23,6 +24,8 @@
 #--fixed_range=10.20.1.0/24
 #--flat_network_dhcp_start=10.20.1.2
 #--public_interface=eth0
+--force_dhcp_release
+--libvirt_use_virtio_for_bridges
 
 # GLANCE
 --image_service=nova.image.glance.GlanceImageService
