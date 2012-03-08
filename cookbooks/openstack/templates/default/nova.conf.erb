@@ -34,7 +34,7 @@
 # COMPUTE
 --compute_manager=nova.compute.manager.ComputeManager
 --sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
---conection_type=libvirt
+--connection_type=libvirt
 --libvirt_type=<%= @virt_type %>
 --root_helper=sudo nova-rootwrap
 
