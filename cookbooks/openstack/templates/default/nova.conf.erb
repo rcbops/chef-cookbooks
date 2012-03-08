@@ -31,7 +31,9 @@
 # COMPUTE
 --compute_manager=nova.compute.manager.ComputeManager
 --sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
+--conection_type=libvirt
 --libvirt_type=<%= @virt_type %>
+--root_helper=sudo nova-rootwrap
 
 # VNCPROXY
 --vncproxy_url=http://<%= @ip_address %>:6080
