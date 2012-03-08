@@ -3,8 +3,14 @@ action :create_service do
     # construct a HTTP object
     http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
 
-    # Build out the required header info
+    # Check to see if connection is http or https
+    if new_resource.auth_protocol == "https"
+        http.use_ssl = true
+    end
 
+    # Build out the required header info
+    headers = _build_headers(new_resource.auth_token)
+    
     # Construct the extension path
     path = "/#{new_resource.api_ver}/OS-KSADM/services"
 
