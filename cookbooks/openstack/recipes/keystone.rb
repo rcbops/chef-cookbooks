@@ -47,6 +47,14 @@ end
 execute "keystone-manage db_sync" do
   command "keystone-manage db_sync"
   action :nothing
+  notifies :restart, resources(:service => "keystone"), :immediately
+  # notifies :run, resources(:execute => "Keystone: sleep"), :immediately
+end
+
+execute "Keystone: sleep" do
+  command "sleep 10s"
+  action :nothing
+  # notifies :restart, resources(:service => "keystone"), :immediately
 end
 
 template "/etc/keystone/keystone.conf" do
@@ -65,8 +73,9 @@ template "/etc/keystone/keystone.conf" do
             :admin_port => node[:keystone][:admin_port],
             :admin_token => node[:keystone][:admin_token]
             )
-  notifies :restart, resources(:service => "keystone"), :immediately
+  # notifies :restart, resources(:service => "keystone"), :immediately
   notifies :run, resources(:execute => "keystone-manage db_sync"), :immediately
+  # notifies :run, resources(:execute => "Keystone: sleep"), :immediately
 end
 
 template "/etc/keystone/logging.conf" do
