@@ -19,5 +19,5 @@
     "bridge": "br200",
     "bridge_dev": "eth2"
   },
-  "run_list": [ "recipe[apt]", "recipe[openstack::allinone]" ]
+  "run_list": [ "recipe[apt]", "recipe[keystone::server]", "recipe[openstack::allinone]" ]
 }
