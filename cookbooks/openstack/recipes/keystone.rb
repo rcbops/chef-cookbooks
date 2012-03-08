@@ -54,7 +54,7 @@ execute "keystone-manage db_sync" do
   command "keystone-manage db_sync"
   action :nothing
   # notifies :restart, resources(:service => "keystone"), :immediately
-  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
+  # notifies :run, resources(:execute => "Keystone: sleep"), :immediately
 end
 
 template "/etc/keystone/keystone.conf" do
@@ -83,7 +83,8 @@ template "/etc/keystone/logging.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "keystone"), :immediately
+  # notifies :restart, resources(:service => "keystone"), :immediately
+  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
 end
 
 token = "#{node[:keystone][:admin_token]}"
