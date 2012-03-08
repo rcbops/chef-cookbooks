@@ -5,6 +5,9 @@ attribute :auth_protocol, :kind_of => string, :equal_to => [ "http", "https" ]
 attribute :auth_host, :kind_of => string
 attribute :auth_port, :kind_of => string
 attribute :api_ver, :kind_of => string, :default => "/v2.0"
+attribute :auth_username, :kind_of => string
+attribute :auth_password, :kind_of => string
+attribute :auth_tenant, :kind_of => string
 
 
 # :create_service specific attributes
