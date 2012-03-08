@@ -45,7 +45,7 @@ file "/var/lib/keystone/keystone.db" do
 end
 
 execute "Keystone: sleep" do
-  command "sleep 10s"
+  command "sleep 20s"
   action :nothing
   notifies :restart, resources(:service => "keystone"), :immediately
 end
