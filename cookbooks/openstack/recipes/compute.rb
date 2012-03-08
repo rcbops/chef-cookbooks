@@ -25,7 +25,13 @@ package "mysql-client" do
 	action :install
 end
 
-package "nova-compute" do
+if node[:virt_type] == "kvm"
+  compute_package = "nova-compute-kvm"
+elsif node[:virt_type] == "qemu"
+  compute_package = "nova-compute-qemu"
+end
+
+package compute_package do
   action :upgrade
   options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
