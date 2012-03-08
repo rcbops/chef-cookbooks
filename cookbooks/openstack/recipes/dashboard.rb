@@ -20,7 +20,7 @@
 include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 include_recipe "openstack::api"
-include_recipe "openstack::keystone"
+include_recipe "keystone::server"
 
 package "openstack-dashboard" do
   action :upgrade
