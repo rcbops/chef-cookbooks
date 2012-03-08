@@ -22,7 +22,7 @@ include_recipe "openssh::default"
 
 include_recipe "openstack::rabbitmq"
 include_recipe "openstack::mysql"
-include_recipe "openstack::keystone"
+include_recipe "keystone::server"
 include_recipe "openstack::glance"
 include_recipe "openstack::nova-setup"
 include_recipe "openstack::scheduler"
