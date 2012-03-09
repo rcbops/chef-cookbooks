@@ -12,3 +12,4 @@ end
 
 depends "apt"
 depends "openssh"
+depends "keystone"
