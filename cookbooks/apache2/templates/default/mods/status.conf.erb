@@ -20,12 +20,12 @@ ExtendedStatus <%= node[:apache][:status][:enable] %>
         RewriteEngine off
     </IfModule>
 <%
-iplist = '' 
-node[:rackspace][:whitelistips][:support].each do |ip|
-        iplist << ip + " "
-end
+# iplist = '' 
+# node[:rackspace][:whitelistips][:support].each do |ip|
+        # iplist << ip + " "
+# end
 %>
-    Allow from <%= iplist %>
+    Allow from all
 
     AuthUserFile <%= node[:apache][:dir] %>/status-htpasswd
     AuthName "Password protected"
