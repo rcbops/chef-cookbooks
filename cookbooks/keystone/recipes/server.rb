@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-require 'chef/shell_out'
-
-include_recipe "openstack::apt"
+# include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 
 ##### NOTE #####
@@ -42,12 +40,6 @@ end
 
 file "/var/lib/keystone/keystone.db" do
   action :delete
-end
-
-execute "Keystone: sleep" do
-  command "sleep 20s"
-  action :nothing
-  notifies :restart, resources(:service => "keystone"), :immediately
 end
 
 execute "keystone-manage db_sync" do
@@ -79,7 +71,12 @@ template "/etc/keystone/logging.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
+  notifies :restart, resources(:service => "keystone"), :immediately
+end
+
+execute "Keystone: sleep" do
+  command "sleep 10s"
+  action :run
 end
 
 token = "#{node[:keystone][:admin_token]}"
@@ -227,42 +224,54 @@ Chef::Log.info "Keystone AdminURL: #{node[:keystone][:adminURL]}"
 Chef::Log.info "Keystone InternalURL: #{node[:keystone][:internalURL]}"
 Chef::Log.info "Keystone PublicURL: #{node[:keystone][:publicURL]}"
 
-bash "Keystone: create identity endpoint" do
-  user "root"
-  code <<-EOH
-    SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep "#{node[:keystone][:publicURL]}"; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:keystone][:publicURL]}" --adminurl "#{node[:keystone][:adminURL]}" --internalurl "#{node[:keystone][:internalURL]}"
-    fi
-  EOH
+keystone_register "Register Identity Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "identity"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:keystone][:adminURL]
+  endpoint_internalurl node[:keystone][:internalURL]
+  endpoint_publicurl node[:keystone][:publicURL]
+  action :create_endpoint
 end
 
 node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%(tenant_id)s"
 node[:nova][:internalURL] = node[:nova][:adminURL]
 node[:nova][:publicURL] = node[:nova][:adminURL]
 
-bash "Keystone: create compute endpoint" do
-  user "root"
-  code <<-EOH
-    SERVICE_UUID=$(#{keystone_cmd} service-list|grep compute|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep "#{node[:nova][:publicURL]}"; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:nova][:publicURL]}" --adminurl "#{node[:nova][:adminURL]}" --internalurl "#{node[:nova][:internalURL]}"
-    fi
-  EOH
+keystone_register "Register Compute Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "compute"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:nova][:adminURL]
+  endpoint_internalurl node[:nova][:internalURL]
+  endpoint_publicurl node[:nova][:publicURL]
+  action :create_endpoint
 end
 
 node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
 node[:glance][:internalURL] = node[:glance][:adminURL]
 node[:glance][:publicURL] = node[:glance][:adminURL]
 
-bash "Keystone: create image endpoint" do
-  user "root"
-  code <<-EOH
-    SERVICE_UUID=$(#{keystone_cmd} service-list|grep image|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | "grep #{node[:glance][:publicURL]}"; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:glance][:publicURL]}" --adminurl "#{node[:glance][:adminURL]}" --internalurl "#{node[:glance][:internalURL]}"
-    fi
-  EOH
+keystone_register "Register Image Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "image"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:glance][:adminURL]
+  endpoint_internalurl node[:glance][:internalURL]
+  endpoint_publicurl node[:glance][:publicURL]
+  action :create_endpoint
 end
 
 
