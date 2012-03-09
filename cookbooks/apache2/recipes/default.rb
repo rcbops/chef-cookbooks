@@ -125,7 +125,7 @@ include_recipe "apache2::mod_negotiation"
 include_recipe "apache2::mod_setenvif"
 include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_rewrite"
-include_recipe "apache2::mod_php5"
+# include_recipe "apache2::mod_php5"
 
 execute "htpasswd"  do
   command "htpasswd -b -c #{node[:apache][:dir]}/status-htpasswd #{node[:apache][:status][:user]} #{node[:apache][:status][:pass]}"
