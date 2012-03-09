@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-::Chef::Node.send(:include, Opscode::OpenSSL::Password)
+# ::Chef::Node.send(:include, Opscode::OpenSSL::Password)
 
 # Where the various parts of apache are
 case platform
@@ -76,7 +76,9 @@ default[:apache][:allowed_openids] = Array.new
 # mod_status
 default[:apache][:status][:enable] = "On"
 default_unless[:apache][:status][:user] = "serverinfo"
-default_unless[:apache][:status][:pass] = secure_password
+# This will not work unless the first line in this file works
+# default_unless[:apache][:status][:pass] = secure_password
+default_unless[:apache][:status][:pass] = "serverinfo"
 
 # Lets figure maxclients depending on size
 maxclients = node[:memory][:total].to_i / 15000
