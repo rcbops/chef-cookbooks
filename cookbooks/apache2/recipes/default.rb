@@ -17,13 +17,9 @@
 # limitations under the License.
 #
 
-case node[:platform]
-  when "redhat","centos"
-    package node[:apache][:package]
-  when "ubuntu","debian"
-    rackspace_apt node[:apache][:package] do
-      action :install
-    end
+package "apache2" do
+  package_name node[:apache][:package]
+  action :install
 end
 
 service "apache2" do
