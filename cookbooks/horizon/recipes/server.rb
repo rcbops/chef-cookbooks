@@ -40,7 +40,7 @@ execute "openstack-dashboard syncdb" do
   not_if "/usr/bin/mysql -u root -e 'describe #{node["dash"][:db]}.django_content_type'"
 end
 
-template dashboard_for_platform(
+template value_for_platform(
   [ "redhat", "centos" ] => { "default" => "#{node[:apache][:dir]}/vhost.d/openstack-dashboard" }, 
   [ "ubuntu","debian" ] => { "default" => "#{node[:apache][:dir]}/sites-available/openstack-dashboard" },
   "default" => { "default" => "#{node[:apache][:dir]}/openstack-dashboard" }
@@ -55,9 +55,8 @@ template dashboard_for_platform(
       :ssl_key_file => node[:apache][:ssl_key_key],
       :apache_log_dir => node[:apache][:log_dir]
   )
-  if platform?("debian", "ubuntu") do
-    apache_site "openstack-dashboard" enable
-  end 
-
+  if platform?("debian", "ubuntu") then 
+    apache_site "openstack-dashboard"
+  end
   notifies :restart, resources(:service => "apache2")
 end
