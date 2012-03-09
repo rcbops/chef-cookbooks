@@ -50,7 +50,7 @@ action :create_endpoint do
     headers = _build_headers(new_resource.auth_token)
     
     # Construct the extension path
-    path = "/#{new_resource.api_ver}/OS-KSADM/endpoints"
+    path = "/#{new_resource.api_ver}/endpoints"
 
     # Lookup the service_uuid for service_type
     service_uuid, error = _find_service_id(http, "/#{new_resource.api_ver}/OS-KSADM/services", headers, new_resource.service_type)
