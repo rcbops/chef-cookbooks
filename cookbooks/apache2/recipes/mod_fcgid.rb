@@ -18,10 +18,9 @@
 #
 
 if platform?("debian", "ubuntu")
-  #package "libapache2-mod-fcgid"
-  rackspace_apt "libapache2-mod-fcgid" do
-    action :install
-  end
+    package "libapache2-mod-fcgid" do
+      action :install
+    end
 elsif platform?("centos", "redhat", "fedora")
   package "mod_fcgid" do
     notifies :run, resources(:execute => "generate-module-list"), :immediately

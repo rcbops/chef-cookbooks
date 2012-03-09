@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 
-case node[:platform]
-  when "centos", "redhat"
-    package "libapache2-svn"
-  when "ubuntu", "debian"
-    rackspace_apt "libapache2-svn" do
-      action :install
-    end
+package "libapache2-svn" do
+  case node['platform']
+  when "centos","redhat","scientific","fedora","suse"
+    package_name "mod_dav_svn"
+  else
+    package_name "libapache2-svn"
+  end
 end
 
 apache_module "dav_svn"
