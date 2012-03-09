@@ -238,16 +238,6 @@ keystone_register "Register Identity Endpoint" do
   action :create_endpoint
 end
 
-#bash "Keystone: create identity endpoint" do
-#  user "root"
-#  code <<-EOH
-#    SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
-#    if ! #{keystone_cmd} endpoint-list | grep "#{node[:keystone][:publicURL]}"; then
-#        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:keystone][:publicURL]}" --adminurl "#{node[:keystone][:adminURL]}" --internalurl "#{node[:keystone][:internalURL]}"
-#    fi
-#  EOH
-#end
-
 node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%(tenant_id)s"
 node[:nova][:internalURL] = node[:nova][:adminURL]
 node[:nova][:publicURL] = node[:nova][:adminURL]
@@ -266,16 +256,6 @@ keystone_register "Register Compute Endpoint" do
   action :create_endpoint
 end
 
-#bash "Keystone: create compute endpoint" do
-#  user "root"
-#  code <<-EOH
-#    SERVICE_UUID=$(#{keystone_cmd} service-list|grep compute|awk '{print $2}')
-#    if ! #{keystone_cmd} endpoint-list | grep "#{node[:nova][:publicURL]}"; then
-#        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:nova][:publicURL]}" --adminurl "#{node[:nova][:adminURL]}" --internalurl "#{node[:nova][:internalURL]}"
-#    fi
-#  EOH
-#end
-
 node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
 node[:glance][:internalURL] = node[:glance][:adminURL]
 node[:glance][:publicURL] = node[:glance][:adminURL]
@@ -293,16 +273,6 @@ keystone_register "Register Image Endpoint" do
   endpoint_publicurl node[:glance][:publicURL]
   action :create_endpoint
 end
-
-#bash "Keystone: create image endpoint" do
-#  user "root"
-#  code <<-EOH
-#    SERVICE_UUID=$(#{keystone_cmd} service-list|grep image|awk '{print $2}')
-#    if ! #{keystone_cmd} endpoint-list | "grep #{node[:glance][:publicURL]}"; then
-#        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:glance][:publicURL]}" --adminurl "#{node[:glance][:adminURL]}" --internalurl "#{node[:glance][:internalURL]}"
-#    fi
-#  EOH
-#end
 
 
 ## Create EC2 credentials ##
