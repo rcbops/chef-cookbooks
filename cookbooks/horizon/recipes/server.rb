@@ -8,9 +8,9 @@
 #
 include_recipe "apache2"
 include_recipe "apache2::mod_wsgi"
-include_recipe "openstack::apt"
-include_recipe "openstack::mysql"
-include_recipe "openstack::api"
+# include_recipe "openstack::apt"
+# include_recipe "openstack::mysql"
+# include_recipe "openstack::api"
 
 package "openstack-dashboard" do
     action :upgrade
@@ -22,14 +22,14 @@ template "/etc/openstack-dashboard/local_settings.py" do
   group "root"
   mode "0644"
   variables(
-            :user => node[:dash][:db_user],
-            :passwd => node[:dash][:db_passwd],
-            :ip_address => node[:controller_ipaddress],
-            :db_name => node[:dash][:db],
-            :service_port => node[:keystone][:service_port],
-            :admin_port => node[:keystone][:admin_port],
-            :admin_token => node[:keystone][:admin_token]
-            )
+            :user => node[:horizon][:db_user],
+            :passwd => node[:horizon][:db_passwd],
+            :ip_address => node[:compute][:controller_ipaddress],
+            :db_name => node[:horizon][:db],
+            :service_port => node[:identity][:service_port],
+            :admin_port => node[:identity][:admin_port],
+            :admin_token => node[:identity][:admin_token]
+  )
 end
 
 execute "openstack-dashboard syncdb" do
@@ -55,8 +55,12 @@ template value_for_platform(
       :ssl_key_file => node[:apache][:ssl_key_key],
       :apache_log_dir => node[:apache][:log_dir]
   )
-  if platform?("debian", "ubuntu") then 
-    apache_site "openstack-dashboard"
-  end
-  notifies :restart, resources(:service => "apache2")
+end
+
+if platform?("debian", "ubuntu") then 
+  apache_site "openstack-dashboard"
+end
+
+service "apache2" do
+   action :restart
 end
