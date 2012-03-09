@@ -42,12 +42,6 @@ file "/var/lib/keystone/keystone.db" do
   action :delete
 end
 
-execute "Keystone: sleep" do
-  command "sleep 30s"
-  action :nothing
-  notifies :restart, resources(:service => "keystone"), :immediately
-end
-
 execute "keystone-manage db_sync" do
   command "keystone-manage db_sync"
   action :nothing
@@ -77,7 +71,12 @@ template "/etc/keystone/logging.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :run, resources(:execute => "Keystone: sleep"), :immediately
+  notifies :restart, resources(:service => "keystone"), :immediately
+end
+
+execute "Keystone: sleep" do
+  command "sleep 10s"
+  action :run
 end
 
 token = "#{node[:keystone][:admin_token]}"
