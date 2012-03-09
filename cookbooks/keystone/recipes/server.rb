@@ -225,15 +225,29 @@ Chef::Log.info "Keystone AdminURL: #{node[:keystone][:adminURL]}"
 Chef::Log.info "Keystone InternalURL: #{node[:keystone][:internalURL]}"
 Chef::Log.info "Keystone PublicURL: #{node[:keystone][:publicURL]}"
 
-bash "Keystone: create identity endpoint" do
-  user "root"
-  code <<-EOH
-    SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
-    if ! #{keystone_cmd} endpoint-list | grep "#{node[:keystone][:publicURL]}"; then
-        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:keystone][:publicURL]}" --adminurl "#{node[:keystone][:adminURL]}" --internalurl "#{node[:keystone][:internalURL]}"
-    fi
-  EOH
+keystone_register "Register Identity Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "image"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:keystone][:adminURL]
+  endpoint_internalurl node[:keystone][:internalURL]
+  endpoint_publicurl node[:keystone][:publicURL]
+  action :create_endpoint
 end
+
+#bash "Keystone: create identity endpoint" do
+#  user "root"
+#  code <<-EOH
+#    SERVICE_UUID=$(#{keystone_cmd} service-list|grep identity|awk '{print $2}')
+#    if ! #{keystone_cmd} endpoint-list | grep "#{node[:keystone][:publicURL]}"; then
+#        #{keystone_cmd} endpoint-create --region RegionOne --service_id ${SERVICE_UUID} --publicurl "#{node[:keystone][:publicURL]}" --adminurl "#{node[:keystone][:adminURL]}" --internalurl "#{node[:keystone][:internalURL]}"
+#    fi
+#  EOH
+#end
 
 node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%(tenant_id)s"
 node[:nova][:internalURL] = node[:nova][:adminURL]
