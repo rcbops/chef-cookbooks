@@ -10,7 +10,7 @@ attribute :auth_token, :kind_of => String
 
 # :create_service specific attributes
 attribute :service_type, :kind_of => String, :equal_to => [ "image", "identity", "compute", "storage", "ec2" ]
-attribute :sertice_name, :kind_of => String
+attribute :service_name, :kind_of => String
 attribute :service_description, :kind_of => String
 
 # :create_endpoint specific attributes
