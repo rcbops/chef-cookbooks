@@ -37,7 +37,7 @@ execute "openstack-dashboard syncdb" do
   environment ({'PYTHONPATH' => '/etc/openstack-dashboard:/usr/share/openstack-dashboard:$PYTHONPATH'})
   command "python manage.py syncdb"
   action :run
-  not_if "/usr/bin/mysql -u root -e 'describe #{node["dash"][:db]}.django_content_type'"
+  # not_if "/usr/bin/mysql -u root -e 'describe #{node["dash"][:db]}.django_content_type'"
 end
 
 template value_for_platform(
@@ -51,8 +51,8 @@ template value_for_platform(
   mode "0644"
   variables(
       :apache_contact => node[:apache][:contact],
-      :ssl_cert_file => node[:apache][:self_cert],
-      :ssl_key_file => node[:apache][:ssl_key_key],
+      :ssl_cert_file => "#{node[:apache][:cert_dir]}certs/#{node[:apache][:self_cert]}",
+      :ssl_key_file => "#{node[:apache][:cert_dir]}private/#{node[:apache][:self_cert_key]}",
       :apache_log_dir => node[:apache][:log_dir]
   )
 end
