@@ -65,7 +65,7 @@ action :create_endpoint do
     if resp.is_a?(Net::HTTPOK)
         endpoint_exists = false
         data = JSON.parse(data)
-        data['endpoint'].each do |endpoint|
+        data['endpoints'].each do |endpoint|
             if endpoint['service_id'] == service_uuid
                 # Match found
                 endpoint_exists = true
