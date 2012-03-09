@@ -9,4 +9,4 @@ recipe            "keystone::server", "Installs packages required for a keystone
   supports os
 end
 
-depends "openstack::mysql"
+depends "openstack"
