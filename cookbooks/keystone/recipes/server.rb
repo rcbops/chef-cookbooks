@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 
-require 'chef/shell_out'
-
-include_recipe "openstack::apt"
+# include_recipe "openstack::apt"
 include_recipe "openstack::mysql"
 
 ##### NOTE #####
@@ -45,7 +43,7 @@ file "/var/lib/keystone/keystone.db" do
 end
 
 execute "Keystone: sleep" do
-  command "sleep 20s"
+  command "sleep 30s"
   action :nothing
   notifies :restart, resources(:service => "keystone"), :immediately
 end
