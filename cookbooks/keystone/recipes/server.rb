@@ -168,28 +168,52 @@ end
 
 ## Add Services ##
 
-execute "Keystone: service-create --name keystone --type identity" do
-  command "#{keystone_cmd} service-create --name keystone --type identity --description='Keystone Identity Service'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep keystone"
+keystone_register "Register Identity Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "keystone"
+  service_type "identity"
+  service_description "Keystone Identity Service"
+  action :create_service
 end
 
-execute "Keystone: service-create --name nova --type compute" do
-  command "#{keystone_cmd} service-create --name nova --type compute --description='Nova Compute Service'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep nova"
+keystone_register "Register Compute Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "nova"
+  service_type "compute"
+  service_description "Nova Compute Service"
+  action :create_service
 end
 
-execute "Keystone: service-create --name ec2 --type ec2" do
-  command "#{keystone_cmd} service-create --name ec2 --type ec2 --description='EC2 Compatibility Layer'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep ec2"
+keystone_register "Register EC2 Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "ec2"
+  service_type "ec2"
+  service_description "EC2 Compatibility Layer"
+  action :create_service
 end
 
-execute "Keystone: service-create --name glance --type image" do
-  command "#{keystone_cmd} service-create --name glance --type image --description='Glance Image Service'"
-  action :run
-  not_if "#{keystone_cmd} service-list |grep glance"
+keystone_register "Register Image Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "glance"
+  service_type "image"
+  service_description "Glance Image Service"
+  action :create_service
 end
 
 
