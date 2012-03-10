@@ -19,10 +19,9 @@
 
 case node[:platform]
 when "debian","ubuntu"
-  #package "libapache2-mod-wsgi"
-  rackspace_apt "libapache2-mod-wsgi" do
-    action :install
-  end
+    package "libapache2-mod-wsgi" do
+      action :install
+    end
 when "redhat","centos","fedora"
   package "mod_wsgi"
 end
