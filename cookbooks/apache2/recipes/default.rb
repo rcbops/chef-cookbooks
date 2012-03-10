@@ -17,13 +17,9 @@
 # limitations under the License.
 #
 
-case node[:platform]
-  when "redhat","centos"
-    package node[:apache][:package]
-  when "ubuntu","debian"
-    rackspace_apt node[:apache][:package] do
-      action :install
-    end
+package "apache2" do
+  package_name node[:apache][:package]
+  action :install
 end
 
 service "apache2" do
@@ -129,7 +125,7 @@ include_recipe "apache2::mod_negotiation"
 include_recipe "apache2::mod_setenvif"
 include_recipe "apache2::mod_ssl"
 include_recipe "apache2::mod_rewrite"
-include_recipe "apache2::mod_php5"
+# include_recipe "apache2::mod_php5"
 
 execute "htpasswd"  do
   command "htpasswd -b -c #{node[:apache][:dir]}/status-htpasswd #{node[:apache][:status][:user]} #{node[:apache][:status][:pass]}"
