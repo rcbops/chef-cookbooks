@@ -201,18 +201,6 @@ keystone_register "Register EC2 Service" do
   action :create_service
 end
 
-#keystone_register "Register Image Service" do
-#  auth_host node[:controller_ipaddress]
-#  auth_port node[:keystone][:admin_port]
-#  auth_protocol "http"
-#  api_ver "/v2.0"
-#  auth_token node[:keystone][:admin_token]
-#  service_name "glance"
-#  service_type "image"
-#  service_description "Glance Image Service"
-#  action :create_service
-#end
-
 
 ## Add Endpoints ##
 
@@ -255,24 +243,6 @@ keystone_register "Register Compute Endpoint" do
   endpoint_publicurl node[:nova][:publicURL]
   action :create_endpoint
 end
-
-#node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
-#node[:glance][:internalURL] = node[:glance][:adminURL]
-#node[:glance][:publicURL] = node[:glance][:adminURL]
-
-#keystone_register "Register Image Endpoint" do
-#  auth_host node[:controller_ipaddress]
-#  auth_port node[:keystone][:admin_port]
-#  auth_protocol "http"
-#  api_ver "/v2.0"
-#  auth_token node[:keystone][:admin_token]
-#  service_type "image"
-#  endpoint_region "RegionOne"
-#  endpoint_adminurl node[:glance][:adminURL]
-#  endpoint_internalurl node[:glance][:internalURL]
-#  endpoint_publicurl node[:glance][:publicURL]
-#  action :create_endpoint
-#end
 
 
 ## Create EC2 credentials ##
