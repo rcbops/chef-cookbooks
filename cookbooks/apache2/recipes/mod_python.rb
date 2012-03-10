@@ -19,8 +19,7 @@
 
 case node[:platform]
   when "debian", "ubuntu"
-    #package "libapache2-mod-python" do
-    rackspace_apt "libapache2-mod-python" do
+    package "libapache2-mod-python" do
       action :install
     end
   when "centos", "redhat", "fedora"
