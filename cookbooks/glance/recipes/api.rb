@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-# include_recipe "keystone::server"
-
 package "curl" do
   action :install
 end
