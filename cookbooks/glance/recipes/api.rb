@@ -81,6 +81,38 @@ template "/etc/glance/glance-scrubber.conf" do
   )
 end
 
+# Register Image Service
+keystone_register "Register Image Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "glance"
+  service_type "image"
+  service_description "Glance Image Service"
+  action :create_service
+end
+
+node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
+node[:glance][:internalURL] = node[:glance][:adminURL]
+node[:glance][:publicURL] = node[:glance][:adminURL]
+
+# Register Image Endpoint
+keystone_register "Register Image Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "image"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:glance][:adminURL]
+  endpoint_internalurl node[:glance][:internalURL]
+  endpoint_publicurl node[:glance][:publicURL]
+  action :create_endpoint
+end
+
 # This is a dirty hack for now.. NEED TO BE FIXED
 keystone_auth_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
 extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
