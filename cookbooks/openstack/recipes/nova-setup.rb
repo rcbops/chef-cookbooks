@@ -17,8 +17,27 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
 include_recipe "openstack::nova-common"
+include_recipe "mysql::client"
+
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+mysql_database "create nova database" do
+  connection connection_info
+  database_name node[:nova][:db]
+  action :create
+end
+
+mysql_database "create nova db user" do
+  connection connection_info
+  sql "grant all privileges on #{node[:nova][:db]}.* to '#{node[:nova][:db_user]}'@'%'"
+  action :query
+end
+
+mysql_database "configure nova db password" do
+  connection connection_info
+  sql "SET PASSWORD for '#{node[:nova][:db_user]}'@'%' = PASSWORD('#{node[:nova][:db_passwd]}')"
+  action :query
+end
 
 execute "nova-manage db sync" do
   command "nova-manage db sync"
