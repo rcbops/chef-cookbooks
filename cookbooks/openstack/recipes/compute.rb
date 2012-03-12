@@ -20,6 +20,7 @@
 include_recipe "openstack::nova-common"
 include_recipe "openstack::api"
 include_recipe "openstack::network"
+include_recipe "openstack::libvirt"
 
 package "mysql-client" do
 	action :install
