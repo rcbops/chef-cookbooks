@@ -12,6 +12,30 @@ include_recipe "apache2::mod_wsgi"
 # include_recipe "openstack::mysql"
 # include_recipe "openstack::api"
 
+include_recipe "mysql::client"
+
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+mysql_database "create horizon database" do
+  connection connection_info
+  database_name node[:horizon][:db]
+  action :create
+end
+
+mysql_database_user node[:horizon][:db_user] do
+  connection connection_info
+  password node[:horizon][:db_passwd]
+  action :create
+end
+
+mysql_database_user node[:horizon][:db_user] do
+  connection connection_info
+  password node[:horizon][:db_passwd]
+  database_name node[:horizon][:db]
+  host '%'
+  privileges [:all]
+  action :grant 
+end
+
 package "openstack-dashboard" do
     action :upgrade
 end
