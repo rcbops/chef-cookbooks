@@ -27,16 +27,19 @@ mysql_database "create nova database" do
   action :create
 end
 
-mysql_database "create nova db user" do
+mysql_database_user node[:nova][:db_user] do
   connection connection_info
-  sql "grant all privileges on #{node[:nova][:db]}.* to '#{node[:nova][:db_user]}'@'%'"
-  action :query
+  password node[:nova][:db_passwd]
+  action :create
 end
 
-mysql_database "configure nova db password" do
+mysql_database_user node[:nova][:db_user] do
   connection connection_info
-  sql "SET PASSWORD for '#{node[:nova][:db_user]}'@'%' = PASSWORD('#{node[:nova][:db_passwd]}')"
-  action :query
+  password node[:nova][:db_passwd]
+  database_name node[:nova][:db]
+  host '%'
+  privileges [:all]
+  action :grant
 end
 
 execute "nova-manage db sync" do
