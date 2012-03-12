@@ -26,16 +26,19 @@ mysql_database "create glance database" do
   action :create
 end
 
-mysql_database "create glance db user" do
+mysql_database_user node[:glance][:db_user] do
   connection connection_info
-  sql "grant all privileges on #{node[:glance][:db]}.* to '#{node[:glance][:db_user]}'@'%'"
-  action :query
+  password node[:glance][:db_passwd]
+  action :create
 end
 
-mysql_database "configure glance db password" do
+mysql_database_user node[:glance][:db_user] do
   connection connection_info
-  sql "SET PASSWORD for '#{node[:glance][:db_user]}'@'%' = PASSWORD('#{node[:glance][:db_passwd]}')"
-  action :query
+  password node[:glance][:db_passwd]
+  database_name node[:glance][:db]
+  host '%'
+  privileges [:all]
+  action :grant 
 end
 
 package "curl" do
