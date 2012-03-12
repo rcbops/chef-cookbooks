@@ -17,14 +17,13 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::apt"
+include_recipe "mysql::server"
 include_recipe "openssh::default"
 
 include_recipe "openstack::rabbitmq"
-include_recipe "openstack::mysql"
 include_recipe "keystone::server"
-include_recipe "glance::api"
 include_recipe "glance::registry"
+include_recipe "glance::api"
 include_recipe "openstack::nova-setup"
 include_recipe "openstack::scheduler"
 include_recipe "openstack::api"
