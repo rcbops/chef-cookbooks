@@ -17,31 +17,23 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
-# include_recipe "keystone::server"
-
 include mysql::client
 
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   database node[:glance][:db]
-  action [:create_db]
+  action :create
 end
 
 mysql_database "create glance db user" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "grant all privileges on #{node[:glance][:db]}.* to '#{node[:glance][:db_user]}'@'%'"
   action :query
 end
 
 mysql_database "configure glance db password" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "SET PASSWORD for '#{node[:glance][:db_user]}'@'%' = PASSWORD('#{node[:glance][:db_passwd]}')"
   action :query
 end
