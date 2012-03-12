@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include mysql::client
+include_recipe "mysql::client"
 
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
