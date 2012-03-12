@@ -12,3 +12,5 @@ end
 
 depends "openstack"
 depends "keystone"
+depends "mysql"
+depends "database"
