@@ -143,7 +143,7 @@ auth_unix_rw = "none"
 # Don't do this outside of a dev/test scenario. For real world
 # use, always enable SASL and use the GSSAPI or DIGEST-MD5
 # mechanism in /etc/sasl2/libvirt.conf
-auth_tcp = <%= node[:libvirt][auth_tcp] %>
+auth_tcp = <%= node[:libvirt][:auth_tcp] %>
 
 # Change the authentication scheme for TLS sockets.
 #
