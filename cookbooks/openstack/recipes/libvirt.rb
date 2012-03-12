@@ -8,16 +8,17 @@ service "libvirt-bin" do
   action :enable
 end
 
-service "saslauthd" do
-  supports :status => true, :restart => true
-  action :enable
-end
-
 if node[:libvirt][:auth_tcp] == "sasl"
     package "sasl2-bin" do
         # install sasl2-bin for sasl2passwd
         action :install
     end
+
+    service "saslauthd" do
+      supports :status => true, :restart => true
+      action :enable
+    end
+
     # TODO(breu): do some sasl stuff
     # TODO(breu): saslpasswd2 -a libvirt sasl_username
     # TODO(breu): pass in the password sasl_password

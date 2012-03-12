@@ -20,7 +20,6 @@
 include_recipe "openstack::nova-common"
 include_recipe "openstack::api"
 include_recipe "openstack::network"
-include_recipe "openstack::libvirt"
 
 # package "mysql-client" do
 #	action :install
@@ -42,3 +41,5 @@ service "nova-compute" do
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
+
+include_recipe "openstack::libvirt"
