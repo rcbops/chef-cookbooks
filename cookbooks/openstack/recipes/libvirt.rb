@@ -8,6 +8,18 @@ service "libvirt-bin" do
   action :enable
 end
 
+package "sasl2-bin" do
+    # install sasl2-bin for sasl2passwd
+    action :install
+    only_if node[:libvirt][:auth_tcp] == "sasl"
+end
+
+if node[:libvirt][:auth_tcp] == "sasl"
+    # TODO(breu): do some sasl stuff
+    # TODO(breu): saslpasswd2 -a libvirt sasl_username
+    # TODO(breu): pass in the password sasl_password
+end
+
 #
 # TODO(breu): this section needs to be rewritten to support key privisioning
 #
