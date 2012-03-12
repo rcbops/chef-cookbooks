@@ -13,3 +13,4 @@ end
 depends "apt"
 depends "openssh"
 depends "keystone"
+depends "glance"
