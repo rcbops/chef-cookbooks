@@ -26,16 +26,19 @@ mysql_database "create keystone database" do
   action :create
 end
 
-mysql_database "create keystone db user" do
+mysql_database_user node[:keystone][:db_user] do
   connection connection_info
-  sql "grant all privileges on #{node[:keystone][:db]}.* to '#{node[:keystone][:db_user]}'@'%'"
-  action :query
+  password node[:keystone][:db_passwd]
+  action :create
 end
 
-mysql_database "configure keystone db password" do
+mysql_database_user node[:keystone][:db_user] do
   connection connection_info
-  sql "SET PASSWORD for '#{node[:keystone][:db_user]}'@'%' = PASSWORD('#{node[:keystone][:db_passwd]}')"
-  action :query
+  password node[:keystone][:db_passwd]
+  database_name node[:keystone][:db_passwd]
+  host '%'
+  privileges [:all]
+  action :grant 
 end
 
 ##### NOTE #####
