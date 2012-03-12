@@ -35,7 +35,7 @@ end
 mysql_database_user node[:keystone][:db_user] do
   connection connection_info
   password node[:keystone][:db_passwd]
-  database_name node[:keystone][:db_passwd]
+  database_name node[:keystone][:db]
   host '%'
   privileges [:all]
   action :grant 
