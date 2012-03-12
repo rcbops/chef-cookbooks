@@ -18,26 +18,21 @@
 
 include_recipe "mysql::client"
 
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']} 
 mysql_database "create nova database" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
-  database node[:nova][:db]
-  action [:create_db]
+  connection connection_info
+  database_name node[:nova][:db]
+  action :create
 end
 
 mysql_database "create nova db user" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "grant all privileges on #{node[:nova][:db]}.* to '#{node[:nova][:db_user]}'@'%'"
   action :query
 end
 
 mysql_database "configure nova db password" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "SET PASSWORD for '#{node[:nova][:db_user]}'@'%' = PASSWORD('#{node[:nova][:db_passwd]}')"
   action :query
 end
