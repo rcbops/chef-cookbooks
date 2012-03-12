@@ -20,6 +20,32 @@
 include_recipe "openstack::mysql"
 # include_recipe "keystone::server"
 
+include mysql::client
+
+mysql_database "create glance database" do
+  host node[:controller_ip]
+  username "root"
+  password node['mysql']['server_root_password']
+  database node[:glance][:db]
+  action [:create_db]
+end
+
+mysql_database "create glance db user" do
+  host node[:controller_ip]
+  username "root"
+  password node['mysql']['server_root_password']
+  sql "grant all privileges on #{node[:glance][:db]}.* to '#{node[:glance][:db_user]}'@'%'"
+  action :query
+end
+
+mysql_database "configure glance db password" do
+  host node[:controller_ip]
+  username "root"
+  password node['mysql']['server_root_password']
+  sql "SET PASSWORD for '#{node[:glance][:db_user]}'@'%' = PASSWORD('#{node[:glance][:db_passwd]}')"
+  action :query
+end
+
 package "curl" do
   action :install
 end
