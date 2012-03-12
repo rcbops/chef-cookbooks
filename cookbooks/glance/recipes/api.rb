@@ -17,15 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::apt"
-include_recipe "openstack::mysql"
-include_recipe "keystone::server"
-
 package "curl" do
-  action :install
-end
-
-package "python-mysqldb" do
   action :install
 end
 
@@ -42,53 +34,6 @@ end
 service "glance-api" do
   supports :status => true, :restart => true
   action :enable
-end
-
-service "glance-registry" do
-  supports :status => true, :restart => true
-  action :enable
-end
-
-execute "glance-manage db_sync" do
-        command "glance-manage db_sync"
-        action :nothing
-        notifies :restart, resources(:service => "glance-registry"), :immediately
-end
-
-file "/var/lib/glance/glance.sqlite" do
-    action :delete
-end
-
-template "/etc/glance/glance-registry.conf" do
-  source "glance-registry.conf.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables(
-    :registry_port => node[:glance][:registry_port],
-    :user => node[:glance][:db_user],
-    :passwd => node[:glance][:db_passwd],
-    :ip_address => node[:controller_ipaddress],
-    :db_name => node[:glance][:db],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
-  )
-  notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
-end
-
-template "/etc/glance/glance-registry-paste.ini" do
-  source "glance-registry-paste.ini.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables(
-    :ip_address => node[:controller_ipaddress],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
-  )
-  notifies :restart, resources(:service => "glance-registry"), :immediately
 end
 
 template "/etc/glance/glance-api.conf" do
@@ -132,6 +77,38 @@ template "/etc/glance/glance-scrubber.conf" do
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db]
   )
+end
+
+# Register Image Service
+keystone_register "Register Image Service" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_name "glance"
+  service_type "image"
+  service_description "Glance Image Service"
+  action :create_service
+end
+
+node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
+node[:glance][:internalURL] = node[:glance][:adminURL]
+node[:glance][:publicURL] = node[:glance][:adminURL]
+
+# Register Image Endpoint
+keystone_register "Register Image Endpoint" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  service_type "image"
+  endpoint_region "RegionOne"
+  endpoint_adminurl node[:glance][:adminURL]
+  endpoint_internalurl node[:glance][:internalURL]
+  endpoint_publicurl node[:glance][:publicURL]
+  action :create_endpoint
 end
 
 # This is a dirty hack for now.. NEED TO BE FIXED
