@@ -49,3 +49,5 @@ default[:controller_ipaddress] = node[:ipaddress]
 default[:virt_type] = "kvm"
 
 default[:libvirt][:auth_tcp] = "none"
+default[:libvirt][:sasl_username] = "nova"
+default[:libvirt][:sasl_password] = "loihe4Aisah8Eequ"
