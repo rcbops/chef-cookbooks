@@ -61,7 +61,7 @@ package node['mysql']['package_name'] do
   action :install
 end
 
-directory "#{node['mysql']['conf_dir']}/mysql/conf.d" do
+directory "#{node['mysql']['conf_dir']}/conf.d" do
   owner "mysql"
   group "mysql"
   action :create
