@@ -21,7 +21,6 @@ include_recipe "mysql::server"
 include_recipe "openssh::default"
 
 include_recipe "openstack::rabbitmq"
-include_recipe "openstack::mysql"
 include_recipe "keystone::server"
 include_recipe "glance::api"
 include_recipe "glance::registry"
