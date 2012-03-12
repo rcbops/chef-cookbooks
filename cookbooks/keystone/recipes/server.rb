@@ -17,31 +17,23 @@
 # limitations under the License.
 #
 
-# include_recipe "openstack::apt"
-include_recipe "openstack::mysql"
-
 include mysql::client
 
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
-  database node[:keystone][:db]
-  action [:create_db]
+  connection connection_info
+  database_name node[:keystone][:db]
+  action :create
 end
 
 mysql_database "create keystone db user" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "grant all privileges on #{node[:keystone][:db]}.* to '#{node[:keystone][:db_user]}'@'%'"
   action :query
 end
 
 mysql_database "configure keystone db password" do
-  host node[:controller_ip]
-  username "root"
-  password node['mysql']['server_root_password']
+  connection connection_info
   sql "SET PASSWORD for '#{node[:keystone][:db_user]}'@'%' = PASSWORD('#{node[:keystone][:db_passwd]}')"
   action :query
 end
