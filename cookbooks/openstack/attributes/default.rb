@@ -47,3 +47,5 @@ default[:private][:bridge_dev] = "eth3"
 
 default[:controller_ipaddress] = node[:ipaddress]
 default[:virt_type] = "kvm"
+
+default[:libvirt][:auth_tcp] = "none"
