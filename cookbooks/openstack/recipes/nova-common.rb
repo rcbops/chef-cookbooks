@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::apt"
-
 package "nova-common" do
   action :upgrade
   options "-o Dpkg::Options::='--force-confold' --force-yes"

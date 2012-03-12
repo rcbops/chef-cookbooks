@@ -10,3 +10,5 @@ recipe            "keystone::server", "Installs packages required for a keystone
 end
 
 depends "openstack"
+depends "mysql"
+depends "database"

@@ -21,9 +21,9 @@ include_recipe "openstack::nova-common"
 include_recipe "openstack::api"
 include_recipe "openstack::network"
 
-package "mysql-client" do
-	action :install
-end
+# package "mysql-client" do
+#	action :install
+#end
 
 if node[:virt_type] == "kvm"
   compute_package = "nova-compute-kvm"
