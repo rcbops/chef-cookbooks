@@ -22,7 +22,7 @@ include_recipe "mysql::client"
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
   connection connection_info
-  database node[:glance][:db]
+  database_name node[:glance][:db]
   action :create
 end
 
