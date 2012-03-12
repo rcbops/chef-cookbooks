@@ -17,8 +17,29 @@
 # limitations under the License.
 #
 
-# include_recipe "openstack::apt"
-include_recipe "openstack::mysql"
+include_recipe "mysql::client"
+
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+mysql_database "create keystone database" do
+  connection connection_info
+  database_name node[:keystone][:db]
+  action :create
+end
+
+mysql_database_user node[:keystone][:db_user] do
+  connection connection_info
+  password node[:keystone][:db_passwd]
+  action :create
+end
+
+mysql_database_user node[:keystone][:db_user] do
+  connection connection_info
+  password node[:keystone][:db_passwd]
+  database_name node[:keystone][:db]
+  host '%'
+  privileges [:all]
+  action :grant 
+end
 
 ##### NOTE #####
 # https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236

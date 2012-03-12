@@ -17,8 +17,29 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::mysql"
-# include_recipe "keystone::server"
+include_recipe "mysql::client"
+
+connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+mysql_database "create glance database" do
+  connection connection_info
+  database_name node[:glance][:db]
+  action :create
+end
+
+mysql_database_user node[:glance][:db_user] do
+  connection connection_info
+  password node[:glance][:db_passwd]
+  action :create
+end
+
+mysql_database_user node[:glance][:db_user] do
+  connection connection_info
+  password node[:glance][:db_passwd]
+  database_name node[:glance][:db]
+  host '%'
+  privileges [:all]
+  action :grant 
+end
 
 package "curl" do
   action :install
