@@ -159,10 +159,10 @@ action :create_user do
     end
 
     # Construct the extension path using the found tenant_uuid
-    path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users"
+    path = "/#{new_resource.api_ver}/users"
 
     # Make sure this endpoint does not already exist
-    resp, data = http.request_get(path, headers)
+    resp, data = http.request_get("#{new_resource.api_ver}/tenants/#{tenant_uuid}/users", headers)
     if resp.is_a?(Net::HTTPOK)
         user_exists = false
         data = JSON.parse(data)
