@@ -152,7 +152,7 @@ action :create_user do
     
     # Lookup the tenant_uuid for tenant_name
     tenant_uuid, error = _find_tenant_id(http, "/#{new_resource.api_ver}/tenants", headers, new_resource.tenant_name)
-    unless service_uuid
+    unless tenant_uuid
         Chef::Log.error("Unable to find tenant '#{new_resource.tenant_name}'")
         new_resource.updated_by_last_action(false)
         return
