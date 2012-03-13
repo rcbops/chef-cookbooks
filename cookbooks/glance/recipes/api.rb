@@ -61,7 +61,10 @@ template "/etc/glance/glance-api-paste.ini" do
     :ip_address => node[:controller_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
+    :admin_token => node[:keystone][:admin_token],
+    :service_tenant_name => node[:glance][:service_tenant_name],
+    :service_user => node[:glance][:service_user],
+    :service_pass => node[:glance][:service_pass]
   )
   notifies :restart, resources(:service => "glance-api"), :immediately
 end
