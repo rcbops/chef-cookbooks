@@ -101,6 +101,43 @@ action :create_endpoint do
     end
 end
 
+action :create_tenant do
+    # construct a HTTP object
+    http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
+
+    # Check to see if connection is http or https
+    if new_resource.auth_protocol == "https"
+        http.use_ssl = true
+    end
+
+    # Build out the required header info
+    headers = _build_headers(new_resource.auth_token)
+    
+    # Construct the extension path
+    path = "/#{new_resource.api_ver}/tenants"
+
+    # See if the service exists yet
+    tenant_uuid, error = _find_tenant_id(http, path, headers, new_resource.service_type)
+    unless tenant_uuid
+        # Service does not exist yet
+        payload = _build_tenant_object(new_resource.tenant_name, new_resource.service_description, new_resource.tenant_enabled)
+        resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+        if resp.is_a?(Net::HTTPOK)
+            Chef::Log.info("Created tenant '#{new_resource.tenant_name}'")
+            new_resource.updated_by_last_action(true)
+        else
+            Chef::Log.error("Unable to create tenant '#{new_resource.tenant_name}'")
+            Chef::Log.error("Response Code: #{resp.code}")
+            Chef::Log.error("Response Message: #{resp.message}")
+            new_resource.updated_by_last_action(false)
+        end
+    else
+        Chef::Log.info("Tenant '#{new_resource.tenant_name}' already exists.. Not creating.") if error
+        Chef::Log.info("Tenant UUID: #{tenant_uuid}")
+        new_resource.updated_by_last_action(false)
+    end
+end
+
 
 private
 def _find_service_id(http, path, headers, service_type)
@@ -122,6 +159,28 @@ def _find_service_id(http, path, headers, service_type)
     return service_uuid,error
 end
 
+
+private
+def _find_tenant_id(http, path, headers, tenant_name)
+    tenant_uuid = nil
+    error = false
+    resp, data = http.request_get(path, headers)
+    if resp.is_a?(Net::HTTPOK)
+        data = JSON.parse(data)
+        data['tenants'].each do |tenant|
+            tenant_uuid = tenant['id'] if tenant['name'] == tenant_name
+            break if tenant_uuid
+        end
+    else
+        Chef::Log.error("Unknown response from the Keystone Server")
+        Chef::Log.error("Response Code: #{resp.code}")
+        Chef::Log.error("Response Message: #{resp.message}")
+        error = true
+    end
+    return tenant_uuid,error
+end
+
+
 private
 def _build_service_object(type, name, description)
     service_obj = Hash.new
@@ -132,6 +191,19 @@ def _build_service_object(type, name, description)
     ret.store("OS-KSADM:service", service_obj)
     return ret
 end
+
+
+private
+def _build_tenant_object(name, description, enabled)
+    tenant_obj = Hash.new
+    tenant_obj.store("name", name)
+    tenant_obj.store("description", description)
+    tenant_obj.store("enabled", enabled)
+    ret = Hash.new
+    ret.store("tenant", tenant_obj)
+    return ret
+end
+
 
 private
 def _build_endpoint_object(region, service_uuid, publicurl, internalurl, adminurl)
@@ -145,6 +217,7 @@ def _build_endpoint_object(region, service_uuid, publicurl, internalurl, adminur
     ret.store("endpoint", endpoint_obj)
     return ret
 end
+
 
 private
 def _build_headers(token)
