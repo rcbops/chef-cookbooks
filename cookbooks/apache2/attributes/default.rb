@@ -17,8 +17,6 @@
 # limitations under the License.
 #
 
-::Chef::Node.send(:include, Opscode::OpenSSL::Password)
-
 # Where the various parts of apache are
 case platform
 when "redhat","centos","fedora","suse"
@@ -74,9 +72,9 @@ default[:apache][:traceenable] = "Off"
 default[:apache][:allowed_openids] = Array.new
 
 # mod_status
-default[:apache][:status][:enable] = "On"
-default_unless[:apache][:status][:user] = "serverinfo"
-default_unless[:apache][:status][:pass] = secure_password
+#default[:apache][:status][:enable] = "On"
+#default_unless[:apache][:status][:user] = "serverinfo"
+#default_unless[:apache][:status][:pass] = secure_password
 
 # Lets figure maxclients depending on size
 maxclients = node[:memory][:total].to_i / 15000
