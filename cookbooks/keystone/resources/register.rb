@@ -30,5 +30,5 @@ attribute :tenant_enabled, :kind_of => String, :equal_to => [ "true", "false" ],
 # :create_user specific attributes
 attribute :user_name, :kind_of => String
 attribute :user_pass, :kind_of => String
-attribute :user_email, :kind_of => String
+# attribute :user_email, :kind_of => String
 attribute :user_enabled, :kind_of => String, :equal_to => [ "true", "false" ], :default => "true"
