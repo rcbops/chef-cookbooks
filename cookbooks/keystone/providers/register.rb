@@ -138,6 +138,69 @@ action :create_tenant do
     end
 end
 
+action :create_user do
+    # construct a HTTP object
+    http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
+
+    # Check to see if connection is http or https
+    if new_resource.auth_protocol == "https"
+        http.use_ssl = true
+    end
+
+    # Build out the required header info
+    headers = _build_headers(new_resource.auth_token)
+    
+    # Lookup the tenant_uuid for tenant_name
+    tenant_uuid, error = _find_tenant_id(http, "/#{new_resource.api_ver}/tenants", headers, new_resource.tenant_name)
+    unless service_uuid
+        Chef::Log.error("Unable to find tenant '#{new_resource.tenant_name}'")
+        new_resource.updated_by_last_action(false)
+        return
+    end
+
+    # Construct the extension path using the found tenant_uuid
+    path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users"
+
+    # Make sure this endpoint does not already exist
+    resp, data = http.request_get(path, headers)
+    if resp.is_a?(Net::HTTPOK)
+        user_exists = false
+        data = JSON.parse(data)
+        data['users'].each do |endpoint|
+            if endpoint['name'] == new_resource.user_name
+                # Match found
+                user_exists = true
+                break
+            end
+        end
+        if user_exists
+            Chef::Log.error("User '#{new_resource.user_name}' already exists for tenant '#{new_resource.tenant_name}'")
+            new_resource.updated_by_last_action(false)
+        else
+            payload = _build_user_object(
+                      tenant_uuid,
+                      new_resource.user_name,
+                      new_resource.user_pass,
+                      new_resource.user_enabled)
+            resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+            if resp.is_a?(Net::HTTPOK)
+                Chef::Log.info("Created user '#{new_resource.user_name}' for tenant '#{new_resource.tenant_name}'")
+                new_resource.updated_by_last_action(true)
+            else
+                Chef::Log.error("Unable to create user '#{new_resource.user_name}' for tenant '#{new_resource.tenant_name}'")
+                Chef::Log.error("Response Code: #{resp.code}")
+                Chef::Log.error("Response Message: #{resp.message}")
+                new_resource.updated_by_last_action(false)
+            end
+        end
+    else
+        Chef::Log.error("Unknown response from the Keystone Server")
+        Chef::Log.error("Response Code: #{resp.code}")
+        Chef::Log.error("Response Message: #{resp.message}")
+        new_resource.updated_by_last_action(false)
+    end
+end
+
 
 private
 def _find_service_id(http, path, headers, service_type)
@@ -215,6 +278,21 @@ def _build_endpoint_object(region, service_uuid, publicurl, internalurl, adminur
     endpoint_obj.store("region", region)
     ret = Hash.new
     ret.store("endpoint", endpoint_obj)
+    return ret
+end
+
+
+private
+def _build_user_object(tenant_uuid, name, password, enabled)
+    user_obj = Hash.new
+    user_obj.store("tenantId", tenant_uuid)
+    user_obj.store("name", name)
+    user_obj.store("password", description)
+    # Have to provide a null value for this because I dont want to have this in the LWRP
+    user_obj.store("email", null)
+    user_obj.store("enabled", enabled)
+    ret = Hash.new
+    ret.store("user", user_obj)
     return ret
 end
 
