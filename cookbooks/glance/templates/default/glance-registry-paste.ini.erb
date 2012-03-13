@@ -23,8 +23,8 @@ auth_protocol = http
 auth_uri = http://<%= @ip_address %>:<%= @service_port %>/v2.0
 # admin_token = <%= @admin_token %>
 admin_tenant_name = <%= @service_tenant_name %>
-#admin_user = <%= @service_user %>
-#admin_password = <%= @service_pass %>
+admin_user = <%= @service_user %>
+admin_password = <%= @service_pass %>
 
 [filter:auth-context]
 context_class = glance.registry.context.RequestContext
