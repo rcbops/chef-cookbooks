@@ -75,7 +75,7 @@ file "/var/lib/glance/glance.sqlite" do
 end
 
 # Register Service Tenant
-keystone_register "Register Image Endpoint" do
+keystone_register "Register Service Tenant" do
   auth_host node[:controller_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
@@ -88,7 +88,7 @@ keystone_register "Register Image Endpoint" do
 end
 
 ## Register Service User
-#keystone_register "Register Image Endpoint" do
+#keystone_register "Register Service User" do
 #  auth_host node[:controller_ipaddress]
 #  auth_port node[:keystone][:admin_port]
 #  auth_protocol "http"
