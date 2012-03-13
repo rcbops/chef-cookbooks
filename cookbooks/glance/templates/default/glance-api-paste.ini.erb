@@ -37,7 +37,10 @@ auth_host = <%= @ip_address %>
 auth_port = <%= @admin_port %>
 auth_protocol = http
 auth_uri = http://<%= @ip_address %>:<%= @service_port %>/v2.0
-admin_token = <%= @admin_token %>
+# admin_token = <%= @admin_token %>
+admin_tenant_name = <%= @service_tenant_name %>
+#admin_user = <%= @service_user %>
+#admin_password = <%= @service_password %>
 
 [filter:auth-context]
 paste.filter_factory = glance.common.wsgi:filter_factory
