@@ -20,6 +20,6 @@
 include_recipe "collectd"
 
 collectd_plugin "mysql" do
-  options (:Host=>(:node, 'mysql_server_role:master'),
-  :User=>"root", :Password=>"password", :Port=>"3306", :MasterStats=>"true", :ignore_selected=>true)
+  options (:Host=>(node['mysql']),
+  :User=>"root", :Password=>(node['mysql']['server_root_password']), :Port=>"3306", :MasterStats=>"true", :ignore_selected=>true)
 end
