@@ -1,5 +1,5 @@
 
-actions :create_service, :create_endpoint, :create_tenant, :create_user, :role_create, :gront_role
+actions :create_service, :create_endpoint, :create_tenant, :create_user, :create_role, :gront_role
 
 attribute :auth_protocol, :kind_of => String, :equal_to => [ "http", "https" ]
 attribute :auth_host, :kind_of => String
