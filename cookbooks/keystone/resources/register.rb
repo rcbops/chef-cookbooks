@@ -1,5 +1,5 @@
 
-actions :create_service, :create_endpoint, :create_tenant, :create_user
+actions :create_service, :create_endpoint, :create_tenant, :create_user, :role_create, :gront_role
 
 attribute :auth_protocol, :kind_of => String, :equal_to => [ "http", "https" ]
 attribute :auth_host, :kind_of => String
@@ -32,3 +32,6 @@ attribute :user_name, :kind_of => String
 attribute :user_pass, :kind_of => String
 # attribute :user_email, :kind_of => String
 attribute :user_enabled, :kind_of => String, :equal_to => [ "true", "false" ], :default => "true"
+
+# Used by :create_role and :grant_role specific attributes
+attribute :role_name, :kind_of => String
