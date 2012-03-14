@@ -128,41 +128,16 @@ end
 
 
 ## Add Roles ##
-
-execute "Keystone: add admin role" do
-  command "#{keystone_cmd} role-create --name admin"
-  action :run
-  not_if "#{keystone_cmd} role-list |grep admin"
-end
-
-execute "Keystone: add Member role" do
-  command "#{keystone_cmd} role-create --name Member"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep Member"
-end
-
-execute "Keystone: add KeystoneAdmin role" do
-  command "#{keystone_cmd} role-create --name KeystoneAdmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep KeystoneAdmin"
-end
-
-execute "Keystone: add KeystoneServiceAdmin role" do
-  command "#{keystone_cmd} role-create --name KeystoneServiceAdmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep KeystoneServiceAdmin"
-end
-
-execute "Keystone: add sysadmin role" do
-  command "#{keystone_cmd} role-create --name sysadmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep sysadmin"
-end
-
-execute "Keystone: add netadmin role" do
-  command "#{keystone_cmd} role-create --name netadmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep netadmin"
+node[:keystone][:roles].each do |role_key|
+  keystone_register "Register '#{role.to_s}' Role" do
+    auth_host node[:controller_ipaddress]
+    auth_port node[:keystone][:admin_port]
+    auth_protocol "http"
+    api_ver "/v2.0"
+    auth_token node[:keystone][:admin_token]
+    role_name node[:keystone][:roles][role_key]
+    action :create_role
+  end
 end
 
 
