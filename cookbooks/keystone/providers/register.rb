@@ -241,6 +241,62 @@ action :create_user do
     end
 end
 
+action :grant_role do
+    # construct a HTTP object
+    http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
+
+    # Check to see if connection is http or https
+    if new_resource.auth_protocol == "https"
+        http.use_ssl = true
+    end
+
+    # Build out the required header info
+    headers = _build_headers(new_resource.auth_token)
+
+    # lookup tennant_uuid
+    tenant_container = "tenants"
+    tenant_key = "name"
+    tenant_path = '/#{new_resource.api_ver}/tenants'
+    tennant_uuid, tenant_error = _find_id(http, tenant_path, headers, tenant_container, tenant_key, new_resource.tenant_name)
+
+    # lookup user_uuid
+    user_container = "users"
+    user_key = "name"
+    user_path = '/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users'
+    user_uuid, user_error = _find_id(http, user_path, headers, user_container, user_key, new_resource.user_name)
+
+    # lookup role_uuid
+    role_container = "roles"
+    role_key = "name"
+    role_path = "/#{new_resource.api_ver}/OS-KSADM/roles"
+    role_uuid, role_error = _find_id(http, path, headers, container, key, new_resource.role_name)
+
+    # lookup roles assigned to user/tenant
+    assigned_container = "roles"
+    assigned_key = "name"
+    assigned_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles"
+    assigned_role_uuid, assigned_error = _find_id(http, assigned_path, headers, assigned_container, assigned_key, new_resource.role_name)
+
+    error = (tenant_error or user_error or role_error or assigned_error)
+    unless role_uuid == assigned_role_uuid or error
+        # Construct the extension path
+        path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles/OS-KSADM/#{role_uuid}"
+
+        resp, data = http.send_request('PUT', path, headers)
+        if resp.is_a?(Net::HTTPOK)
+            Chef::Log.info("Granted Role '#{new_resource.role_name}' to User '#{new_resource.user_name}' in Tenant '#{new_resource.tenant_name}'")
+            new_resource.updated_by_last_action(true)
+        else
+            Chef::Log.error("Unable to grant role '#{new_resource.role_name}'")
+            Chef::Log.error("Response Code: #{resp.code}")
+            Chef::Log.error("Response Message: #{resp.message}")
+            new_resource.updated_by_last_action(false)
+        end
+    else
+        Chef::Log.info("Role '#{new_resource.role_name}' already exists.. Not granting.") if error
+        new_resource.updated_by_last_action(false)
+    end
+end
 
 private
 def _find_service_id(http, path, headers, service_type)
