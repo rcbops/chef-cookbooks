@@ -129,7 +129,7 @@ end
 
 ## Add Roles ##
 node[:keystone][:roles].each do |role_key|
-  keystone_register "Register '#{role.to_s}' Role" do
+  keystone_register "Register '#{role_key.to_s}' Role" do
     auth_host node[:controller_ipaddress]
     auth_port node[:keystone][:admin_port]
     auth_protocol "http"
