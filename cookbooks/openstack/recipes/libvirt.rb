@@ -8,40 +8,6 @@ service "libvirt-bin" do
   action :enable
 end
 
-if node[:libvirt][:auth_tcp] == "sasl"
-    package "sasl2-bin" do
-        # install sasl2-bin for sasl2passwd
-        action :install
-    end
-
-    service "saslauthd" do
-      supports :status => true, :restart => true
-      action :enable
-    end
-
-    # TODO(breu): do some sasl stuff
-    # TODO(breu): saslpasswd2 -a libvirt sasl_username
-    # TODO(breu): pass in the password sasl_password
-    VIRT_SASL_PASSWORD = "#{node[:libvirt][:sasl_password]}"
-    VIRT_SASL_USERNAME = "#{node[:libvirt][:sasl_username]}"
-    bash "create sasl user" do
-        cwd "/tmp"
-        user "root"
-        code <<-EOH
-            set -x
-            echo '#{VIRT_SASL_PASSWORD}' | saslpasswd2 -p -c -a libvirt #{VIRT_SASL_USERNAME}
-        EOH
-    end
-end
-
-template "/etc/default/saslauthd" do
-    source "saslauthd"
-    owner "root"
-    group "root"
-    mode "0644"
-    action :create
-    notifies :restart, resources(:service => "saslauthd"), :immediately
-end
 
 directory "/var/lib/nova/.ssh" do
     owner "nova"
