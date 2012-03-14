@@ -135,7 +135,7 @@ node[:keystone][:roles].each do |role_key|
     auth_protocol "http"
     api_ver "/v2.0"
     auth_token node[:keystone][:admin_token]
-    role_name node[:keystone][:roles][role_key]
+    role_name role_key
     action :create_role
   end
 end
