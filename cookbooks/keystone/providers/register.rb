@@ -138,6 +138,46 @@ action :create_tenant do
     end
 end
 
+action :create_role do
+    # construct a HTTP object
+    http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
+
+    # Check to see if connection is http or https
+    if new_resource.auth_protocol == "https"
+        http.use_ssl = true
+    end
+
+    # Build out the required header info
+    headers = _build_headers(new_resource.auth_token)
+    
+    # Construct the extension path
+    path = "/#{new_resource.api_ver}/OS-KSADM/roles"
+
+    container = "roles"
+    key = "name"
+
+    # See if the role exists yet
+    role_uuid, error = _find_id(http, path, headers, container, key, new_resource.role_name)
+    unless role_uuid
+        # role does not exist yet
+        payload = _build_role_obj(new_resource.role_name)
+        resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+        if resp.is_a?(Net::HTTPOK)
+            Chef::Log.info("Created Role '#{new_resource.role_name}'")
+            new_resource.updated_by_last_action(true)
+        else
+            Chef::Log.error("Unable to create role '#{new_resource.role_name}'")
+            Chef::Log.error("Response Code: #{resp.code}")
+            Chef::Log.error("Response Message: #{resp.message}")
+            new_resource.updated_by_last_action(false)
+        end
+    else
+        Chef::Log.info("Role '#{new_resource.role_name}' already exists.. Not creating.") if error
+        Chef::Log.info("Role UUID: #{role_uuid}")
+        new_resource.updated_by_last_action(false)
+    end
+end
+
 action :create_user do
     # construct a HTTP object
     http = Net::HTTP.new(new_resource.auth_host, new_resource.auth_port)
@@ -224,6 +264,27 @@ end
 
 
 private
+def _find_id(http, path, headers, container, key, match_value)
+    uuid = nil
+    error = false
+    resp, data = http.request_get(path, headers)
+    if resp.is_a?(Net::HTTPOK)
+        data = JSON.parse(data)
+        data[container].each do |obj|
+            uuid = obj['id'] if obj[key] == match_value
+            break if uuid
+        end
+    else
+        Chef::Log.error("Unknown response from the Keystone Server")
+        Chef::Log.error("Response Code: #{resp.code}")
+        Chef::Log.error("Response Message: #{resp.message}")
+        error = true
+    end
+    return uuid,error
+end
+
+
+private
 def _find_tenant_id(http, path, headers, tenant_name)
     tenant_uuid = nil
     error = false
@@ -252,6 +313,16 @@ def _build_service_object(type, name, description)
     service_obj.store("description", description)
     ret = Hash.new
     ret.store("OS-KSADM:service", service_obj)
+    return ret
+end
+
+
+private
+def _build_role_obj(name)
+    role_obj = Hash.new
+    role_obj.store("name", name)
+    ret = Hash.new
+    ret.store("role", role_obj)
     return ret
 end
 
