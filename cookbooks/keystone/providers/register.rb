@@ -256,13 +256,13 @@ action :grant_role do
     # lookup tenant_uuid
     tenant_container = "tenants"
     tenant_key = "name"
-    tenant_path = '/#{new_resource.api_ver}/tenants'
+    tenant_path = "/#{new_resource.api_ver}/tenants"
     tenant_uuid, tenant_error = _find_id(http, tenant_path, headers, tenant_container, tenant_key, new_resource.tenant_name)
 
     # lookup user_uuid
     user_container = "users"
     user_key = "name"
-    user_path = '/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users'
+    user_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users"
     user_uuid, user_error = _find_id(http, user_path, headers, user_container, user_key, new_resource.user_name)
 
     # lookup role_uuid
