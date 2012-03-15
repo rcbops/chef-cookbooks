@@ -271,14 +271,14 @@ action :grant_role do
     role_path = "/#{new_resource.api_ver}/OS-KSADM/roles"
     role_uuid, role_error = _find_id(http, role_path, headers, role_container, role_key, new_resource.role_name)
 
+    Chef::Log.debug("Found Tenant UUID: #{tenant_uuid}")
+    Chef::Log.debug("Found User UUID: #{user_uuid}")
+    Chef::Log.debug("Found Role UUID: #{role_uuid}")
+
     # lookup roles assigned to user/tenant
     assigned_container = "roles"
     assigned_key = "name"
     assigned_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles"
-    Chef::Log.info("Tenant UUID: #{tenant_uuid}")
-    Chef::Log.info("User UUID: #{user_uuid}")
-    Chef::Log.info("Role UUID: #{role_uuid}")
-    Chef::Log.info("Assigned Roles Path: #{assigned_path}")
     assigned_role_uuid, assigned_error = _find_id(http, assigned_path, headers, assigned_container, assigned_key, new_resource.role_name)
 
     error = (tenant_error or user_error or role_error or assigned_error)
@@ -326,10 +326,6 @@ end
 
 private
 def _find_id(http, path, headers, container, key, match_value)
-    Chef::Log.info("Path: #{path}")
-    Chef::Log.info("Container: #{container}")
-    Chef::Log.info("Key: #{key}")
-    Chef::Log.info("Match_Value: #{match_value}")
     uuid = nil
     error = false
     resp, data = http.request_get(path, headers)
