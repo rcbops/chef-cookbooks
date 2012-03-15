@@ -325,6 +325,10 @@ end
 
 private
 def _find_id(http, path, headers, container, key, match_value)
+    Chef::Log.info("Path: #{path}")
+    Chef::Log.info("Container: #{container}")
+    Chef::Log.info("Key: #{key}")
+    Chef::Log.info("Match_Value: #{match_value}")
     uuid = nil
     error = false
     resp, data = http.request_get(path, headers)
