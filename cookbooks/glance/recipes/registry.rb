@@ -74,6 +74,46 @@ file "/var/lib/glance/glance.sqlite" do
     action :delete
 end
 
+# Register Service Tenant
+keystone_register "Register Service Tenant" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name node[:glance][:service_tenant_name]
+  tenant_description "Service Tenant"
+  tenant_enabled "true" # Not required as this is the default
+  action :create_tenant
+end
+
+# Register Service User
+keystone_register "Register Service User" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name node[:glance][:service_tenant_name]
+  user_name node[:glance][:service_user]
+  user_pass node[:glance][:service_pass]
+  user_enabled "true" # Not required as this is the default
+  action :create_user
+end
+
+## Grant Admin role to Service User for Service Tenant ##
+keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name node[:glance][:service_tenant_name]
+  user_name node[:glance][:service_user]
+  role_name node[:glance][:service_role]
+  action :grant_role
+end
+
 template "/etc/glance/glance-registry.conf" do
   source "glance-registry.conf.erb"
   owner "root"
@@ -87,7 +127,10 @@ template "/etc/glance/glance-registry.conf" do
     :db_name => node[:glance][:db],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
+    :admin_token => node[:keystone][:admin_token],
+    :service_tenant_name => node[:glance][:service_tenant_name],
+    :service_user => node[:glance][:service_user],
+    :service_pass => node[:glance][:service_pass]
   )
   notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
 end

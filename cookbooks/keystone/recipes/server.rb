@@ -106,83 +106,58 @@ keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
 
 ## Add openstack tenant ##
-
-execute "Keystone: add openstack tenant" do
-  command "#{keystone_cmd} tenant-create --name openstack --description openstack_tenant --enabled true"
-  action :run
-  not_if "#{keystone_cmd} tenant-list|grep openstack"
+keystone_register "Register 'openstack' Tenant" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name "openstack"
+  tenant_description "Default Tenant"
+  tenant_enabled "true" # Not required as this is the default
+  action :create_tenant
 end
-
 
 ## Add admin user ##
-
-bash "Keystone: add admin user" do
-  user "root"
-  code <<-EOH
-    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
-    if ! #{keystone_cmd} user-list ${TENANT_UUID}|grep admin; then
-        #{keystone_cmd} user-create --name admin --pass secrete --tenant_id ${TENANT_UUID} --enabled true
-    fi
-  EOH
+keystone_register "Register 'admin' User" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name "openstack"
+  user_name "admin"
+  user_pass "secrete"
+  user_enabled "true" # Not required as this is the default
+  action :create_user
 end
-
 
 ## Add Roles ##
-
-execute "Keystone: add admin role" do
-  command "#{keystone_cmd} role-create --name admin"
-  action :run
-  not_if "#{keystone_cmd} role-list |grep admin"
-end
-
-execute "Keystone: add Member role" do
-  command "#{keystone_cmd} role-create --name Member"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep Member"
-end
-
-execute "Keystone: add KeystoneAdmin role" do
-  command "#{keystone_cmd} role-create --name KeystoneAdmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep KeystoneAdmin"
-end
-
-execute "Keystone: add KeystoneServiceAdmin role" do
-  command "#{keystone_cmd} role-create --name KeystoneServiceAdmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep KeystoneServiceAdmin"
-end
-
-execute "Keystone: add sysadmin role" do
-  command "#{keystone_cmd} role-create --name sysadmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep sysadmin"
-end
-
-execute "Keystone: add netadmin role" do
-  command "#{keystone_cmd} role-create --name netadmin"
-  action :run
-  not_if "#{keystone_cmd} role-list | grep netadmin"
+node[:keystone][:roles].each do |role_key|
+  keystone_register "Register '#{role_key.to_s}' Role" do
+    auth_host node[:controller_ipaddress]
+    auth_port node[:keystone][:admin_port]
+    auth_protocol "http"
+    api_ver "/v2.0"
+    auth_token node[:keystone][:admin_token]
+    role_name role_key
+    action :create_role
+  end
 end
 
 
 ## Add Admin role to admin user ##
-
-# for keystone-2012.1~e4-0ubuntu2, this actually does nothing in the db
-bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>" do
-  user "root"
-  code <<-EOH
-    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
-    USER_UUID=$(#{keystone_cmd} user-list ${TENANT_UUID}|grep admin|awk '{print $2}')
-    ROLE_UUID=$(#{keystone_cmd} role-list|grep admin | head -1 |awk '{print $2}')
-    semaphore=/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore
-    if [ ! -e ${semaphore} ]; then
-        #{keystone_cmd} user-role-add --user ${USER_UUID} --role ${ROLE_UUID} --tenant_id ${TENANT_UUID}
-        touch ${semaphore}
-    fi
-  EOH
+keystone_register "Grant 'admin' Role to 'admin' User" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name "openstack"
+  user_name "admin"
+  role_name "admin"
+  action :grant_role
 end
-
 
 ## Add Services ##
 
