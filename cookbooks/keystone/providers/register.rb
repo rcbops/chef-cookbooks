@@ -269,7 +269,7 @@ action :grant_role do
     role_container = "roles"
     role_key = "name"
     role_path = "/#{new_resource.api_ver}/OS-KSADM/roles"
-    role_uuid, role_error = _find_id(http, path, headers, container, key, new_resource.role_name)
+    role_uuid, role_error = _find_id(http, role_path, headers, role_container, role_key, new_resource.role_name)
 
     # lookup roles assigned to user/tenant
     assigned_container = "roles"
