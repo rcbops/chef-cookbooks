@@ -258,18 +258,21 @@ action :grant_role do
     tenant_key = "name"
     tenant_path = "/#{new_resource.api_ver}/tenants"
     tenant_uuid, tenant_error = _find_id(http, tenant_path, headers, tenant_container, tenant_key, new_resource.tenant_name)
+    Chef::Log.error("There was an error looking up Tenant '#{new_resource.tenant_name}'") if tenant_error
 
     # lookup user_uuid
     user_container = "users"
     user_key = "name"
     user_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users"
     user_uuid, user_error = _find_id(http, user_path, headers, user_container, user_key, new_resource.user_name)
+    Chef::Log.error("There was an error looking up User '#{new_resource.user_name}'") if user_error
 
     # lookup role_uuid
     role_container = "roles"
     role_key = "name"
     role_path = "/#{new_resource.api_ver}/OS-KSADM/roles"
     role_uuid, role_error = _find_id(http, role_path, headers, role_container, role_key, new_resource.role_name)
+    Chef::Log.error("There was an error looking up Role '#{new_resource.role_name}'") if role_error
 
     Chef::Log.debug("Found Tenant UUID: #{tenant_uuid}")
     Chef::Log.debug("Found User UUID: #{user_uuid}")
@@ -280,6 +283,7 @@ action :grant_role do
     assigned_key = "name"
     assigned_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles"
     assigned_role_uuid, assigned_error = _find_id(http, assigned_path, headers, assigned_container, assigned_key, new_resource.role_name)
+    Chef::Log.error("There was an error looking up Assigned Role '#{new_resource.role_name}' for User '#{new_resource.user_name}' and Tenant '#{new_resource.tenant_name}'") if assigned_error
 
     error = (tenant_error or user_error or role_error or assigned_error)
     unless role_uuid == assigned_role_uuid or error
@@ -299,6 +303,7 @@ action :grant_role do
         end
     else
         Chef::Log.info("Role '#{new_resource.role_name}' already exists.. Not granting.")
+        Chef::Log.error("There was an error looking up '#{new_resource.role_name}'") if error
         new_resource.updated_by_last_action(false)
     end
 end
