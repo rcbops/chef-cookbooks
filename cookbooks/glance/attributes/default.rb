@@ -8,6 +8,7 @@ default[:glance][:images] = [ "tty", "natty" ]
 default[:glance][:service_tenant_name] = "service"
 default[:glance][:service_user] = "glance"
 default[:glance][:service_pass] = "vARxre7K"
+default[:glance][:service_role] = "admin"
 
 default[:image][:oneiric] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.10-server-uec-amd64-multinic.tar.gz"
 default[:image][:natty] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11.04-server-uec-amd64-multinic.tar.gz"
