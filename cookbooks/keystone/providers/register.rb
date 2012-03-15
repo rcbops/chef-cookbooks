@@ -286,7 +286,8 @@ action :grant_role do
         # Construct the extension path
         path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles/OS-KSADM/#{role_uuid}"
 
-        resp, data = http.send_request('PUT', path, headers)
+        # needs a '' for the body, or it throws a 500
+        resp, data = http.send_request('PUT', path, '', headers)
         if resp.is_a?(Net::HTTPOK)
             Chef::Log.info("Granted Role '#{new_resource.role_name}' to User '#{new_resource.user_name}' in Tenant '#{new_resource.tenant_name}'")
             new_resource.updated_by_last_action(true)

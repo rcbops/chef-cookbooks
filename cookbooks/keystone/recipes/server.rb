@@ -153,8 +153,8 @@ keystone_register "Grant 'admin' Role to 'admin' User" do
   auth_protocol "http"
   api_ver "/v2.0"
   auth_token node[:keystone][:admin_token]
-  user_name "admin"
   tenant_name "openstack"
+  user_name "admin"
   role_name "admin"
   action :grant_role
 end
