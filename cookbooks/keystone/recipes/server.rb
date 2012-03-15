@@ -106,26 +106,31 @@ keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
 
 ## Add openstack tenant ##
-
-execute "Keystone: add openstack tenant" do
-  command "#{keystone_cmd} tenant-create --name openstack --description openstack_tenant --enabled true"
-  action :run
-  not_if "#{keystone_cmd} tenant-list|grep openstack"
+keystone_register "Register 'openstack' Tenant" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name "openstack"
+  tenant_description "Default Tenant"
+  tenant_enabled "true" # Not required as this is the default
+  action :create_tenant
 end
-
 
 ## Add admin user ##
-
-bash "Keystone: add admin user" do
-  user "root"
-  code <<-EOH
-    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
-    if ! #{keystone_cmd} user-list ${TENANT_UUID}|grep admin; then
-        #{keystone_cmd} user-create --name admin --pass secrete --tenant_id ${TENANT_UUID} --enabled true
-    fi
-  EOH
+keystone_register "Register 'admin' User" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name "openstack"
+  user_name "admin"
+  user_pass "secrete"
+  user_enabled "true" # Not required as this is the default
+  action :create_user
 end
-
 
 ## Add Roles ##
 node[:keystone][:roles].each do |role_key|
