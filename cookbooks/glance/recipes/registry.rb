@@ -101,6 +101,19 @@ keystone_register "Register Service User" do
   action :create_user
 end
 
+## Grant Admin role to Service User for Service Tenant ##
+keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  tenant_name node[:glance][:service_tenant_name]
+  user_name node[:glance][:service_user]
+  role_name node[:glance][:service_role]
+  action :grant_role
+end
+
 template "/etc/glance/glance-registry.conf" do
   source "glance-registry.conf.erb"
   owner "root"
