@@ -275,6 +275,10 @@ action :grant_role do
     assigned_container = "roles"
     assigned_key = "name"
     assigned_path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles"
+    Chef::Log.info("Tenant UUID: #{tenant_uuid}")
+    Chef::Log.info("User UUID: #{user_uuid}")
+    Chef::Log.info("Role UUID: #{role_uuid}")
+    Chef::Log.info("Assigned Roles Path: #{assigned_path}")
     assigned_role_uuid, assigned_error = _find_id(http, assigned_path, headers, assigned_container, assigned_key, new_resource.role_name)
 
     error = (tenant_error or user_error or role_error or assigned_error)
