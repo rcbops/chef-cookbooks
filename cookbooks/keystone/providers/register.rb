@@ -253,11 +253,11 @@ action :grant_role do
     # Build out the required header info
     headers = _build_headers(new_resource.auth_token)
 
-    # lookup tennant_uuid
+    # lookup tenant_uuid
     tenant_container = "tenants"
     tenant_key = "name"
     tenant_path = '/#{new_resource.api_ver}/tenants'
-    tennant_uuid, tenant_error = _find_id(http, tenant_path, headers, tenant_container, tenant_key, new_resource.tenant_name)
+    tenant_uuid, tenant_error = _find_id(http, tenant_path, headers, tenant_container, tenant_key, new_resource.tenant_name)
 
     # lookup user_uuid
     user_container = "users"
