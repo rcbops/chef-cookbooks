@@ -117,7 +117,7 @@ action :create_tenant do
     path = "/#{new_resource.api_ver}/tenants"
 
     # See if the service exists yet
-    tenant_uuid, error = _find_tenant_id(http, path, headers, new_resource.service_type)
+    tenant_uuid, error = _find_tenant_id(http, path, headers, new_resource.tenant_name)
     unless tenant_uuid
         # Service does not exist yet
         payload = _build_tenant_object(new_resource.tenant_name, new_resource.service_description, new_resource.tenant_enabled)
@@ -214,7 +214,7 @@ action :create_user do
             end
         end
         if user_exists
-            Chef::Log.error("User '#{new_resource.user_name}' already exists for tenant '#{new_resource.tenant_name}'")
+            Chef::Log.info("User '#{new_resource.user_name}' already exists for tenant '#{new_resource.tenant_name}'")
             new_resource.updated_by_last_action(false)
         else
             payload = _build_user_object(
