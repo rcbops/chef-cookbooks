@@ -298,7 +298,7 @@ action :grant_role do
             new_resource.updated_by_last_action(false)
         end
     else
-        Chef::Log.info("Role '#{new_resource.role_name}' already exists.. Not granting.") if error
+        Chef::Log.info("Role '#{new_resource.role_name}' already exists.. Not granting.")
         new_resource.updated_by_last_action(false)
     end
 end
