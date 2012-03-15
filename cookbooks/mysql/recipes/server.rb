@@ -138,3 +138,12 @@ execute "mysql-install-privileges" do
   action :nothing
   subscribes :run, resources("template[#{grants_path}]"), :immediately
 end
+
+template "/root/.my.cnf" do
+  source "dotmycnf.erb"
+  owner "root"
+  group "root"
+  mode "0600"
+  not_if "test -f /root/.my.cnf"
+  variables :rootpasswd => node[:mysql][:server_root_password]
+end
