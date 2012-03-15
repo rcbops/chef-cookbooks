@@ -142,22 +142,17 @@ end
 
 
 ## Add Admin role to admin user ##
-
-# for keystone-2012.1~e4-0ubuntu2, this actually does nothing in the db
-bash "Keystone: user-role-add --user admin --role admin --tenant <openstack uuid>" do
-  user "root"
-  code <<-EOH
-    TENANT_UUID=$(#{keystone_cmd} tenant-list|grep openstack|awk '{print $2}')
-    USER_UUID=$(#{keystone_cmd} user-list ${TENANT_UUID}|grep admin|awk '{print $2}')
-    ROLE_UUID=$(#{keystone_cmd} role-list|grep admin | head -1 |awk '{print $2}')
-    semaphore=/var/lib/keystone/nice_to_see_we_are_still_not_testing_the_cli.semaphore
-    if [ ! -e ${semaphore} ]; then
-        #{keystone_cmd} user-role-add --user ${USER_UUID} --role ${ROLE_UUID} --tenant_id ${TENANT_UUID}
-        touch ${semaphore}
-    fi
-  EOH
+keystone_register "Grant 'admin' Role to 'admin' User" do
+  auth_host node[:controller_ipaddress]
+  auth_port node[:keystone][:admin_port]
+  auth_protocol "http"
+  api_ver "/v2.0"
+  auth_token node[:keystone][:admin_token]
+  user_name "admin"
+  tenant_name "openstack"
+  role_name "admin"
+  action :grant_role
 end
-
 
 ## Add Services ##
 
