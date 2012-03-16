@@ -19,7 +19,7 @@ action :create_service do
     unless service_uuid
         # Service does not exist yet
         payload = _build_service_object(new_resource.service_type, new_resource.service_name, new_resource.service_description)
-        resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+        resp = http.send_request('POST', path, JSON.generate(payload), headers)
         if resp.is_a?(Net::HTTPOK)
             Chef::Log.info("Created service '#{new_resource.service_name}'")
             new_resource.updated_by_last_action(true)
@@ -61,10 +61,10 @@ action :create_endpoint do
     end
 
     # Make sure this endpoint does not already exist
-    resp, data = http.request_get(path, headers)
+    resp = http.request_get(path, headers)
     if resp.is_a?(Net::HTTPOK)
         endpoint_exists = false
-        data = JSON.parse(data)
+        data = JSON.parse(resp.body)
         data['endpoints'].each do |endpoint|
             if endpoint['service_id'] == service_uuid
                 # Match found
@@ -82,7 +82,7 @@ action :create_endpoint do
                       new_resource.endpoint_publicurl,
                       new_resource.endpoint_internalurl,
                       new_resource.endpoint_adminurl)
-            resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+            resp = http.send_request('POST', path, JSON.generate(payload), headers)
             if resp.is_a?(Net::HTTPOK)
                 Chef::Log.info("Created endpoint for service type '#{new_resource.service_type}'")
                 new_resource.updated_by_last_action(true)
@@ -121,7 +121,7 @@ action :create_tenant do
     unless tenant_uuid
         # Service does not exist yet
         payload = _build_tenant_object(new_resource.tenant_name, new_resource.service_description, new_resource.tenant_enabled)
-        resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+        resp = http.send_request('POST', path, JSON.generate(payload), headers)
         if resp.is_a?(Net::HTTPOK)
             Chef::Log.info("Created tenant '#{new_resource.tenant_name}'")
             new_resource.updated_by_last_action(true)
@@ -161,7 +161,7 @@ action :create_role do
     unless role_uuid
         # role does not exist yet
         payload = _build_role_obj(new_resource.role_name)
-        resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+        resp = http.send_request('POST', path, JSON.generate(payload), headers)
         if resp.is_a?(Net::HTTPOK)
             Chef::Log.info("Created Role '#{new_resource.role_name}'")
             new_resource.updated_by_last_action(true)
@@ -202,10 +202,10 @@ action :create_user do
     path = "/#{new_resource.api_ver}/users"
 
     # Make sure this endpoint does not already exist
-    resp, data = http.request_get("#{new_resource.api_ver}/tenants/#{tenant_uuid}/users", headers)
+    resp = http.request_get("#{new_resource.api_ver}/tenants/#{tenant_uuid}/users", headers)
     if resp.is_a?(Net::HTTPOK)
         user_exists = false
-        data = JSON.parse(data)
+        data = JSON.parse(resp.body)
         data['users'].each do |endpoint|
             if endpoint['name'] == new_resource.user_name
                 # Match found
@@ -222,7 +222,7 @@ action :create_user do
                       new_resource.user_name,
                       new_resource.user_pass,
                       new_resource.user_enabled)
-            resp, data = http.send_request('POST', path, JSON.generate(payload), headers)
+            resp = http.send_request('POST', path, JSON.generate(payload), headers)
             if resp.is_a?(Net::HTTPOK)
                 Chef::Log.info("Created user '#{new_resource.user_name}' for tenant '#{new_resource.tenant_name}'")
                 new_resource.updated_by_last_action(true)
@@ -291,7 +291,7 @@ action :grant_role do
         path = "/#{new_resource.api_ver}/tenants/#{tenant_uuid}/users/#{user_uuid}/roles/OS-KSADM/#{role_uuid}"
 
         # needs a '' for the body, or it throws a 500
-        resp, data = http.send_request('PUT', path, '', headers)
+        resp = http.send_request('PUT', path, '', headers)
         if resp.is_a?(Net::HTTPOK)
             Chef::Log.info("Granted Role '#{new_resource.role_name}' to User '#{new_resource.user_name}' in Tenant '#{new_resource.tenant_name}'")
             new_resource.updated_by_last_action(true)
@@ -312,9 +312,9 @@ private
 def _find_service_id(http, path, headers, service_type)
     service_uuid = nil
     error = false
-    resp, data = http.request_get(path, headers)
+    resp = http.request_get(path, headers)
     if resp.is_a?(Net::HTTPOK)
-        data = JSON.parse(data)
+        data = JSON.parse(resp.body)
         data['OS-KSADM:services'].each do |svc|
             service_uuid = svc['id'] if svc['type'] == service_type
             break if service_uuid
@@ -333,9 +333,9 @@ private
 def _find_id(http, path, headers, container, key, match_value)
     uuid = nil
     error = false
-    resp, data = http.request_get(path, headers)
+    resp = http.request_get(path, headers)
     if resp.is_a?(Net::HTTPOK)
-        data = JSON.parse(data)
+        data = JSON.parse(resp.body)
         data[container].each do |obj|
             uuid = obj['id'] if obj[key] == match_value
             break if uuid
@@ -354,9 +354,9 @@ private
 def _find_tenant_id(http, path, headers, tenant_name)
     tenant_uuid = nil
     error = false
-    resp, data = http.request_get(path, headers)
+    resp = http.request_get(path, headers)
     if resp.is_a?(Net::HTTPOK)
-        data = JSON.parse(data)
+        data = JSON.parse(resp.body)
         data['tenants'].each do |tenant|
             tenant_uuid = tenant['id'] if tenant['name'] == tenant_name
             break if tenant_uuid
