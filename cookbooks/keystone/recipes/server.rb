@@ -19,6 +19,20 @@
 
 include_recipe "mysql::client"
 
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  mysql_python_package = "MySQL-python"
+  keystone_package = "openstack-keystone"
+  keystone_service = keystone_package
+else
+  # All Others (right now Debian and Ubuntu)
+  mysql_python_package="python-mysqldb"
+  keystone_package = "keystone"
+  keystone_service = keystone_package
+end
+
+
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
   connection connection_info
@@ -45,16 +59,18 @@ end
 # https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/931236
 ################
 
-package "python-mysqldb" do
+package mysql_python_package do
   action :install
 end
 
-package "keystone" do
+package keystone_package do
   action :upgrade
-  options "-o Dpkg::Options::='--force-confold' --force-yes"
+  if platform?(%w{debian ubuntu})
+    options "-o Dpkg::Options::='--force-confold' --force-yes"
+  end
 end
 
-service "keystone" do
+service keystone_service do
   supports :status => true, :restart => true
   action [ :enable, :start ]
 end
@@ -92,7 +108,7 @@ template "/etc/keystone/logging.conf" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "keystone"), :immediately
+  notifies :restart, resources(:service => keystone_service), :immediately
 end
 
 execute "Keystone: sleep" do
