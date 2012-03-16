@@ -20,7 +20,7 @@
 include_recipe "mysql::server"
 include_recipe "openssh::default"
 
-include_recipe "openstack::rabbitmq"
+include_recipe "rabbitmq::default"
 include_recipe "keystone::server"
 include_recipe "glance::registry"
 include_recipe "glance::api"
@@ -28,7 +28,3 @@ include_recipe "openstack::nova-setup"
 include_recipe "openstack::scheduler"
 include_recipe "openstack::api"
 include_recipe "openstack::vncproxy"
-
-# https://bugs.launchpad.net/ubuntu/+source/keystone/+bug/934064
-# Can not install keystone and dash on the same box at the moment
-# include_recipe "openstack::dashboard"
