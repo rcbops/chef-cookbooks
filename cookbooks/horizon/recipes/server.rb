@@ -85,6 +85,18 @@ if platform?("debian", "ubuntu") then
   apache_site "openstack-dashboard"
 end
 
+# This is a dirty hack to deal with https://bugs.launchpad.net/nova/+bug/932468
+directory "/var/www/.novaclient" do
+  owner node[:apache][:user]
+  group node[:apache][:group]
+  mode "0755"
+  action :create
+end
+
+# TODO(shep)
+# Horizon has a forced dependency on their being a volume service endpoint in your keystone catalog
+# https://answers.launchpad.net/horizon/+question/189551
+
 service "apache2" do
    action :restart
 end
