@@ -3,9 +3,9 @@ description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
   "recipe[mysql::server]",
-  "recipe[openstack::rabbitmq]",
+  "recipe[rabbitmq]",
   "recipe[keystone::server]",
-  "recipe[glance::default]",
+  "recipe[glance]",
   "recipe[openstack::nova-setup]",
   "recipe[openstack::scheduler]",
   "recipe[openstack::api]",
