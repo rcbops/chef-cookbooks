@@ -1,6 +1,6 @@
 name "single-controller"
 description "Nova Controller (non-HA)"
-run_list (
+run_list(
   "role[base]",
   "recipe[mysql::server]",
   "recipe[openstack::rabbitmq]",
