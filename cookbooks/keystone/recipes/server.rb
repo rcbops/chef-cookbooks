@@ -25,11 +25,13 @@ if platform?(%w{fedora})
   mysql_python_package = "MySQL-python"
   keystone_package = "openstack-keystone"
   keystone_service = keystone_package
+  keystone_package_options = ""
 else
   # All Others (right now Debian and Ubuntu)
   mysql_python_package="python-mysqldb"
   keystone_package = "keystone"
   keystone_service = keystone_package
+  keystone_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
 
@@ -65,9 +67,7 @@ end
 
 package keystone_package do
   action :upgrade
-  if platform?(%w{debian ubuntu})
-    options "-o Dpkg::Options::='--force-confold' --force-yes"
-  end
+  options keystone_package_options
 end
 
 service keystone_service do
