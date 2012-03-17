@@ -25,18 +25,30 @@ include_recipe "openstack::network"
 #	action :install
 #end
 
-if node[:virt_type] == "kvm"
-  compute_package = "nova-compute-kvm"
-elsif node[:virt_type] == "qemu"
-  compute_package = "nova-compute-qemu"
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  nova_compute_package = "openstack-nova"
+  nova_compute_service = "openstack-nova-compute"
+  nova_compute_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  nova_compute_package = "nova-compute"
+  nova_compute_service = nova_compute_package
+  nova_compute_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+  if node[:virt_type] == "kvm"
+    nova_compute_package = "nova-compute-kvm"
+  elsif node[:virt_type] == "qemu"
+    nova_compute_package = "nova-compute-qemu"
+  end
 end
 
-package compute_package do
+package nova_compute_package do
   action :upgrade
   options "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
-service "nova-compute" do
+service nova_compute_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed

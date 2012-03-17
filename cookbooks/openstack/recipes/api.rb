@@ -19,16 +19,36 @@
 
 include_recipe "openstack::nova-common"
 
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  nova_api_package = "openstack-nova"
+  nova_api_service = "openstack-nova-api"
+  nova_api_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  nova_api_package = "nova-api"
+  nova_api_service = nova_api_package
+  nova_api_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
+directory "/var/lock/nova" do
+    owner "nova"
+    group "nova"
+    mode "0755"
+    action :create
+end
+
 package "python-keystone" do
   action :upgrade
 end
 
-package "nova-api" do
+package nova_api_package do
   action :upgrade
-  options "-o Dpkg::Options::='--force-confold' --force-yes"
+  options nova_api_package_options
 end
 
-service "nova-api" do
+service nova_api_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
@@ -46,5 +66,5 @@ template "/etc/nova/api-paste.ini" do
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
   )
-  notifies :restart, resources(:service => "nova-api"), :immediately
+  notifies :restart, resources(:service => nova_api_service), :immediately
 end
