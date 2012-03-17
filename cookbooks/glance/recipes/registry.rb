@@ -19,6 +19,21 @@
 
 include_recipe "mysql::client"
 
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  mysql_python_package = "MySQL-python"
+  glance_package = "openstack-glance"
+  glance_registry_service = "openstack-glance-registry"
+  glance_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  mysql_python_package="python-mysqldb"
+  glance_package = "glance"
+  glance_registry_service = "glance-registry"
+  glance_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
   connection connection_info
@@ -45,7 +60,7 @@ package "curl" do
   action :install
 end
 
-package "python-mysqldb" do
+package mysql_python_package do
   action :install
 end
 
@@ -55,11 +70,11 @@ end
 #  action :install
 #end
 
-package "glance" do
+package glance_package do
   action :upgrade
 end
 
-service "glance-registry" do
+service glance_registry_service do
   supports :status => true, :restart => true
   action :enable
 end
@@ -67,7 +82,7 @@ end
 execute "glance-manage db_sync" do
         command "glance-manage db_sync"
         action :nothing
-        notifies :restart, resources(:service => "glance-registry"), :immediately
+        notifies :restart, resources(:service => glance_registry_service), :immediately
 end
 
 file "/var/lib/glance/glance.sqlite" do
@@ -149,5 +164,5 @@ template "/etc/glance/glance-registry-paste.ini" do
     :service_user => node[:glance][:service_user],
     :service_pass => node[:glance][:service_pass]
   )
-  notifies :restart, resources(:service => "glance-registry"), :immediately
+  notifies :restart, resources(:service => glance_registry_service), :immediately
 end
