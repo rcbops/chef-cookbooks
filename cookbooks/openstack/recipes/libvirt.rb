@@ -28,7 +28,7 @@ if platform?(%w{fedora})
     code <<-EOH
         set -e
         set -x
-        groupadd libvirtd
+        groupadd -f libvirtd
         usermod -G libvirtd nova
     EOH
   end

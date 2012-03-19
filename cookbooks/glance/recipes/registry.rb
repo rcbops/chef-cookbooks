@@ -50,9 +50,9 @@ if platform?(%w{fedora})
     code <<-EOH
         set -e
         set -x
-        rpm -UFvh /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm
+        yum -y install /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm || : 
         service openstack-glance-registry restart
-        chown glance.glance /var/log/glance/registry.log
+        #chown glance.glance /var/log/glance/registry.log
     EOH
   end
 end
