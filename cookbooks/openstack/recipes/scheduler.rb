@@ -19,11 +19,24 @@
 
 include_recipe "openstack::nova-common"
 
-package "nova-scheduler" do
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  nova_scheduler_package = "openstack-nova"
+  nova_scheduler_service = "openstack-nova-scheduler"
+  nova_scheduler_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  nova_scheduler_package = "nova-scheduler"
+  nova_scheduler_service = nova_scheduler_package
+  nova_scheduler_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
+package nova_scheduler_package do
   action :upgrade
 end
 
-service "nova-scheduler" do
+service nova_scheduler_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed

@@ -1,15 +1,16 @@
 #
-# Cookbook Name:: memcache
-# Recipe:: default
+# Author:: Sean OMeara (<someara@opscode.com>)
+# Cookbook Name:: selinux
+# Recipe:: enforcing
 #
-# Copyright 2009, Example Com
+# Copyright 2011, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,19 +18,16 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::server"
-include_recipe "openssh::default"
+execute "enable selinux enforcement" do
+  not_if "getenforce | grep -qx 'Enforcing'"
+  command "setenforce 1"
+  action :run
+end
 
-include_recipe "rabbitmq::default"
-include_recipe "keystone::server"
-include_recipe "glance::registry"
-include_recipe "glance::api"
-include_recipe "openstack::nova-setup"
-include_recipe "openstack::scheduler"
-include_recipe "openstack::api"
-
-if platform?(%w{fedora})
-  # Fedora skipping vncproxy for right now
-else
-  include_recipe "openstack::vncproxy"
+template "/etc/selinux/config" do
+  source "sysconfig/selinux.erb"
+  variables(
+    :selinux => "enforcing",
+    :selinuxtype => "targeted"
+  )
 end

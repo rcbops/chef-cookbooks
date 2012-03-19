@@ -17,9 +17,21 @@
 # limitations under the License.
 #
 
-package "nova-common" do
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  nova_common_package = "openstack-nova"
+  nova_common_package_options = ""
+  include_recipe "selinux::disabled"
+else
+  # All Others (right now Debian and Ubuntu)
+  nova_common_package = "nova-common"
+  nova_common_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
+package nova_common_package do
   action :upgrade
-  options "-o Dpkg::Options::='--force-confold' --force-yes"
+  options options
 end
 
 template "/etc/nova/nova.conf" do
