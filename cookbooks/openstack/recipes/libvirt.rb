@@ -3,7 +3,38 @@
 # Recipe:: libvirt
 #
 
-service "libvirt-bin" do
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  libvirt_package = "libvirt"
+  libvirt_service = "libvirtd"
+  libvirt_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  libvirt_package = "libvirt-bin"
+  libvirt_service = libvirt_package
+  libvirt_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
+package libvirt_package do
+  action :install
+end
+
+if platform?(%w{fedora})
+  # oh fedora...
+  bash "create libvirtd group" do
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+        set -e
+        set -x
+        groupadd libvirtd
+        usermod -G libvirtd nova
+    EOH
+  end
+end
+
+service libvirt_service do
   supports :status => true, :restart => true
   action :enable
 end
@@ -68,7 +99,7 @@ template "/etc/libvirt/libvirtd.conf" do
   variables(
     :auth_tcp => node[:libvirt][:auth_tcp]
   )
-  notifies :restart, resources(:service => "libvirt-bin"), :immediately
+  notifies :restart, resources(:service => libvirt_service), :immediately
 end
 
 template "/etc/default/libvirt-bin" do
@@ -76,6 +107,6 @@ template "/etc/default/libvirt-bin" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "libvirt-bin"), :immediately
+  notifies :restart, resources(:service => libvirt_service), :immediately
 end
 
