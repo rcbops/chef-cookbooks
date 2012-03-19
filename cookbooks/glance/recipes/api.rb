@@ -17,6 +17,21 @@
 # limitations under the License.
 #
 
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  mysql_python_package = "MySQL-python"
+  glance_package = "openstack-glance"
+  glance_api_service = "openstack-glance-api"
+  glance_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  mysql_python_package="python-mysqldb"
+  glance_package = "glance"
+  glance_api_service = "glance-api"
+  glance_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+end
+
 package "curl" do
   action :install
 end
@@ -27,11 +42,33 @@ end
 #  action :install
 #end
 
-package "glance" do
+if platform?(%w{fedora})
+  # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.  
+  remote_file "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  remote_file "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  bash "install glance-api" do
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+        set -e
+        set -x
+        rpm -UFvh /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm
+        service openstack-glance-api restart
+    EOH
+  end
+end
+
+package glance_package do
   action :upgrade
 end
 
-service "glance-api" do
+service glance_api_service do
   supports :status => true, :restart => true
   action :enable
 end
@@ -49,7 +86,7 @@ template "/etc/glance/glance-api.conf" do
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
   )
-  notifies :restart, resources(:service => "glance-api"), :immediately
+  notifies :restart, resources(:service => glance_api_service), :immediately
 end
 
 template "/etc/glance/glance-api-paste.ini" do
@@ -66,7 +103,7 @@ template "/etc/glance/glance-api-paste.ini" do
     :service_user => node[:glance][:service_user],
     :service_pass => node[:glance][:service_pass]
   )
-  notifies :restart, resources(:service => "glance-api"), :immediately
+  notifies :restart, resources(:service => glance_api_service), :immediately
 end
 
 template "/etc/glance/glance-scrubber.conf" do
@@ -116,7 +153,9 @@ end
 
 # This is a dirty hack for now.. NEED TO BE FIXED
 keystone_auth_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
-extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
+#extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
+# new format for renamed command lines
+extra_opts = "--os_username=admin --os_password=secrete --os_tenant=openstack --os_auth_url=#{keystone_auth_url}"
 
 node[:glance][:images].each do |img|
   bash "default image setup for #{img.to_s}" do
