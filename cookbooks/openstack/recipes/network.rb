@@ -19,11 +19,25 @@
 
 include_recipe "openstack::nova-common"
 
-package "nova-network" do
-  action :upgrade
+# Distribution specific settings go here
+if platform?(%w{fedora})
+  # Fedora
+  nova_network_package = "openstack-nova"
+  nova_network_service = "openstack-nova-network"
+  nova_network_package_options = ""
+else
+  # All Others (right now Debian and Ubuntu)
+  nova_network_package = "nova-network"
+  nova_network_service = nova_network_package
+  nova_network_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
-service "nova-network" do
+package nova_network_package do
+  action :upgrade
+  options nova_network_package_options
+end
+
+service nova_network_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
