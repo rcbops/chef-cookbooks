@@ -34,6 +34,30 @@ else
   glance_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
+if platform?(%w{fedora})
+  # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.  
+  remote_file "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  remote_file "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  bash "install glance-registry" do
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+        set -e
+        set -x
+        rpm -UFvh /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm
+        service openstack-glance-registry restart
+        chown glance.glance /var/log/glance/registry.log
+    EOH
+  end
+end
+
+
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
   connection connection_info
@@ -69,6 +93,27 @@ end
 #package "python-dateutil" do
 #  action :install
 #end
+
+if platform?(%w{fedora})
+  # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.
+  remote_file "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  remote_file "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  bash "install glance-api" do
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+        set -e
+        set -x
+        rpm -UFvh /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm
+    EOH
+ end
+end
 
 package glance_package do
   action :upgrade
