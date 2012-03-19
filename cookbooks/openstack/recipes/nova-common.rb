@@ -22,6 +22,7 @@ if platform?(%w{fedora})
   # Fedora
   nova_common_package = "openstack-nova"
   nova_common_package_options = ""
+  include_recipe "selinux::disabled"
 else
   # All Others (right now Debian and Ubuntu)
   nova_common_package = "nova-common"
