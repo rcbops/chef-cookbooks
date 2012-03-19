@@ -34,6 +34,28 @@ else
   keystone_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
+if platform?(%w{fedora})
+  # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.
+  remote_file "/tmp/openstack-keystone-2012.1-0.11.erc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/openstack-keystone-2012.1-0.11.erc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+  remote_file "/tmp/python-keystone-2012.1-0.11.erc1.fc17.noarch.rpm" do
+    source "http://www.breu.org/filedrop/nova/python-keystone-2012.1-0.11.erc1.fc17.noarch.rpm"
+    action :create_if_missing
+  end
+
+  bash "install keystone" do
+    cwd "/tmp"
+    user "root"
+    code <<-EOH
+        set -e
+        set -x
+        rpm -UFvh /tmp/openstack-keystone-2012.1-0.11.erc1.fc17.noarch.rpm /tmp/python-keystone-2012.1-0.11.erc1.fc17.noarch.rpm
+        service openstack-keystone restart
+    EOH
+  end
+end
 
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
