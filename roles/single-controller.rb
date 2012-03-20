@@ -9,6 +9,7 @@ run_list(
   "recipe[nova::nova-setup]",
   "recipe[nova::scheduler]",
   "recipe[nova::api]",
+  "recipe[nova::volume]",
   "recipe[horizon::server]"
 )
 
