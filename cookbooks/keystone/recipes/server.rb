@@ -51,7 +51,7 @@ if platform?(%w{fedora})
     code <<-EOH
         set -e
         set -x
-        rpm -UFvh /tmp/openstack-keystone-2012.1-0.11.erc1.fc17.noarch.rpm /tmp/python-keystone-2012.1-0.11.erc1.fc17.noarch.rpm
+        yum -y install /tmp/openstack-keystone-2012.1-0.11.erc1.fc17.noarch.rpm /tmp/python-keystone-2012.1-0.11.erc1.fc17.noarch.rpm || :
         service openstack-keystone restart
     EOH
   end
