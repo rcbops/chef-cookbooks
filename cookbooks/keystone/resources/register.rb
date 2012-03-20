@@ -8,7 +8,7 @@ attribute :api_ver, :kind_of => String, :default => "/v2.0"
 attribute :auth_token, :kind_of => String
 
 # Used by both :create_service and :create_endpoint
-attribute :service_type, :kind_of => String, :equal_to => [ "image", "identity", "compute", "storage", "ec2" ]
+attribute :service_type, :kind_of => String, :equal_to => [ "image", "identity", "compute", "storage", "ec2", "volume" ]
 
 # :create_service specific attributes
 attribute :service_name, :kind_of => String
