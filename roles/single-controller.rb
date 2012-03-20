@@ -6,9 +6,9 @@ run_list(
   "recipe[rabbitmq]",
   "recipe[keystone::server]",
   "recipe[glance]",
-  "recipe[openstack::nova-setup]",
-  "recipe[openstack::scheduler]",
-  "recipe[openstack::api]",
+  "recipe[nova::nova-setup]",
+  "recipe[nova::scheduler]",
+  "recipe[nova::api]",
   "recipe[horizon::server]"
 )
 

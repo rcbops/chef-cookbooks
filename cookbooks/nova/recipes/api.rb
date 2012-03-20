@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
+include_recipe "nova::nova-common"
 
 # Distribution specific settings go here
 if platform?(%w{fedora})
