@@ -8,9 +8,9 @@
 #
 include_recipe "apache2"
 include_recipe "apache2::mod_wsgi"
-# include_recipe "openstack::apt"
-# include_recipe "openstack::mysql"
-# include_recipe "openstack::api"
+# include_recipe "nova::apt"
+# include_recipe "nova::mysql"
+# include_recipe "nova::api"
 
 include_recipe "mysql::client"
 
