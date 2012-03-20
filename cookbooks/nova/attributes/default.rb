@@ -1,4 +1,4 @@
-default[:mysql][:root_pass] = "secrete"
+ default[:mysql][:root_pass] = "secrete"
 
 default[:nova][:db] = "nova"
 default[:nova][:db_user] = "nova"
@@ -10,6 +10,11 @@ default[:glance][:db_passwd] = "glance"
 default[:glance][:api_port] = "9292"
 default[:glance][:registry_port] = "9191"
 default[:glance][:images] = [ "tty", "natty" ]
+
+default[:volume][:api_port] = 8776
+default[:volume][:adminURL] = "http://#{default[:controller_ipaddress]}:#{default[:volume][:api_port]}/v1"
+default[:volume][:internalURL] = default[:volume][:adminURL]
+default[:volume][:publicURL] = default[:volume][:adminURL]
 
 default[:keystone][:db] = "keystone"
 default[:keystone][:db_user] = "keystone"
