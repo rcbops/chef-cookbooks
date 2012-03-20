@@ -17,41 +17,28 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
-include_recipe "openstack::api"
-include_recipe "openstack::network"
-
-# package "mysql-client" do
-#	action :install
-#end
+include_recipe "nova::nova-common"
 
 # Distribution specific settings go here
 if platform?(%w{fedora})
   # Fedora
-  nova_compute_package = "openstack-nova"
-  nova_compute_service = "openstack-nova-compute"
-  nova_compute_package_options = ""
+  nova_network_package = "openstack-nova"
+  nova_network_service = "openstack-nova-network"
+  nova_network_package_options = ""
 else
   # All Others (right now Debian and Ubuntu)
-  nova_compute_package = "nova-compute"
-  nova_compute_service = nova_compute_package
-  nova_compute_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
-  if node[:virt_type] == "kvm"
-    nova_compute_package = "nova-compute-kvm"
-  elsif node[:virt_type] == "qemu"
-    nova_compute_package = "nova-compute-qemu"
-  end
+  nova_network_package = "nova-network"
+  nova_network_service = nova_network_package
+  nova_network_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
-package nova_compute_package do
+package nova_network_package do
   action :upgrade
-  options "-o Dpkg::Options::='--force-confold' --force-yes"
+  options nova_network_package_options
 end
 
-service nova_compute_service do
+service nova_network_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
 end
-
-include_recipe "openstack::libvirt"
