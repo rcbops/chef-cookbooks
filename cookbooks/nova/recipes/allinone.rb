@@ -17,4 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::allinone"
+include_recipe "nova::apt"
+
+include_recipe "nova::controller"
+include_recipe "nova::compute"
