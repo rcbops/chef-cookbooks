@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
+include_recipe "nova::nova-common"
 include_recipe "mysql::client"
 
 connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}

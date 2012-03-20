@@ -24,12 +24,12 @@ include_recipe "rabbitmq::default"
 include_recipe "keystone::server"
 include_recipe "glance::registry"
 include_recipe "glance::api"
-include_recipe "openstack::nova-setup"
-include_recipe "openstack::scheduler"
-include_recipe "openstack::api"
+include_recipe "nova::nova-setup"
+include_recipe "nova::scheduler"
+include_recipe "nova::api"
 
 if platform?(%w{fedora})
   # Fedora skipping vncproxy for right now
 else
-  include_recipe "openstack::vncproxy"
+  include_recipe "nova::vncproxy"
 end
