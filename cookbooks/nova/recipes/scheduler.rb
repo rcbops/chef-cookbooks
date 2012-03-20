@@ -17,27 +17,26 @@
 # limitations under the License.
 #
 
-include_recipe "openstack::nova-common"
+include_recipe "nova::nova-common"
 
 # Distribution specific settings go here
 if platform?(%w{fedora})
   # Fedora
-  nova_network_package = "openstack-nova"
-  nova_network_service = "openstack-nova-network"
-  nova_network_package_options = ""
+  nova_scheduler_package = "openstack-nova"
+  nova_scheduler_service = "openstack-nova-scheduler"
+  nova_scheduler_package_options = ""
 else
   # All Others (right now Debian and Ubuntu)
-  nova_network_package = "nova-network"
-  nova_network_service = nova_network_package
-  nova_network_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+  nova_scheduler_package = "nova-scheduler"
+  nova_scheduler_service = nova_scheduler_package
+  nova_scheduler_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
-package nova_network_package do
+package nova_scheduler_package do
   action :upgrade
-  options nova_network_package_options
 end
 
-service nova_network_service do
+service nova_scheduler_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
