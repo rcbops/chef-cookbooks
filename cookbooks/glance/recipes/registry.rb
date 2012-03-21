@@ -58,7 +58,7 @@ if platform?(%w{fedora})
 end
 
 
-connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:glance][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
   connection connection_info
   database_name node[:glance][:db]
@@ -185,6 +185,7 @@ template "/etc/glance/glance-registry.conf" do
     :passwd => node[:glance][:db_passwd],
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db],
+    :db_host => node[:glance][:db_host],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token],

@@ -21,7 +21,7 @@ backlog = 4096
 # SQLAlchemy connection string for the reference implementation
 # registry server. Any valid SQLAlchemy connection string is fine.
 # See: http://www.sqlalchemy.org/docs/05/reference/sqlalchemy/connections.html#sqlalchemy.create_engine
-sql_connection = mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
+sql_connection = mysql://<%= @user %>:<%= @passwd %>@<%= @db_host %>/<%= @db_name %>
 
 # Period in seconds after which SQLAlchemy should reestablish its connection
 # to the database.
