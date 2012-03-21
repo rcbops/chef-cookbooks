@@ -41,7 +41,7 @@ glance_api_servers=<%= @ip_address %>:<%= @api_port %>
 
 # COMPUTE
 compute_manager=nova.compute.manager.ComputeManager
-sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
+sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_host %>/<%= @db_name %>
 connection_type=libvirt
 libvirt_type=<%= @virt_type %>
 root_helper=sudo nova-rootwrap
