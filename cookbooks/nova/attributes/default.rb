@@ -1,9 +1,11 @@
- default[:mysql][:root_pass] = "secrete"
+default[:mysql][:root_pass] = "secrete"
 
 default[:nova][:db] = "nova"
 default[:nova][:db_user] = "nova"
 default[:nova][:db_passwd] = "nova"
+default[:nova][:db_host] = node[:controller_ipaddress]
 
+# TODO (cleanup this section)
 default[:glance][:db] = "glance"
 default[:glance][:db_user] = "glance"
 default[:glance][:db_passwd] = "glance"
@@ -16,6 +18,7 @@ default[:volume][:adminURL] = "http://#{default[:controller_ipaddress]}:#{defaul
 default[:volume][:internalURL] = default[:volume][:adminURL]
 default[:volume][:publicURL] = default[:volume][:adminURL]
 
+# TODO (cleanup this section)
 default[:keystone][:db] = "keystone"
 default[:keystone][:db_user] = "keystone"
 default[:keystone][:db_passwd] = "keystone"
@@ -25,6 +28,7 @@ default[:keystone][:service_port] = "5000"
 default[:keystone][:admin_port] = "35357"
 default[:keystone][:admin_token] = "999888777666"
 
+# TODO (cleanup this section)
 default[:dash][:db] = "dash"
 default[:dash][:db_user] = "dash"
 default[:dash][:db_passwd] = "dash"
