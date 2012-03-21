@@ -18,6 +18,7 @@
 #
 
 default['mysql']['bind_address']               = attribute?('cloud') ? cloud['local_ipv4'] : ipaddress
+default['mysql']['root_network_acl']          = "localhost"
 
 case node["platform"]
 when "centos", "redhat", "fedora", "suse", "scientific", "amazon"
