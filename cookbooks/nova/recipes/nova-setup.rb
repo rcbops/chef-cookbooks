@@ -20,7 +20,7 @@
 include_recipe "nova::nova-common"
 include_recipe "mysql::client"
 
-connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:nova][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create nova database" do
   connection connection_info
   database_name node[:nova][:db]
