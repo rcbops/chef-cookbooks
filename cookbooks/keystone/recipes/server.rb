@@ -57,7 +57,7 @@ if platform?(%w{fedora})
   end
 end
 
-connection_info = {:host => node[:controller_ip], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:keystone][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
   connection connection_info
   database_name node[:keystone][:db]
@@ -118,6 +118,7 @@ template "/etc/keystone/keystone.conf" do
             :passwd => node[:keystone][:db_passwd],
             :ip_address => node[:controller_ipaddress],
             :db_name => node[:keystone][:db],
+            :db_host => node[:keystone][:db_host],
             :service_port => node[:keystone][:service_port],
             :admin_port => node[:keystone][:admin_port],
             :admin_token => node[:keystone][:admin_token]
