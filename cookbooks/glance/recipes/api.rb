@@ -115,7 +115,8 @@ template "/etc/glance/glance-scrubber.conf" do
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
     :ip_address => node[:controller_ipaddress],
-    :db_name => node[:glance][:db]
+    :db_name => node[:glance][:db],
+    :db_host => node[:glance][:db_host]
   )
 end
 

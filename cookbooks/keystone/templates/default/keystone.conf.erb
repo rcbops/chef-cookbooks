@@ -17,7 +17,7 @@ use_syslog = False
 # syslog_log_facility = LOG_LOCAL0
 
 [sql]
-connection = mysql://<%= @user %>:<%= @passwd %>@<%= @ip_address %>/<%= @db_name %>
+connection = mysql://<%= @user %>:<%= @passwd %>@<%= @db_host %>/<%= @db_name %>
 idle_timeout = 200
 min_pool_size = 5
 max_pool_size = 10
