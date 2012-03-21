@@ -50,6 +50,7 @@ template "/etc/openstack-dashboard/local_settings.py" do
             :passwd => node[:horizon][:db_passwd],
             :ip_address => node[:controller_ipaddress],
             :db_name => node[:horizon][:db],
+            :db_host => node[:horizon][:db_host],
             :service_port => node[:identity][:service_port],
             :admin_port => node[:identity][:admin_port],
             :admin_token => node[:identity][:admin_token]
