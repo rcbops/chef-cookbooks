@@ -2,6 +2,7 @@
 
 # LOGS/STATE
 verbose=true
+auth_strategy=keystone
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 logdir=/var/log/nova
@@ -27,6 +28,7 @@ ec2_dmz_host=<%= @ip_address %>
 #--flat_network_dhcp_start=10.20.1.2
 #--public_interface=eth0
 force_dhcp_release=true
+send_arp_for_ha=True
 <% if @virt_type == "qemu" -%>
 libvirt_use_virtio_for_bridges=false
 <% else -%>
