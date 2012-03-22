@@ -33,7 +33,7 @@ else
 end
 
 package "curl" do
-  action :install
+  action :upgrade
 end
 
 # Supposedly Resolved
@@ -52,15 +52,13 @@ if platform?(%w{fedora})
     source "http://www.breu.org/filedrop/nova/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
     action :create_if_missing
   end
-  bash "install glance-api" do
-    cwd "/tmp"
-    user "root"
-    code <<-EOH
-        set -e
-        set -x
-        yum -y install /tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm /tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm || :
-        service openstack-glance-api restart
-    EOH
+  package "openstack-glance" do
+    source "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :install
+  end
+  package "python-glance" do
+    source "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
+    action :install
   end
 end
 
@@ -167,8 +165,8 @@ node[:glance][:images].each do |img|
       set -x
       mkdir -p images
 
-      curl #{node[:image][img.to_sym]} | tar -zx -C images/
-      image_name=$(basename #{node[:image][img]} .tar.gz)
+      curl #{node[:glance][:image][img.to_sym]} | tar -zx -C images/
+      image_name=$(basename #{node[:glance][:image][img]} .tar.gz)
 
       image_name=${image_name%-multinic}
 
