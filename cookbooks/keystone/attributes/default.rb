@@ -9,6 +9,8 @@ default[:keystone][:service_port] = "5000"
 default[:keystone][:admin_port] = "35357"
 default[:keystone][:admin_token] = "999888777666"
 
+default[:nova][:api_ipaddress] = node[:controller_ipaddress]
+
 default[:keystone][:roles] = [ "admin", "Member", "KeystoneAdmin", "KeystoneServiceAdmin", "sysadmin", "netadmin" ]
 
 default[:controller_ipaddress] = node[:ipaddress]
