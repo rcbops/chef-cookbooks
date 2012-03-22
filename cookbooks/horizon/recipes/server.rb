@@ -54,8 +54,6 @@ template "/etc/openstack-dashboard/local_settings.py" do
             :service_port => node[:identity][:service_port],
             :admin_port => node[:identity][:admin_port],
             :admin_token => node[:identity][:admin_token],
-            :django_wsgi_path => node[:horizon][:wsgi_path],
-            :dash_path => node[:horizon][:dash_path]
   )
 end
 
@@ -80,7 +78,9 @@ template value_for_platform(
       :apache_contact => node[:apache][:contact],
       :ssl_cert_file => "#{node[:apache][:cert_dir]}certs/#{node[:apache][:self_cert]}",
       :ssl_key_file => "#{node[:apache][:cert_dir]}private/#{node[:apache][:self_cert_key]}",
-      :apache_log_dir => node[:apache][:log_dir]
+      :apache_log_dir => node[:apache][:log_dir],
+      :django_wsgi_path => node[:horizon][:wsgi_path],
+      :dash_path => node[:horizon][:dash_path]
   )
 end
 
