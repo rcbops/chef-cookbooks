@@ -34,6 +34,10 @@ else
   glance_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
+package "python-keystone" do
+    action :install
+end
+
 if platform?(%w{fedora})
   # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.  
   remote_file "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
@@ -58,7 +62,7 @@ if platform?(%w{fedora})
 end
 
 
-connection_info = {:host => node[:glance][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:glance][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create glance database" do
   connection connection_info
   database_name node[:glance][:db]
@@ -136,7 +140,7 @@ end
 
 # Register Service Tenant
 keystone_register "Register Service Tenant" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -149,7 +153,7 @@ end
 
 # Register Service User
 keystone_register "Register Service User" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -163,7 +167,7 @@ end
 
 ## Grant Admin role to Service User for Service Tenant ##
 keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -182,10 +186,11 @@ template "/etc/glance/glance-registry.conf" do
   variables(
     :registry_port => node[:glance][:registry_port],
     :user => node[:glance][:db_user],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :passwd => node[:glance][:db_passwd],
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db],
-    :db_host => node[:glance][:db_host],
+    :db_ipaddress => node[:glance][:db_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token],
@@ -203,6 +208,7 @@ template "/etc/glance/glance-registry-paste.ini" do
   mode "0644"
   variables(
     :ip_address => node[:controller_ipaddress],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token],
