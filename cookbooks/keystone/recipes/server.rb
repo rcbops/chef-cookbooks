@@ -97,6 +97,16 @@ service keystone_service do
   action [ :enable, :start ]
 end
 
+directory "/etc/keystone" do
+  action :create
+  owner "root"
+  group "root"
+  mode "0755"
+  not_if do 
+    File.exists?("/etc/keystone")
+  end
+end
+
 file "/var/lib/keystone/keystone.db" do
   action :delete
 end
