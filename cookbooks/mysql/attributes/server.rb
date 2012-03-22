@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-default['mysql']['bind_address']               = attribute?('cloud') ? cloud['local_ipv4'] : ipaddress
-default['mysql']['root_network_acl']          = "localhost"
+default['mysql']['bind_address']              = attribute?('cloud') ? cloud['local_ipv4'] : ipaddress
+default['mysql']['root_network_acl']          = default['mysql']['bind_address']
 
 case node["platform"]
 when "centos", "redhat", "fedora", "suse", "scientific", "amazon"
