@@ -53,7 +53,9 @@ template "/etc/openstack-dashboard/local_settings.py" do
             :db_host => node[:horizon][:db_host],
             :service_port => node[:identity][:service_port],
             :admin_port => node[:identity][:admin_port],
-            :admin_token => node[:identity][:admin_token]
+            :admin_token => node[:identity][:admin_token],
+            :django_wsgi_path => node[:horizon][:wsgi_path],
+            :dash_path => node[:horizon][:dash_path]
   )
 end
 
