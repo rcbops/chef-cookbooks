@@ -57,7 +57,7 @@ if platform?(%w{fedora})
   end
 end
 
-connection_info = {:host => node[:keystone][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:keystone][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create keystone database" do
   connection connection_info
   database_name node[:keystone][:db]
@@ -116,9 +116,9 @@ template "/etc/keystone/keystone.conf" do
             :verbose => node[:keystone][:verbose],
             :user => node[:keystone][:db_user],
             :passwd => node[:keystone][:db_passwd],
-            :ip_address => node[:controller_ipaddress],
+            :ip_address => node[:keystone][:api_ipaddress],
             :db_name => node[:keystone][:db],
-            :db_host => node[:keystone][:db_host],
+            :db_ipaddress => node[:keystone][:db_ipaddress],
             :service_port => node[:keystone][:service_port],
             :admin_port => node[:keystone][:admin_port],
             :admin_token => node[:keystone][:admin_token]
@@ -140,13 +140,13 @@ execute "Keystone: sleep" do
 end
 
 token = "#{node[:keystone][:admin_token]}"
-admin_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+admin_url = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
 keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
 
 ## Add openstack tenant ##
 keystone_register "Register 'openstack' Tenant" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -159,7 +159,7 @@ end
 
 ## Add admin user ##
 keystone_register "Register 'admin' User" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -174,7 +174,7 @@ end
 ## Add Roles ##
 node[:keystone][:roles].each do |role_key|
   keystone_register "Register '#{role_key.to_s}' Role" do
-    auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
     auth_port node[:keystone][:admin_port]
     auth_protocol "http"
     api_ver "/v2.0"
@@ -187,7 +187,7 @@ end
 
 ## Add Admin role to admin user ##
 keystone_register "Grant 'admin' Role to 'admin' User" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -201,7 +201,7 @@ end
 ## Add Services ##
 
 keystone_register "Register Identity Service" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -213,7 +213,7 @@ keystone_register "Register Identity Service" do
 end
 
 keystone_register "Register Compute Service" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -225,7 +225,7 @@ keystone_register "Register Compute Service" do
 end
 
 keystone_register "Register EC2 Service" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -239,8 +239,8 @@ end
 
 ## Add Endpoints ##
 
-node[:keystone][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
-node[:keystone][:internalURL] = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
+node[:keystone][:adminURL] = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+node[:keystone][:internalURL] = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
 node[:keystone][:publicURL] = node[:keystone][:internalURL]
 
 Chef::Log.info "Keystone AdminURL: #{node[:keystone][:adminURL]}"
@@ -248,7 +248,7 @@ Chef::Log.info "Keystone InternalURL: #{node[:keystone][:internalURL]}"
 Chef::Log.info "Keystone PublicURL: #{node[:keystone][:publicURL]}"
 
 keystone_register "Register Identity Endpoint" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -261,12 +261,12 @@ keystone_register "Register Identity Endpoint" do
   action :create_endpoint
 end
 
-node[:nova][:adminURL] = "http://#{node[:controller_ipaddress]}:8774/v1.1/%(tenant_id)s"
+node[:nova][:adminURL] = "http://#{node[:nova][:api_ipaddress]}:8774/v1.1/%(tenant_id)s"
 node[:nova][:internalURL] = node[:nova][:adminURL]
 node[:nova][:publicURL] = node[:nova][:adminURL]
 
 keystone_register "Register Compute Endpoint" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
