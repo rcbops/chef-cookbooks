@@ -77,6 +77,27 @@ service glance_api_service do
   action :enable
 end
 
+directory "/etc/glance" do
+  action :create
+  group "glance"
+  owner "glance"
+  mode "0700"
+  not_if do
+    File.exists?("/etc/glance")
+  end
+end
+
+template "/etc/glance/policy.json" do
+  source "policy.json.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => glance_api_service), :immediately
+  not_if do
+    File.exists?("/etc/glance/policy.json")
+  end
+end
+ 
 template "/etc/glance/glance-api.conf" do
   source "glance-api.conf.erb"
   owner "root"
