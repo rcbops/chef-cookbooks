@@ -11,3 +11,7 @@ default[:horizon][:db_host] = node[:controller_ipaddress]
 
 # Compute Information (probably better with node search later)
 default[:compute][:controller_ipaddress] = node[:ipaddress]
+
+# Account for the moving target that is the dashboard path....
+default[:horizon][:dash_path] = "/usr/share/openstack-dashboard/openstack_dashboard"
+default[:horizon][:wsgi_path] = node[:horizon][:dash_path] + "/wsgi"

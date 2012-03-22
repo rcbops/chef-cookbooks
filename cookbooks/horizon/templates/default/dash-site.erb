@@ -6,19 +6,19 @@
 
 <VirtualHost *:443>
   ServerAdmin <%= @apache_contact %>
-  WSGIScriptAlias / /var/lib/dash/dashboard/wsgi/django.wsgi
-  WSGIDaemonProcess dashboard user=www-data group=www-data processes=3 threads=10 python-path=/var/lib/dash
+  WSGIScriptAlias / <%= @django_wsgi_path %>/django.wsgi
+  WSGIDaemonProcess dashboard user=www-data group=www-data processes=3 threads=10 python-path=<%= @dash_path %>
   WSGIProcessGroup dashboard
 
-  DocumentRoot /var/lib/dash/.blackhole/
-  Alias /media /var/lib/dash/media
+  DocumentRoot <%= @dash_path %>/.blackhole/
+  Alias /media <%= @dash_path %>/media
 
   <Directory />
       Options FollowSymLinks
       AllowOverride None
   </Directory>
 
-  <Directory /var/lib/dash/>
+  <Directory <%= @dash_path %>>
       Options Indexes FollowSymLinks MultiViews
       AllowOverride None
       Order allow,deny
