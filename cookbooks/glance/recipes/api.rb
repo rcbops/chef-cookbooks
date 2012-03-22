@@ -83,6 +83,17 @@ directory "/etc/glance" do
   end
 end
 
+template "/etc/glance/policy.json" do
+  source "policy.json.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  notifies :restart, resources(:service => glance_api_service), :immediately
+  not_if do
+    File.exists?("/etc/glance/policy.json")
+  end
+end
+ 
 template "/etc/glance/glance-api.conf" do
   source "glance-api.conf.erb"
   owner "root"
