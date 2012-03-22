@@ -36,6 +36,10 @@ package "curl" do
   action :install
 end
 
+package "python-keystone" do
+    action :install
+end
+
 # Supposedly Resolved
 # Fixes issue https://bugs.launchpad.net/ubuntu/+source/glance/+bug/943748
 #package "python-dateutil" do
@@ -80,8 +84,10 @@ template "/etc/glance/glance-api.conf" do
   mode "0644"
   variables(
     :api_port => node[:glance][:api_port],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :registry_port => node[:glance][:registry_port],
     :ip_address => node[:controller_ipaddress],
+    :rabbit_ipaddress => node[:rabbit][:rabbit_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
@@ -96,6 +102,7 @@ template "/etc/glance/glance-api-paste.ini" do
   mode "0644"
   variables(
     :ip_address => node[:controller_ipaddress],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :service_port => node[:keystone][:service_port],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token],
@@ -114,15 +121,16 @@ template "/etc/glance/glance-scrubber.conf" do
   variables(
     :user => node[:glance][:db_user],
     :passwd => node[:glance][:db_passwd],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :ip_address => node[:controller_ipaddress],
     :db_name => node[:glance][:db],
-    :db_host => node[:glance][:db_host]
+    :db_ipaddress => node[:glance][:db_ipaddress]
   )
 end
 
 # Register Image Service
 keystone_register "Register Image Service" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -133,13 +141,13 @@ keystone_register "Register Image Service" do
   action :create_service
 end
 
-node[:glance][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:glance][:api_port]}/v1"
+node[:glance][:adminURL] = "http://#{node[:glance][:api_ipaddress]}:#{node[:glance][:api_port]}/v1"
 node[:glance][:internalURL] = node[:glance][:adminURL]
 node[:glance][:publicURL] = node[:glance][:adminURL]
 
 # Register Image Endpoint
 keystone_register "Register Image Endpoint" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -153,7 +161,7 @@ keystone_register "Register Image Endpoint" do
 end
 
 # This is a dirty hack for now.. NEED TO BE FIXED
-keystone_auth_url = "http://#{node[:controller_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+keystone_auth_url = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
 #extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
 # new format for renamed command lines
 extra_opts = "--os_username=admin --os_password=secrete --os_tenant=openstack --os_auth_url=#{keystone_auth_url}"
