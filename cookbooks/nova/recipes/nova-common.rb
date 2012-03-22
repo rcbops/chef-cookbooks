@@ -34,6 +34,16 @@ package nova_common_package do
   options options
 end
 
+directory "/etc/nova" do
+  action :create
+  owner :nova
+  group :nova
+  mode "0755"
+  not_if do
+    File.exists?("/etc/nova")
+  end
+end
+  
 template "/etc/nova/nova.conf" do
   source "nova.conf.erb"
   owner "root"
