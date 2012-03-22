@@ -6,17 +6,17 @@ Requirements
 
 ## Cookbooks
 
-* apache2
 * database
+* keystone
 * mysql
 
-## Platform
+## Platforms
 
 * Ubuntu
+* Fedora
 
-Attributes
+ATTRIBUTES
 ==========
 
-Usage
+USAGE
 =====
-
