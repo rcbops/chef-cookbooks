@@ -86,6 +86,10 @@ end
 
 if platform?("debian", "ubuntu") then 
   apache_site "openstack-dashboard"
+  apache_site(
+    :name => "000-default",
+    :enable => false
+  )
 end
 
 # This is a dirty hack to deal with https://bugs.launchpad.net/nova/+bug/932468
