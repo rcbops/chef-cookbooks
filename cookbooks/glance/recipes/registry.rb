@@ -178,6 +178,16 @@ keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
   action :grant_role
 end
 
+directory "/etc/glance" do
+  action :create
+  group "glance"
+  owner "glance"
+  mode "0700"
+  not_if do
+    File.exists?("/etc/glance")
+  end
+end  
+
 template "/etc/glance/glance-registry.conf" do
   source "glance-registry.conf.erb"
   owner "root"
