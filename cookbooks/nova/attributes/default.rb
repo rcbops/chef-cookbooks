@@ -16,6 +16,7 @@ default[:glance][:registry_port] = "9191"
 default[:glance][:images] = [ "tty", "natty" ]
 
 default[:volume][:api_port] = 8776
+default[:volume][:ipaddress] = node[:controller_ipaddress]
 default[:volume][:adminURL] = "http://#{default[:controller_ipaddress]}:#{default[:volume][:api_port]}/v1"
 default[:volume][:internalURL] = default[:volume][:adminURL]
 default[:volume][:publicURL] = default[:volume][:adminURL]

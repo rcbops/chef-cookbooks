@@ -7,6 +7,8 @@ default[:glance][:api_port] = "9292"
 default[:glance][:registry_port] = "9191"
 default[:glance][:images] = [ "tty", "natty" ]
 
+default[:rabbit][:rabbit_ipaddress] = node[:controller_ipaddress]
+
 default[:glance][:service_tenant_name] = "service"
 default[:glance][:service_user] = "glance"
 default[:glance][:service_pass] = "vARxre7K"
