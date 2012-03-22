@@ -1,7 +1,8 @@
 default[:glance][:db] = "glance"
 default[:glance][:db_user] = "glance"
 default[:glance][:db_passwd] = "glance"
-default[:glance][:db_host] = node[:controller_ipaddress]
+default[:glance][:db_ipaddress] = node[:controller_ipaddress]
+default[:glance][:api_ipaddress] = node[:controller_ipaddress]
 default[:glance][:api_port] = "9292"
 default[:glance][:registry_port] = "9191"
 default[:glance][:images] = [ "tty", "natty" ]
