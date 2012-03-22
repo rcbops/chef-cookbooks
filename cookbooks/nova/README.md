@@ -6,15 +6,20 @@ Requirements
 
 ## Cookbooks
 
-* apache2
+* apt
 * database
+* glance
+* keystone
 * mysql
+* openssh
+* rabbitmq
 
-## Platform
+## Platforms
 
 * Ubuntu
+* Fedora
 
-Attributes
+Attributes 
 ==========
 
 Usage
