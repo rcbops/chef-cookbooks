@@ -1,0 +1,59 @@
+[DEFAULT]
+
+# LOGS/STATE
+verbose=true
+auth_strategy=keystone
+dhcpbridge_flagfile=/etc/nova/nova.conf
+dhcpbridge=/usr/bin/nova-dhcpbridge
+logdir=/var/log/nova
+state_path=/var/lib/nova
+lock_path=/var/lock/nova
+iscsi_helper=tgtadm
+
+# RABBITMQ
+rabbit_password=guest
+rabbit_port=5672
+rabbit_host=<%= @ip_address %>
+
+# SCHEDULER
+#--scheduler_manager=nova.scheduler.abstract_scheduler.AbstractScheduler
+scheduler_driver=nova.scheduler.simple.SimpleScheduler
+
+# NETWORK
+network_manager=nova.network.manager.FlatDHCPManager
+fixed_range=<%= @ipv4_cidr %>
+ec2_dmz_host=<%= @ip_address %>
+#--flat_interface=eth1
+#--fixed_range=10.20.1.0/24
+#--flat_network_dhcp_start=10.20.1.2
+#--public_interface=eth0
+force_dhcp_release=true
+send_arp_for_ha=True
+<% if @virt_type == "qemu" -%>
+libvirt_use_virtio_for_bridges=false
+<% else -%>
+libvirt_use_virtio_for_bridges=true
+<% end -%>
+
+# GLANCE
+image_service=nova.image.glance.GlanceImageService
+glance_api_servers=<%= @ip_address %>:<%= @api_port %>
+
+# COMPUTE
+compute_manager=nova.compute.manager.ComputeManager
+sql_connection=mysql://<%= @user %>:<%= @passwd %>@<%= @db_host %>/<%= @db_name %>
+connection_type=libvirt
+libvirt_type=<%= @virt_type %>
+root_helper=sudo nova-rootwrap
+
+# VNCPROXY
+vncproxy_url=http://<%= @ip_address %>:6080
+vncproxy_wwwroot=/var/lib/nova/noVNC
+
+# MISC
+use_deprecated_auth=false
+allow_admin_api=true
+enable_zone_routing=true
+
+# KEYSTONE
+keystone_ec2_url=http://<%= @ip_address %>:5000/v2.0/ec2tokens
