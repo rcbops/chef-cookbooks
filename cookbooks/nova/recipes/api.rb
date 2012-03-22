@@ -63,6 +63,7 @@ template "/etc/nova/api-paste.ini" do
     :ip_address => node[:controller_ipaddress],
     :component  => node[:package_component],
     :service_port => node[:keystone][:service_port],
+    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
   )

@@ -2,7 +2,7 @@
 export OS_AUTH_USER=<%= @user %>
 export OS_AUTH_KEY=<%= @password %>
 export OS_AUTH_TENANT=<%= @tenant %>
-export OS_AUTH_URL=http://<%= @keystone_api_ip %>:<%= @keystone_service_port %>/v2.0/
+export OS_AUTH_URL=http://<%= @keystone_api_ipaddress %>:<%= @keystone_service_port %>/v2.0/
 export OS_AUTH_STRATEGY=<%= @auth_strategy %>
 
 # LEGACY NOVA ENVS
@@ -17,4 +17,4 @@ export NOVA_REGION_NAME=<%= @keystone_region %>
 # EUCA2OOLs ENV VARIABLES
 export EC2_ACCESS_KEY=${OS_AUTH_USER}
 export EC2_SECRET_KEY=${OS_AUTH_KEY}
-export EC2_URL=http://<%= @nova_api_ip %>:8773/services/Cloud
+export EC2_URL=http://<%= @nova_api_ipaddress %>:8773/services/Cloud
