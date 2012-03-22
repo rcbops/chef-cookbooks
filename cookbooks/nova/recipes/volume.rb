@@ -46,7 +46,7 @@ keystone_register "Register Volume Service" do
   action :create_service
 end
 
-node[:volume][:adminURL] = "http://#{node[:ipaddress]}:#{node[:volume][:api_port]}/v1/%(tenant_id)s"
+node[:volume][:adminURL] = "http://#{node[:volume][:ipaddress]}:#{node[:volume][:api_port]}/v1/%(tenant_id)s"
 node[:volume][:internalURL] = node[:volume][:adminURL]
 node[:volume][:publicURL] = node[:volume][:adminURL]
 
