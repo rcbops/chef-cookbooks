@@ -13,7 +13,7 @@ DATABASES = {
         'NAME': '<%= @db_name %>',
         'USER': '<%= @user %>',
         'PASSWORD': '<%= @passwd %>',
-        'HOST': '<%= @db_host %>',
+        'HOST': '<%= @db_ipaddress %>',
         'default-character-set': 'utf8'
     },
 }
@@ -50,7 +50,7 @@ HORIZON_CONFIG = {
 
 # FIXME: This is only here so quantum still works. It must be refactored to
 # work with multiple regions.
-OPENSTACK_HOST = "<%= @ip_address %>"
+OPENSTACK_HOST = "<%= @keystone_api_ipaddress %>"
 OPENSTACK_KEYSTONE_URL = "http://%s:<%= @service_port %>/v2.0" % OPENSTACK_HOST
 # FIXME: this is only needed until keystone fixes its GET /tenants call
 # so that it doesn't return everything for admins
