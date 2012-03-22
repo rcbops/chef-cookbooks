@@ -3,7 +3,9 @@ default[:mysql][:root_pass] = "secrete"
 default[:nova][:db] = "nova"
 default[:nova][:db_user] = "nova"
 default[:nova][:db_passwd] = "nova"
-default[:nova][:db_host] = node[:controller_ipaddress]
+default[:nova][:db_ipaddress] = node[:controller_ipaddress]
+
+default[:rabbit][:ipaddress] = node[:controller_ipaddress]
 
 # TODO (cleanup this section)
 default[:glance][:db] = "glance"
@@ -24,6 +26,7 @@ default[:keystone][:db_user] = "keystone"
 default[:keystone][:db_passwd] = "keystone"
 default[:keystone][:verbose] = "False"
 default[:keystone][:debug] = "False"
+default[:keystone][:keystone_host] = node[:controller_ipaddress]
 default[:keystone][:service_port] = "5000"
 default[:keystone][:admin_port] = "35357"
 default[:keystone][:admin_token] = "999888777666"
