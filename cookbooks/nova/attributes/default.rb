@@ -3,7 +3,9 @@ default[:mysql][:root_pass] = "secrete"
 default[:nova][:db] = "nova"
 default[:nova][:db_user] = "nova"
 default[:nova][:db_passwd] = "nova"
-default[:nova][:db_host] = node[:controller_ipaddress]
+default[:nova][:db_ipaddress] = node[:controller_ipaddress]
+
+default[:rabbit][:ipaddress] = node[:controller_ipaddress]
 
 # TODO (cleanup this section)
 default[:glance][:db] = "glance"
@@ -14,6 +16,7 @@ default[:glance][:registry_port] = "9191"
 default[:glance][:images] = [ "tty", "natty" ]
 
 default[:volume][:api_port] = 8776
+default[:volume][:ipaddress] = node[:controller_ipaddress]
 default[:volume][:adminURL] = "http://#{default[:controller_ipaddress]}:#{default[:volume][:api_port]}/v1"
 default[:volume][:internalURL] = default[:volume][:adminURL]
 default[:volume][:publicURL] = default[:volume][:adminURL]
@@ -24,6 +27,7 @@ default[:keystone][:db_user] = "keystone"
 default[:keystone][:db_passwd] = "keystone"
 default[:keystone][:verbose] = "False"
 default[:keystone][:debug] = "False"
+default[:keystone][:keystone_host] = node[:controller_ipaddress]
 default[:keystone][:service_port] = "5000"
 default[:keystone][:admin_port] = "35357"
 default[:keystone][:admin_token] = "999888777666"

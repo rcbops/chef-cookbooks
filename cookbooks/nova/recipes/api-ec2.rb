@@ -19,17 +19,18 @@
 
 include_recipe "nova::nova-common"
 
+#TODO(breu): test for fedora
 # Distribution specific settings go here
 if platform?(%w{fedora})
   # Fedora
-  nova_api_package = "openstack-nova"
-  nova_api_service = "openstack-nova-api"
-  nova_api_package_options = ""
+  nova_api_ec2_package = "openstack-nova"
+  nova_api_ec2_service = "openstack-nova-api"
+  nova_api_ec2_package_options = ""
 else
   # All Others (right now Debian and Ubuntu)
-  nova_api_package = "nova-api"
-  nova_api_service = nova_api_package
-  nova_api_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
+  nova_api_ec2_package = "nova-api-ec2"
+  nova_api_ec2_service = nova_api_ec2_package
+  nova_api_ec2_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
 directory "/var/lock/nova" do
@@ -43,12 +44,12 @@ package "python-keystone" do
   action :upgrade
 end
 
-package nova_api_package do
+package nova_api_ec2_package do
   action :upgrade
-  options nova_api_package_options
+  options nova_api_ec2_package_options
 end
 
-service nova_api_service do
+service nova_api_ec2_service do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
@@ -67,5 +68,5 @@ template "/etc/nova/api-paste.ini" do
     :admin_port => node[:keystone][:admin_port],
     :admin_token => node[:keystone][:admin_token]
   )
-  notifies :restart, resources(:service => nova_api_service), :immediately
+  notifies :restart, resources(:service => nova_api_ec2_service), :delayed
 end
