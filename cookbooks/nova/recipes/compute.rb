@@ -18,7 +18,7 @@
 #
 
 include_recipe "nova::nova-common"
-include_recipe "nova::api"
+include_recipe "nova::api-metadata"
 include_recipe "nova::network"
 
 # package "mysql-client" do
