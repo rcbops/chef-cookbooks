@@ -4,6 +4,7 @@
 #
 
 include_recipe "nova::nova-common"
+include_recipe "nova::api-os-volume"
 
 # Distribution specific settings go here
 if platform?(%w{fedora})
