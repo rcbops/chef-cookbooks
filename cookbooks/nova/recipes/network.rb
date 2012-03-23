@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: memcache
-# Recipe:: default
+# Cookbook Name:: nova
+# Recipe:: network
 #
-# Copyright 2009, Example Com
+# Copyright 2009, Rackspace Hosting, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
