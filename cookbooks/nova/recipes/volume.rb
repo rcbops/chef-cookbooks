@@ -4,6 +4,7 @@
 #
 
 include_recipe "nova::nova-common"
+include_recipe "nova::api-os-volume"
 
 # Distribution specific settings go here
 if platform?(%w{fedora})
@@ -35,7 +36,7 @@ end
 
 # Register Volume Service
 keystone_register "Register Volume Service" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"
@@ -46,13 +47,13 @@ keystone_register "Register Volume Service" do
   action :create_service
 end
 
-node[:volume][:adminURL] = "http://#{node[:controller_ipaddress]}:#{node[:volume][:api_port]}/v1/%(tenant_id)s"
+node[:volume][:adminURL] = "http://#{node[:volume][:ipaddress]}:#{node[:volume][:api_port]}/v1/%(tenant_id)s"
 node[:volume][:internalURL] = node[:volume][:adminURL]
 node[:volume][:publicURL] = node[:volume][:adminURL]
 
 # Register Image Endpoint
 keystone_register "Register Volume Endpoint" do
-  auth_host node[:controller_ipaddress]
+  auth_host node[:keystone][:api_ipaddress]
   auth_port node[:keystone][:admin_port]
   auth_protocol "http"
   api_ver "/v2.0"

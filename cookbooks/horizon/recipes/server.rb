@@ -25,7 +25,7 @@ include_recipe "apache2::mod_wsgi"
 
 include_recipe "mysql::client"
 
-connection_info = {:host => node[:horizon][:db_host], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node[:horizon][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create horizon database" do
   connection connection_info
   database_name node[:horizon][:db]
@@ -61,7 +61,8 @@ template "/etc/openstack-dashboard/local_settings.py" do
             :passwd => node[:horizon][:db_passwd],
             :ip_address => node[:controller_ipaddress],
             :db_name => node[:horizon][:db],
-            :db_host => node[:horizon][:db_host],
+            :db_ipaddress => node[:horizon][:db_ipaddress],
+            :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
             :service_port => node[:identity][:service_port],
             :admin_port => node[:identity][:admin_port],
             :admin_token => node[:identity][:admin_token]
