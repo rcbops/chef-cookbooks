@@ -8,7 +8,7 @@ pipeline = context registryapp
 #   flavor = keystone
 #
 [pipeline:glance-registry-keystone]
-pipeline = authtoken auth-context registryapp
+pipeline = authtoken context registryapp
 
 [app:registryapp]
 paste.app_factory = glance.common.wsgi:app_factory
@@ -32,8 +32,3 @@ auth_uri = http://<%= @keystone_api_ipaddress %>:<%= @service_port %>/
 admin_tenant_name = <%= @service_tenant_name %>
 admin_user = <%= @service_user %>
 admin_password = <%= @service_pass %>
-
-[filter:auth-context]
-context_class = glance.registry.context.RequestContext
-paste.filter_factory = glance.common.wsgi:filter_factory
-glance.filter_factory = keystone.middleware.glance_auth_token:KeystoneContextMiddleware
