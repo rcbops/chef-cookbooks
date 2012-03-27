@@ -40,32 +40,6 @@ package "python-keystone" do
     action :install
 end
 
-# Supposedly Resolved
-# Fixes issue https://bugs.launchpad.net/ubuntu/+source/glance/+bug/943748
-#package "python-dateutil" do
-#  action :install
-#end
-
-#if platform?(%w{fedora})
-#  # THIS IS TEMPORARY!!!  Remove this when fedora fixes their packages.  
-#  remote_file "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
-#    source "http://www.breu.org/filedrop/nova/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
-#    action :create_if_missing
-#  end
-#  remote_file "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm" do
-#    source "http://www.breu.org/filedrop/nova/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
-#    action :create_if_missing
-#  end
-#  package "openstack-glance" do
-#    source "/tmp/openstack-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
-#    action :install
-#  end
-#  package "python-glance" do
-#    source "/tmp/python-glance-2012.1-0.6.rc1.fc17.noarch.rpm"
-#    action :install
-#  end
-#end
-
 package glance_package do
   action :upgrade
 end
