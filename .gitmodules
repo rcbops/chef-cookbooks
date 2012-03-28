@@ -16,3 +16,6 @@
 [submodule "cookbooks/rabbitmq"]
 	path = cookbooks/rabbitmq
 	url = https://github.com/opscode-cookbooks/rabbitmq.git
+[submodule "cookbooks/yum"]
+	path = cookbooks/yum
+	url = https://github.com/opscode-cookbooks/yum.git
