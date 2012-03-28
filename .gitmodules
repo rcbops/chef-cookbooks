@@ -22,3 +22,6 @@
 [submodule "cookbooks/openssh"]
 	path = cookbooks/openssh
 	url = https://github.com/opscode-cookbooks/openssh.git
+[submodule "cookbooks/ntp"]
+	path = cookbooks/ntp
+	url = https://github.com/opscode-cookbooks/ntp.git
