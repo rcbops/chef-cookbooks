@@ -10,6 +10,6 @@ version           "1.0.0"
   supports os
 end
 
-%w{ apt database glance keystone mysql openssh rabbitmq }.each do |dep|
+%w{ apt database glance keystone mysql openssh rabbitmq selinux }.each do |dep|
   depends dep
 end
