@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+default[:controller_ipaddress] = node[:ipaddress]
+
 default[:glance][:db] = "glance"
 default[:glance][:db_user] = "glance"
 default[:glance][:db_passwd] = "glance"
@@ -38,5 +40,3 @@ default[:glance][:image][:natty] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-11
 default[:glance][:image][:maverick] = "http://c250663.r63.cf1.rackcdn.com/ubuntu-10.10-server-uec-amd64-multinic.tar.gz"
 #default[:glance][:image][:tty] = "http://smoser.brickies.net/ubuntu/ttylinux-uec/ttylinux-uec-amd64-12.1_2.6.35-22_1.tar.gz"
 default[:glance][:image][:tty] = "http://c250663.r63.cf1.rackcdn.com/ttylinux.tgz"
-
-default[:controller_ipaddress] = node[:ipaddress]
