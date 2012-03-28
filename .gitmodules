@@ -10,3 +10,6 @@
 [submodule "cookbooks/apt"]
 	path = cookbooks/apt
 	url = https://github.com/opscode-cookbooks/apt.git
+[submodule "cookbooks/selinux"]
+	path = cookbooks/selinux
+	url = https://github.com/opscode-cookbooks/selinux.git
