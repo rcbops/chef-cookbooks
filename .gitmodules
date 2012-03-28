@@ -7,3 +7,6 @@
 [submodule "cookbooks/erlang"]
 	path = cookbooks/erlang
 	url = https://github.com/opscode-cookbooks/erlang.git
+[submodule "cookbooks/apt"]
+	path = cookbooks/apt
+	url = https://github.com/opscode-cookbooks/apt.git
