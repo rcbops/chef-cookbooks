@@ -2,8 +2,8 @@ name "single-controller"
 description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
-  "recipe[mysql::server]",
-  "recipe[rabbitmq]",
+  "role[mysql-master]",
+  "role[rabbitmq-server]",
   "recipe[keystone::server]",
   "recipe[glance]",
   "recipe[nova::nova-setup]",
