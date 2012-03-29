@@ -19,6 +19,9 @@
 
 include_recipe "apache2"
 include_recipe "apache2::mod_wsgi"
+include_recipe "apache2::mod_rewrite"
+include_recipe "apache2::mod_ssl"
+
 # include_recipe "nova::apt"
 # include_recipe "nova::mysql"
 # include_recipe "nova::api"
@@ -88,8 +91,8 @@ template value_for_platform(
   mode "0644"
   variables(
       :apache_contact => node[:apache][:contact],
-      :ssl_cert_file => "#{node[:apache][:cert_dir]}certs/#{node[:apache][:self_cert]}",
-      :ssl_key_file => "#{node[:apache][:cert_dir]}private/#{node[:apache][:self_cert_key]}",
+      :ssl_cert_file => "#{node[:horizon][:cert_dir]}certs/#{node[:horizon][:self_cert]}",
+      :ssl_key_file => "#{node[:horizon][:cert_dir]}private/#{node[:horizon][:self_cert_key]}",
       :apache_log_dir => node[:apache][:log_dir],
       :django_wsgi_path => "#{node[:horizon][:wsgi_path]}",
       :dash_path => "#{node[:horizon][:dash_path]}"
