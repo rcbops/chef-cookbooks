@@ -58,7 +58,7 @@ when "redhat", "centos", "scientific"
   rpm_package "/tmp/rabbitmq-server-2.6.1-1.noarch.rpm" do
     action :install
   end
-when "fedora"
+when "fedora" #TODO(breu): Need to commit this fix upstream
   # when using fedora - ride the edge
   package "rabbitmq-server"
 end
