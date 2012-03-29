@@ -61,6 +61,7 @@ package node['mysql']['package_name'] do
   action :install
 end
 
+# This is a local patch, waiting on upstream: http://tickets.opscode.com/browse/COOK-1117
 directory "#{node['mysql']['conf_dir']}/conf.d" do
   owner "mysql"
   group "mysql"
