@@ -78,7 +78,7 @@ service glance_registry_service do
 end
 
 execute "glance-manage db_sync" do
-        command "glance-manage db_sync"
+        command "sudo -u glance glance-manage db_sync"
         action :nothing
         notifies :restart, resources(:service => glance_registry_service), :immediately
 end
