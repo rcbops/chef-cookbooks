@@ -11,6 +11,6 @@ run_list(
   "recipe[nova::api-ec2]",
   "recipe[nova::api-os-compute]",
   "recipe[nova::volume]",
-  "recipe[horizon::server]"
+  "role[horizon-server]"
 )
 
