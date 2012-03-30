@@ -76,14 +76,14 @@ template "/etc/glance/glance-api.conf" do
   group "root"
   mode "0644"
   variables(
-    :api_port => node[:glance][:api_port],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :registry_port => node[:glance][:registry_port],
-    :ip_address => node[:controller_ipaddress],
-    :rabbit_ipaddress => node[:rabbit][:rabbit_ipaddress],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
+    "api_port" => node["glance"]["api_port"],
+    "keystone_api_ipaddress" => node["keystone"]["api_ipaddress"],
+    "registry_port" => node["glance"]["registry_port"],
+    "ip_address" => node["controller_ipaddress"],
+    "rabbit_ipaddress" => node["rabbit"]["rabbit_ipaddress"],
+    "service_port" => node["keystone"]["service_port"],
+    "admin_port" => node["keystone"]["admin_port"],
+    "admin_token" => node["keystone"]["admin_token"]
   )
   notifies :restart, resources(:service => glance_api_service), :immediately
 end
@@ -94,14 +94,14 @@ template "/etc/glance/glance-api-paste.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => node[:controller_ipaddress],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token],
-    :service_tenant_name => node[:glance][:service_tenant_name],
-    :service_user => node[:glance][:service_user],
-    :service_pass => node[:glance][:service_pass]
+    "ip_address" => node["controller_ipaddress"],
+    "keystone_api_ipaddress" => node["keystone"]["api_ipaddress"],
+    "service_port" => node["keystone"]["service_port"],
+    "admin_port" => node["keystone"]["admin_port"],
+    "admin_token" => node["keystone"]["admin_token"],
+    "service_tenant_name" => node["glance"]["service_tenant_name"],
+    "service_user" => node["glance"]["service_user"],
+    "service_pass" => node["glance"]["service_pass"]
   )
   notifies :restart, resources(:service => glance_api_service), :immediately
 end
@@ -112,54 +112,54 @@ template "/etc/glance/glance-scrubber.conf" do
   group "root"
   mode "0644"
   variables(
-    :user => node[:glance][:db_user],
-    :passwd => node[:glance][:db_passwd],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :ip_address => node[:controller_ipaddress],
-    :db_name => node[:glance][:db],
-    :db_ipaddress => node[:glance][:db_ipaddress]
+    "user" => node["glance"]["db_user"],
+    "passwd" => node["glance"]["db_passwd"],
+    "keystone_api_ipaddress" => node["keystone"]["api_ipaddress"],
+    "ip_address" => node["controller_ipaddress"],
+    "db_name" => node["glance"]["db"],
+    "db_ipaddress" => node["glance"]["db_ipaddress"]
   )
 end
 
 # Register Image Service
 keystone_register "Register Image Service" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_name "glance"
   service_type "image"
   service_description "Glance Image Service"
   action :create_service
 end
 
-node[:glance][:adminURL] = "http://#{node[:glance][:api_ipaddress]}:#{node[:glance][:api_port]}/v1"
-node[:glance][:internalURL] = node[:glance][:adminURL]
-node[:glance][:publicURL] = node[:glance][:adminURL]
+node["glance"]["adminURL"] = "http://#{node["glance"]["api_ipaddress"]}:#{node["glance"]["api_port"]}/v1"
+node["glance"]["internalURL"] = node["glance"]["adminURL"]
+node["glance"]["publicURL"] = node["glance"]["adminURL"]
 
 # Register Image Endpoint
 keystone_register "Register Image Endpoint" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_type "image"
   endpoint_region "RegionOne"
-  endpoint_adminurl node[:glance][:adminURL]
-  endpoint_internalurl node[:glance][:internalURL]
-  endpoint_publicurl node[:glance][:publicURL]
+  endpoint_adminurl node["glance"]["adminURL"]
+  endpoint_internalurl node["glance"]["internalURL"]
+  endpoint_publicurl node["glance"]["publicURL"]
   action :create_endpoint
 end
 
 # This is a dirty hack for now.. NEED TO BE FIXED
-keystone_auth_url = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+keystone_auth_url = "http://#{node["keystone"]["api_ipaddress"]}:#{node["keystone"]["admin_port"]}/v2.0"
 #extra_opts = "--username=admin --password=secrete --tenant=openstack --auth_url=#{keystone_auth_url}"
 # new format for renamed command lines
 extra_opts = "--os_username=admin --os_password=secrete --os_tenant=openstack --os_auth_url=#{keystone_auth_url}"
 
-node[:glance][:images].each do |img|
+node["glance"]["images"].each do |img|
   bash "default image setup for #{img.to_s}" do
     cwd "/tmp"
     user "root"
@@ -168,8 +168,8 @@ node[:glance][:images].each do |img|
       set -x
       mkdir -p images
 
-      curl #{node[:glance][:image][img.to_sym]} | tar -zx -C images/
-      image_name=$(basename #{node[:glance][:image][img]} .tar.gz)
+      curl #{node["glance"]["image"][img.to_sym]} | tar -zx -C images/
+      image_name=$(basename #{node["glance"]["image"][img]} .tar.gz)
 
       image_name=${image_name%-multinic}
 
