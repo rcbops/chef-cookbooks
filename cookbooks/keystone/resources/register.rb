@@ -1,6 +1,16 @@
 
 actions :create_service, :create_endpoint, :create_tenant, :create_user, :create_role, :grant_role
 
+# Chef 0.10.10 or greater
+default_action :create
+
+# In earlier versions of Chef the LWRP DSL doesn't support specifying
+# a default action, so you need to drop into Ruby.
+def initialize(*args)
+  super
+  @action = :create
+end
+
 attribute :auth_protocol, :kind_of => String, :equal_to => [ "http", "https" ]
 attribute :auth_host, :kind_of => String
 attribute :auth_port, :kind_of => String
