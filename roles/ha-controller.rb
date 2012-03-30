@@ -1,4 +1,4 @@
-name "single-controller"
+name "ha-controller"
 description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
