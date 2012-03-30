@@ -34,23 +34,23 @@ else
   keystone_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
 end
 
-connection_info = {:host => node[:keystone][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node["keystone"]["db_ipaddress"], :username => "root", :password => node["mysql"]["server_root_password"]}
 mysql_database "create keystone database" do
   connection connection_info
-  database_name node[:keystone][:db]
+  database_name node["keystone"]["db"]
   action :create
 end
 
-mysql_database_user node[:keystone][:db_user] do
+mysql_database_user node["keystone"]["db_user"] do
   connection connection_info
-  password node[:keystone][:db_passwd]
+  password node["keystone"]["db_passwd"]
   action :create
 end
 
-mysql_database_user node[:keystone][:db_user] do
+mysql_database_user node["keystone"]["db_user"] do
   connection connection_info
-  password node[:keystone][:db_passwd]
-  database_name node[:keystone][:db]
+  password node["keystone"]["db_passwd"]
+  database_name node["keystone"]["db"]
   host '%'
   privileges [:all]
   action :grant 
@@ -99,16 +99,16 @@ template "/etc/keystone/keystone.conf" do
   group "root"
   mode "0644"
   variables(
-            :debug => node[:keystone][:debug],
-            :verbose => node[:keystone][:verbose],
-            :user => node[:keystone][:db_user],
-            :passwd => node[:keystone][:db_passwd],
-            :ip_address => node[:keystone][:api_ipaddress],
-            :db_name => node[:keystone][:db],
-            :db_ipaddress => node[:keystone][:db_ipaddress],
-            :service_port => node[:keystone][:service_port],
-            :admin_port => node[:keystone][:admin_port],
-            :admin_token => node[:keystone][:admin_token]
+            :debug => node["keystone"]["debug"],
+            :verbose => node["keystone"]["verbose"],
+            :user => node["keystone"]["db_user"],
+            :passwd => node["keystone"]["db_passwd"],
+            :ip_address => node["keystone"]["api_ipaddress"],
+            :db_name => node["keystone"]["db"],
+            :db_ipaddress => node["keystone"]["db_ipaddress"],
+            :service_port => node["keystone"]["service_port"],
+            :admin_port => node["keystone"]["admin_port"],
+            :admin_token => node["keystone"]["admin_token"]
             )
   notifies :run, resources(:execute => "keystone-manage db_sync"), :immediately
 end
@@ -126,18 +126,18 @@ execute "Keystone: sleep" do
   action :run
 end
 
-token = "#{node[:keystone][:admin_token]}"
-admin_url = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
+token = node["keystone"]["admin_token"]
+admin_url = "http://#{node["keystone"]["api_ipaddress"]}:#{node["keystone"]["admin_port"]}/v2.0"
 keystone_cmd = "keystone --token #{token} --endpoint #{admin_url}"
 
 
 ## Add openstack tenant ##
 keystone_register "Register 'openstack' Tenant" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   tenant_name "openstack"
   tenant_description "Default Tenant"
   tenant_enabled "true" # Not required as this is the default
@@ -146,11 +146,11 @@ end
 
 ## Add admin user ##
 keystone_register "Register 'admin' User" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   tenant_name "openstack"
   user_name "admin"
   user_pass "secrete"
@@ -159,13 +159,13 @@ keystone_register "Register 'admin' User" do
 end
 
 ## Add Roles ##
-node[:keystone][:roles].each do |role_key|
+node["keystone"]["roles"].each do |role_key|
   keystone_register "Register '#{role_key.to_s}' Role" do
-  auth_host node[:keystone][:api_ipaddress]
-    auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+    auth_port node["keystone"]["admin_port"]
     auth_protocol "http"
     api_ver "/v2.0"
-    auth_token node[:keystone][:admin_token]
+    auth_token node["keystone"]["admin_token"]
     role_name role_key
     action :create_role
   end
@@ -174,11 +174,11 @@ end
 
 ## Add Admin role to admin user ##
 keystone_register "Grant 'admin' Role to 'admin' User" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   tenant_name "openstack"
   user_name "admin"
   role_name "admin"
@@ -188,11 +188,11 @@ end
 ## Add Services ##
 
 keystone_register "Register Identity Service" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_name "keystone"
   service_type "identity"
   service_description "Keystone Identity Service"
@@ -200,11 +200,11 @@ keystone_register "Register Identity Service" do
 end
 
 keystone_register "Register Compute Service" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_name "nova"
   service_type "compute"
   service_description "Nova Compute Service"
@@ -212,11 +212,11 @@ keystone_register "Register Compute Service" do
 end
 
 keystone_register "Register EC2 Service" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_name "ec2"
   service_type "ec2"
   service_description "EC2 Compatibility Layer"
@@ -226,43 +226,43 @@ end
 
 ## Add Endpoints ##
 
-node[:keystone][:adminURL] = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:admin_port]}/v2.0"
-node[:keystone][:internalURL] = "http://#{node[:keystone][:api_ipaddress]}:#{node[:keystone][:service_port]}/v2.0"
-node[:keystone][:publicURL] = node[:keystone][:internalURL]
+node["keystone"]["adminURL"] = "http://#{node["keystone"]["api_ipaddress"]}:#{node["keystone"]["admin_port"]}/v2.0"
+node["keystone"]["internalURL"] = "http://#{node["keystone"]["api_ipaddress"]}:#{node["keystone"]["service_port"]}/v2.0"
+node["keystone"]["publicURL"] = node["keystone"]["internalURL"]
 
-Chef::Log.info "Keystone AdminURL: #{node[:keystone][:adminURL]}"
-Chef::Log.info "Keystone InternalURL: #{node[:keystone][:internalURL]}"
-Chef::Log.info "Keystone PublicURL: #{node[:keystone][:publicURL]}"
+Chef::Log.info "Keystone AdminURL: #{node["keystone"]["adminURL"]}"
+Chef::Log.info "Keystone InternalURL: #{node["keystone"]["internalURL"]}"
+Chef::Log.info "Keystone PublicURL: #{node["keystone"]["publicURL"]}"
 
 keystone_register "Register Identity Endpoint" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_type "identity"
   endpoint_region "RegionOne"
-  endpoint_adminurl node[:keystone][:adminURL]
-  endpoint_internalurl node[:keystone][:internalURL]
-  endpoint_publicurl node[:keystone][:publicURL]
+  endpoint_adminurl node["keystone"]["adminURL"]
+  endpoint_internalurl node["keystone"]["internalURL"]
+  endpoint_publicurl node["keystone"]["publicURL"]
   action :create_endpoint
 end
 
-node[:nova][:adminURL] = "http://#{node[:nova][:api_ipaddress]}:8774/v1.1/%(tenant_id)s"
-node[:nova][:internalURL] = node[:nova][:adminURL]
-node[:nova][:publicURL] = node[:nova][:adminURL]
+node["nova"]["adminURL"] = "http://#{node["nova"]["api_ipaddress"]}:8774/v1.1/%(tenant_id)s"
+node["nova"]["internalURL"] = node["nova"]["adminURL"]
+node["nova"]["publicURL"] = node["nova"]["adminURL"]
 
 keystone_register "Register Compute Endpoint" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_type "compute"
   endpoint_region "RegionOne"
-  endpoint_adminurl node[:nova][:adminURL]
-  endpoint_internalurl node[:nova][:internalURL]
-  endpoint_publicurl node[:nova][:publicURL]
+  endpoint_adminurl node["nova"]["adminURL"]
+  endpoint_internalurl node["nova"]["internalURL"]
+  endpoint_publicurl node["nova"]["publicURL"]
   action :create_endpoint
 end
 
