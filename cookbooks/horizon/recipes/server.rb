@@ -89,8 +89,8 @@ template value_for_platform(
       :ssl_cert_file => "#{node[:horizon][:cert_dir]}/certs/#{node[:horizon][:self_cert]}",
       :ssl_key_file => "#{node[:horizon][:cert_dir]}/private/#{node[:horizon][:self_cert_key]}",
       :apache_log_dir => node[:apache][:log_dir],
-      :django_wsgi_path => "#{node[:horizon][:wsgi_path]}",
-      :dash_path => "#{node[:horizon][:dash_path]}"
+      :django_wsgi_path => node[:horizon][:wsgi_path],
+      :dash_path => node[:horizon][:dash_path]
   )
 end
 
