@@ -38,23 +38,23 @@ package "python-keystone" do
     action :install
 end
 
-connection_info = {:host => node[:glance][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node["glance"]["db_ipaddress"], :username => "root", :password => node["mysql"]["server_root_password"]}
 mysql_database "create glance database" do
   connection connection_info
-  database_name node[:glance][:db]
+  database_name node["glance"]["db"]
   action :create
 end
 
-mysql_database_user node[:glance][:db_user] do
+mysql_database_user node["glance"]["db_user"] do
   connection connection_info
-  password node[:glance][:db_passwd]
+  password node["glance"]["db_passwd"]
   action :create
 end
 
-mysql_database_user node[:glance][:db_user] do
+mysql_database_user node["glance"]["db_user"] do
   connection connection_info
-  password node[:glance][:db_passwd]
-  database_name node[:glance][:db]
+  password node["glance"]["db_passwd"]
+  database_name node["glance"]["db"]
   host '%'
   privileges [:all]
   action :grant 
@@ -89,12 +89,12 @@ end
 
 # Register Service Tenant
 keystone_register "Register Service Tenant" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
-  tenant_name node[:glance][:service_tenant_name]
+  auth_token node["keystone"]["admin_token"]
+  tenant_name node["glance"]["service_tenant_name"]
   tenant_description "Service Tenant"
   tenant_enabled "true" # Not required as this is the default
   action :create_tenant
@@ -102,28 +102,28 @@ end
 
 # Register Service User
 keystone_register "Register Service User" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
-  tenant_name node[:glance][:service_tenant_name]
-  user_name node[:glance][:service_user]
-  user_pass node[:glance][:service_pass]
+  auth_token node["keystone"]["admin_token"]
+  tenant_name node["glance"]["service_tenant_name"]
+  user_name node["glance"]["service_user"]
+  user_pass node["glance"]["service_pass"]
   user_enabled "true" # Not required as this is the default
   action :create_user
 end
 
 ## Grant Admin role to Service User for Service Tenant ##
 keystone_register "Grant 'admin' Role to Service User for Service Tenant" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
-  tenant_name node[:glance][:service_tenant_name]
-  user_name node[:glance][:service_user]
-  role_name node[:glance][:service_role]
+  auth_token node["keystone"]["admin_token"]
+  tenant_name node["glance"]["service_tenant_name"]
+  user_name node["glance"]["service_user"]
+  role_name node["glance"]["service_role"]
   action :grant_role
 end
 
@@ -143,19 +143,19 @@ template "/etc/glance/glance-registry.conf" do
   group "root"
   mode "0644"
   variables(
-    :registry_port => node[:glance][:registry_port],
-    :user => node[:glance][:db_user],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :passwd => node[:glance][:db_passwd],
-    :ip_address => node[:controller_ipaddress],
-    :db_name => node[:glance][:db],
-    :db_ipaddress => node[:glance][:db_ipaddress],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token],
-    :service_tenant_name => node[:glance][:service_tenant_name],
-    :service_user => node[:glance][:service_user],
-    :service_pass => node[:glance][:service_pass]
+    :registry_port => node["glance"]["registry_port"],
+    :user => node["glance"]["db_user"],
+    :keystone_api_ipaddress => node["keystone"]["api_ipaddress"],
+    :passwd => node["glance"]["db_passwd"],
+    :ip_address => node["controller_ipaddress"],
+    :db_name => node["glance"]["db"],
+    :db_ipaddress => node["glance"]["db_ipaddress"],
+    :service_port => node["keystone"]["service_port"],
+    :admin_port => node["keystone"]["admin_port"],
+    :admin_token => node["keystone"]["admin_token"],
+    :service_tenant_name => node["glance"]["service_tenant_name"],
+    :service_user => node["glance"]["service_user"],
+    :service_pass => node["glance"]["service_pass"]
   )
   notifies :run, resources(:execute => "glance-manage db_sync"), :immediately
 end
@@ -166,14 +166,14 @@ template "/etc/glance/glance-registry-paste.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => node[:controller_ipaddress],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :service_port => node[:keystone][:service_port],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token],
-    :service_tenant_name => node[:glance][:service_tenant_name],
-    :service_user => node[:glance][:service_user],
-    :service_pass => node[:glance][:service_pass]
+    :ip_address => node["controller_ipaddress"],
+    :keystone_api_ipaddress => node["keystone"]["api_ipaddress"],
+    :service_port => node["keystone"]["service_port"],
+    :admin_port => node["keystone"]["admin_port"],
+    :admin_token => node["keystone"]["admin_token"],
+    :service_tenant_name => node["glance"]["service_tenant_name"],
+    :service_user => node["glance"]["service_user"],
+    :service_pass => node["glance"]["service_pass"]
   )
   notifies :restart, resources(:service => glance_registry_service), :immediately
 end
