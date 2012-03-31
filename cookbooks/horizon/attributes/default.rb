@@ -10,7 +10,7 @@ default["horizon"]["db"] = "dash"
 default["horizon"]["db_ipaddress"] = node["controller_ipaddress"]
 
 case node["platform"]
-when "fedora", "centos", "redhat"
+when "fedora", "centos", "redhat", "amazon", "scientific"
   default["horizon"]["cert_dir"] = "/etc/pki/tls"
   # TODO(shep) - Fedora does not generate self signed certs by default
   default["horizon"]["self_cert"] = "ssl-cert-snakeoil.pem"
