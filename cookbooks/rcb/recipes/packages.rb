@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-case node['platform']
+case node["platform"]
 when "ubuntu","debian"
     include_recipe "apt"
     execute "apt-get update" do

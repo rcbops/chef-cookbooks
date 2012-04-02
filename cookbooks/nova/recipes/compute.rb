@@ -36,9 +36,9 @@ else
   nova_compute_package = "nova-compute"
   nova_compute_service = nova_compute_package
   nova_compute_package_options = "-o Dpkg::Options::='--force-confold' --force-yes"
-  if node[:virt_type] == "kvm"
+  if node["virt_type"] == "kvm"
     nova_compute_package = "nova-compute-kvm"
-  elsif node[:virt_type] == "qemu"
+  elsif node["virt_type"] == "qemu"
     nova_compute_package = "nova-compute-qemu"
   end
 end

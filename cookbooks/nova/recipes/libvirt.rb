@@ -20,18 +20,15 @@ package libvirt_package do
   action :install
 end
 
-if platform?(%w{fedora})
-  # oh fedora...
-  bash "create libvirtd group" do
-    cwd "/tmp"
-    user "root"
-    code <<-EOH
-        set -e
-        set -x
-        groupadd -f libvirtd
-        usermod -G libvirtd nova
-    EOH
-  end
+# oh fedora...
+bash "create libvirtd group" do
+  cwd "/tmp"
+  user "root"
+  code <<-EOH
+      groupadd -f libvirtd
+      usermod -G libvirtd nova
+  EOH
+  only_if { platform?(%w{fedora}) }
 end
 
 service libvirt_service do
@@ -54,7 +51,7 @@ template "/var/lib/nova/.ssh/id_dsa.pub" do
     group "nova"
     mode "0644"
     variables(
-      :public_key => node[:libvirt][:ssh][:public_key]
+      :public_key => node['libvirt']['ssh']['public_key']
     )
 end
 
@@ -65,7 +62,7 @@ template "/var/lib/nova/.ssh/id_dsa" do
     group "nova"
     mode "0600"
     variables(
-      :private_key => node[:libvirt][:ssh][:private_key]
+      :private_key => node['libvirt']['ssh']['private_key']
     )
 end
 
@@ -84,7 +81,7 @@ template "/var/lib/nova/.ssh/authorized_keys" do
     group "nova"
     mode "0600"
     variables(
-      :public_key => node[:libvirt][:ssh][:public_key]
+      :public_key => node['libvirt']['ssh']['public_key']
     )
 end
 
@@ -97,7 +94,7 @@ template "/etc/libvirt/libvirtd.conf" do
   group "root"
   mode "0644"
   variables(
-    :auth_tcp => node[:libvirt][:auth_tcp]
+    :auth_tcp => node['libvirt']['auth_tcp']
   )
   notifies :restart, resources(:service => libvirt_service), :immediately
 end
