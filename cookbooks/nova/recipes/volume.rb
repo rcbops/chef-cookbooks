@@ -36,32 +36,32 @@ end
 
 # Register Volume Service
 keystone_register "Register Volume Service" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_name "Volume Service"
   service_type "volume"
   service_description "Nova Volume Service"
   action :create_service
 end
 
-node[:volume][:adminURL] = "http://#{node[:volume][:ipaddress]}:#{node[:volume][:api_port]}/v1/%(tenant_id)s"
-node[:volume][:internalURL] = node[:volume][:adminURL]
-node[:volume][:publicURL] = node[:volume][:adminURL]
+node["volume"]["adminURL"] = "http://#{node["volume"]["ipaddress"]}:#{node["volume"]["api_port"]}/v1/%(tenant_id)s"
+node["volume"]["internalURL"] = node["volume"]["adminURL"]
+node["volume"]["publicURL"] = node["volume"]["adminURL"]
 
 # Register Image Endpoint
 keystone_register "Register Volume Endpoint" do
-  auth_host node[:keystone][:api_ipaddress]
-  auth_port node[:keystone][:admin_port]
+  auth_host node["keystone"]["api_ipaddress"]
+  auth_port node["keystone"]["admin_port"]
   auth_protocol "http"
   api_ver "/v2.0"
-  auth_token node[:keystone][:admin_token]
+  auth_token node["keystone"]["admin_token"]
   service_type "volume"
   endpoint_region "RegionOne"
-  endpoint_adminurl node[:volume][:adminURL]
-  endpoint_internalurl node[:volume][:internalURL]
-  endpoint_publicurl node[:volume][:publicURL]
+  endpoint_adminurl node["volume"]["adminURL"]
+  endpoint_internalurl node["volume"]["internalURL"]
+  endpoint_publicurl node["volume"]["publicURL"]
   action :create_endpoint
 end
