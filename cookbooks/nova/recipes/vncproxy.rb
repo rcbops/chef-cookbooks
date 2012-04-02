@@ -28,9 +28,9 @@ package "nova-vncproxy" do
 end
 
 execute "Fix permission Bug" do
-  command "sed -i 's/nova$/root/g' /etc/init/nova-vncproxy.conf"
+  only_if "egrep 'exec.*nova$' /etc/init/nova-vncproxy.conf",
+    command "sed -i 's/nova$/root/g' /etc/init/nova-vncproxy.conf"
   action :run
-  only_if "egrep 'exec.*nova$' /etc/init/nova-vncproxy.conf"
 end
 
 service "nova-vncproxy" do
