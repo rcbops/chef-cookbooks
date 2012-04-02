@@ -19,6 +19,8 @@
 
 include_recipe "collectd"
 
+connection_info = {:Host => node['mysql'], :User => root, :Password => node['mysql']['server_root_password'], :Port => 3306, :MasterStats => "true", :ignore_selected => true}
+
 collectd_plugin "mysql" do
-  options (:Host=>(node['mysql']), :User=>root, :Password=>(node['mysql']['server_root_password']), :Port=>3306, :MasterStats=>"true", :ignore_selected=>true)
+  options connection_info
 end
