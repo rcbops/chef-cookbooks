@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 
-case node[:platform]
+case node['platform']
 when "ubuntu","debian"
     include_recipe "apt"
     execute "apt-get update" do
         command "apt-get update"
     end
-when "redhat","centos","fedora","scientific"
+when "redhat","centos","fedora","scientific","amazon"
     include_recipe "yum"
     execute "apt-get update" do
         command "yum update"
