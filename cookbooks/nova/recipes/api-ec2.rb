@@ -61,12 +61,12 @@ template "/etc/nova/api-paste.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => node[:controller_ipaddress],
-    :component  => node[:package_component],
-    :service_port => node[:keystone][:service_port],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :admin_port => node[:keystone][:admin_port],
-    :admin_token => node[:keystone][:admin_token]
+    :ip_address => node["controller_ipaddress"],
+    :component  => node["package_component"],
+    :service_port => node["keystone"]["service_port"],
+    :keystone_api_ipaddress => node["keystone"]["api_ipaddress"],
+    :admin_port => node["keystone"]["admin_port"],
+    :admin_token => node["keystone"]["admin_token"]
   )
   notifies :restart, resources(:service => nova_api_ec2_service), :delayed
 end

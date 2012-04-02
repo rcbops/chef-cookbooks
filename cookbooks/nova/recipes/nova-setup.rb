@@ -20,25 +20,25 @@
 include_recipe "nova::nova-common"
 include_recipe "mysql::client"
 
-connection_info = {:host => node[:nova][:db_ipaddress], :username => "root", :password => node['mysql']['server_root_password']}
+connection_info = {:host => node["nova"]["db_ipaddress"], :username => "root", :password => node['mysql']['server_root_password']}
 mysql_database "create nova database" do
   connection connection_info
-  database_name node[:nova][:db]
+  database_name node["nova"]["db"]
   action :create
 end
 
-mysql_database_user node[:nova][:db_user] do
+mysql_database_user node["nova"]["db_user"] do
   connection connection_info
-  password node[:nova][:db_passwd]
+  password node["nova"]["db_passwd"]
   action :create
 end
 
-mysql_database_user node[:nova][:db_user] do
+mysql_database_user node["nova"]["db_user"] do
   connection connection_info
-  password node[:nova][:db_passwd]
-  database_name node[:nova][:db]
+  password node["nova"]["db_passwd"]
+  database_name node["nova"]["db"]
   host '%'
-  privileges [:all]
+  privileges ["all"]
   action :grant
 end
 
@@ -49,21 +49,21 @@ execute "nova-manage db sync" do
 end
 
 execute "nova-manage network create --label=public" do
-  command "nova-manage network create --multi_host='T' --label=#{node[:public][:label]} --fixed_range_v4=#{node[:public][:ipv4_cidr]} --num_networks=#{node[:public][:num_networks]} --network_size=#{node[:public][:network_size]} --bridge=#{node[:public][:bridge]} --bridge_interface=#{node[:public][:bridge_dev]} --dns1=#{node[:public][:dns1]} --dns2=#{node[:public][:dns2]}"
+  command "nova-manage network create --multi_host='T' --label=#{node["public"]["label"]} --fixed_range_v4=#{node["public"]["ipv4_cidr"]} --num_networks=#{node["public"]["num_networks"]} --network_size=#{node["public"]["network_size"]} --bridge=#{node["public"]["bridge"]} --bridge_interface=#{node["public"]["bridge_dev"]} --dns1=#{node["public"]["dns1"]} --dns2=#{node["public"]["dns2"]}"
   action :run
-  not_if "nova-manage network list | grep #{node[:public][:ipv4_cidr]}"
+  not_if "nova-manage network list | grep #{node["public"]["ipv4_cidr"]}"
 end
 
 execute "nova-manage network create --label=private" do
-  command "nova-manage network create --multi_host='T' --label=#{node[:private][:label]} --fixed_range_v4=#{node[:private][:ipv4_cidr]} --num_networks=#{node[:private][:num_networks]} --network_size=#{node[:private][:network_size]} --bridge=#{node[:private][:bridge]} --bridge_interface=#{node[:private][:bridge_dev]}"
+  command "nova-manage network create --multi_host='T' --label=#{node["private"]["label"]} --fixed_range_v4=#{node["private"]["ipv4_cidr"]} --num_networks=#{node["private"]["num_networks"]} --network_size=#{node["private"]["network_size"]} --bridge=#{node["private"]["bridge"]} --bridge_interface=#{node["private"]["bridge_dev"]}"
   action :run
-  not_if "nova-manage network list | grep #{node[:private][:ipv4_cidr]}"
+  not_if "nova-manage network list | grep #{node["private"]["ipv4_cidr"]}"
 end
 
 
-if node.has_key?(:floating) and node[:floating].has_key?(:ipv4_cidr)
+if node.has_key?(:floating) and node["floating"].has_key?(:ipv4_cidr)
   execute "nova-manage floating create" do
-    command "nova-manage floating create --ip_range=#{node[:floating][:ipv4_cidr]}"
+    command "nova-manage floating create --ip_range=#{node["floating"]["ipv4_cidr"]}"
     action :run
     not_if "nova-manage floating list"
   end

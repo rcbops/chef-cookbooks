@@ -50,17 +50,17 @@ template "/etc/nova/nova.conf" do
   group "root"
   mode "0644"
   variables(
-    :user => node[:nova][:db_user],
-    :passwd => node[:nova][:db_passwd],
-    :ip_address => node[:controller_ipaddress],
-    :db_name => node[:nova][:db],
-    :db_ipaddress => node[:nova][:db_ipaddress],
-    :rabbit_ipaddress => node[:rabbit][:rabbit_ipaddress],
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :glance_api_ipaddress => node[:glance][:api_ipaddress],
-    :api_port => node[:glance][:api_port],
-    :ipv4_cidr => node[:public][:ipv4_cidr],
-    :virt_type => node[:virt_type]
+    :user => node["nova"]["db_user"],
+    :passwd => node["nova"]["db_passwd"],
+    :ip_address => node["controller_ipaddress"],
+    :db_name => node["nova"]["db"],
+    :db_ipaddress => node["nova"]["db_ipaddress"],
+    :rabbit_ipaddress => node["rabbit"]["rabbit_ipaddress"],
+    :keystone_api_ipaddress => node["keystone"]["api_ipaddress"],
+    :glance_api_ipaddress => node["glance"]["api_ipaddress"],
+    :api_port => node["glance"]["api_port"],
+    :ipv4_cidr => node["public"]["ipv4_cidr"],
+    :virt_type => node["virt_type"]
   )
 end
 
@@ -73,9 +73,9 @@ template "/root/.novarc" do
     :user => 'admin',
     :tenant => 'openstack',
     :password => 'secrete',
-    :keystone_api_ipaddress => node[:keystone][:api_ipaddress],
-    :nova_api_ipaddress => node[:nova][:api_ipaddress],
-    :keystone_service_port => node[:keystone][:service_port],
+    :keystone_api_ipaddress => node["keystone"]["api_ipaddress"],
+    :nova_api_ipaddress => node["nova"]["api_ipaddress"],
+    :keystone_service_port => node["keystone"]["service_port"],
     :nova_api_version => '1.1',
     :keystone_region => 'RegionOne',
     :auth_strategy => 'keystone'
