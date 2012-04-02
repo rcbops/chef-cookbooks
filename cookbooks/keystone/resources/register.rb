@@ -1,9 +1,6 @@
 
 actions :create_service, :create_endpoint, :create_tenant, :create_user, :create_role, :grant_role
 
-# Chef 0.10.10 or greater
-default_action :create
-
 # In earlier versions of Chef the LWRP DSL doesn't support specifying
 # a default action, so you need to drop into Ruby.
 def initialize(*args)
