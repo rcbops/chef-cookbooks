@@ -19,11 +19,19 @@
 
 include_recipe "nova::nova-common"
 
-package "nova-novnc" do
+#TODO(breu): this needs to be abstracted for multi-distro support
+
+# package does not exist in ubuntu anymore
+#package "nova-novnc" do
+#  action :upgrade
+#end
+
+package "nova-vncproxy" do
   action :upgrade
 end
 
-package "nova-vncproxy" do
+# required for vnc console authentication
+package "nova-consoleauth" do
   action :upgrade
 end
 
@@ -34,6 +42,12 @@ execute "Fix permission Bug" do
 end
 
 service "nova-vncproxy" do
+  supports :status => true, :restart => true
+  action :enable
+  subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
+end
+
+service "nova-consoleauth" do
   supports :status => true, :restart => true
   action :enable
   subscribes :restart, resources(:template => "/etc/nova/nova.conf"), :delayed
