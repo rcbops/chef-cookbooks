@@ -22,3 +22,6 @@
 [submodule "cookbooks/ntp"]
 	path = cookbooks/ntp
 	url = https://github.com/opscode-cookbooks/ntp.git
+[submodule "cookbooks/nova"]
+	path = cookbooks/nova
+	url = git@github.com:rcbops/nova.git
