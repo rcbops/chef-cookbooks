@@ -31,3 +31,6 @@
 [submodule "cookbooks/glance"]
 	path = cookbooks/glance
 	url = git@github.com:rcbops/glance.git
+[submodule "cookbooks/horizon"]
+	path = cookbooks/horizon
+	url = git@github.com:rcbops/horizon.git
