@@ -28,3 +28,6 @@
 [submodule "cookbooks/keystone"]
 	path = cookbooks/keystone
 	url = git@github.com:rcbops/keystone.git
+[submodule "cookbooks/glance"]
+	path = cookbooks/glance
+	url = git@github.com:rcbops/glance.git
