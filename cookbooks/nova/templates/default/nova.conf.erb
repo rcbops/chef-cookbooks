@@ -47,8 +47,10 @@ libvirt_type=<%= @virt_type %>
 root_helper=sudo nova-rootwrap
 
 # VNCPROXY
-vncproxy_url=http://<%= @ip_address %>:6080
-vncproxy_wwwroot=/var/lib/nova/noVNC
+vncserver_proxyclient_address=<%= @ip_address %>
+vncserver_listen=<%= @ip_address %>
+novncproxy_base_url=http://<%= @ip_address %>:6080/vnc_auto.html
+xvpvncproxy_base_url=http://<%= @ip_address %>:6081/console
 
 # MISC
 use_deprecated_auth=false
