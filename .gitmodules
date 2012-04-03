@@ -25,3 +25,6 @@
 [submodule "cookbooks/nova"]
 	path = cookbooks/nova
 	url = git@github.com:rcbops/nova.git
+[submodule "cookbooks/keystone"]
+	path = cookbooks/keystone
+	url = git@github.com:rcbops/keystone.git
