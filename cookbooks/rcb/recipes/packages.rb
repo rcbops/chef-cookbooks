@@ -24,8 +24,9 @@ when "ubuntu","debian"
         command "apt-get update"
     end
 when "redhat","centos","fedora","scientific","amazon"
+    # refresh the yum metadata cache
     include_recipe "yum"
-    execute "apt-get update" do
-        command "yum update"
+    execute "yum repolist" do
+        command "yum repolist"
     end
 end
