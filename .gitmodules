@@ -34,3 +34,15 @@
 [submodule "cookbooks/horizon"]
 	path = cookbooks/horizon
 	url = git@github.com:rcbops/horizon.git
+[submodule "cookbooks/database"]
+	path = cookbooks/database
+	url = https://github.com/opscode-cookbooks/database.git
+[submodule "cookbooks/postgresql"]
+	path = cookbooks/postgresql
+	url = https://github.com/opscode-cookbooks/postgresql.git
+[submodule "cookbooks/aws"]
+	path = cookbooks/aws
+	url = https://github.com/opscode-cookbooks/aws.git
+[submodule "cookbooks/xfs"]
+	path = cookbooks/xfs
+	url = https://github.com/opscode-cookbooks/xfs.git
