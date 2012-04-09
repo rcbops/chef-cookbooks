@@ -46,3 +46,6 @@
 [submodule "cookbooks/xfs"]
 	path = cookbooks/xfs
 	url = https://github.com/opscode-cookbooks/xfs.git
+[submodule "cookbooks/mysql"]
+	path = cookbooks/mysql
+	url = https://github.com/rcbops/mysql.git
