@@ -6,5 +6,6 @@ run_list(
 default_attributes(
   "mysql" => {
     "allow_remote_root" => true
-  }
+  },
+  "package_component" => "essex-final",
 )
