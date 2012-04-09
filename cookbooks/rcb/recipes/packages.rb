@@ -35,5 +35,4 @@ when "redhat","centos","fedora","scientific","amazon"
         url "http://repos.fedorapeople.org/repos/apevec/openstack-preview/fedora-$releasever/noarch/"
         action :add
     end
-
 end
