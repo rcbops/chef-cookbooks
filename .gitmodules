@@ -49,3 +49,6 @@
 [submodule "cookbooks/mysql"]
 	path = cookbooks/mysql
 	url = https://github.com/rcbops/mysql.git
+[submodule "cookbooks/rabbitmq"]
+	path = cookbooks/rabbitmq
+	url = https://github.com/rcbops/rabbitmq.git
