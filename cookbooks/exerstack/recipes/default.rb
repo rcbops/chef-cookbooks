@@ -1,8 +1,17 @@
 
 
-%w{git bc euca2ools netcat}.each do |pkg|
-  package pkg do
-    action :install
+case node["platform"]
+when "ubuntu","debian"
+  %w{git bc euca2ools netcat}.each do |pkg|
+    package pkg do
+      action :install
+    end
+  end
+when "redhat","centos","fedora","scientific","amazon"
+  %w{git bc euca2ools nc}.each do |pkg|
+    package pkg do
+      action :install
+    end
   end
 end
 
