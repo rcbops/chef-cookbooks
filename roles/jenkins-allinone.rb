@@ -7,11 +7,11 @@ default_attributes(
   "mysql" => {
     "allow_remote_root" => true
   },
-  "package_component" => "essex-final"
-  "public": {
-    "bridge_dev": "eth0.100",
+  "package_component" => "essex-final",
+  "public" => {
+    "bridge_dev" => "eth0.100"
   },
-  "private": {
-    "bridge_dev": "eth0.101"
+  "private" => {
+    "bridge_dev" => "eth0.101"
   }
 )
