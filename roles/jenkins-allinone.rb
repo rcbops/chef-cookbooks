@@ -13,5 +13,6 @@ default_attributes(
   },
   "private" => {
     "bridge_dev" => "eth0.101"
-  }
+  },
+  virt_type => "qemu"
 )
