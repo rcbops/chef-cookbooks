@@ -10,6 +10,6 @@ export EC2_URL=<%= "http://#{node['nova']['api_ipaddress']}:8773/services/Cloud"
 export EC2_ACCESS_KEY=<%= node["credentials"]["EC2"]["admin"]["access"] %>
 export EC2_SECRET_KEY=<%= node["credentials"]["EC2"]["admin"]["secret"] %>
 export SUSPEND_TIMEOUT=120
-export BOOT_TIMEOUT=60
+export BOOT_TIMEOUT=120
 export ACTIVE_TIMEOUT=240
 
