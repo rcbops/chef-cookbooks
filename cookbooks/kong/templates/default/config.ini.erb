@@ -29,3 +29,10 @@ user = <%= @keystone_user %>
 password = <%= @keystone_pass %>
 tenantid = <%= @keystone_tenantid %>
 region = <%= @keystone_region %>
+
+[KongRequester]
+auth_url = http://<%= @ip_address %>:<%= @keystone_service_port %>
+user = <%= @keystone_user %>
+password = <%= @keystone_pass %>
+tenantid = <%= @keystone_tenantid %>
+region = <%= @keystone_region %>
