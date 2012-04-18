@@ -24,16 +24,16 @@
 	url = https://github.com/opscode-cookbooks/ntp.git
 [submodule "cookbooks/nova"]
 	path = cookbooks/nova
-	url = git@github.com:rcbops/nova.git
+	url = https://github.com/rcbops/nova.git
 [submodule "cookbooks/keystone"]
 	path = cookbooks/keystone
-	url = git@github.com:rcbops/keystone.git
+	url = https://github.com/rcbops/keystone.git
 [submodule "cookbooks/glance"]
 	path = cookbooks/glance
-	url = git@github.com:rcbops/glance.git
+	url = https://github.com/rcbops/glance.git
 [submodule "cookbooks/horizon"]
 	path = cookbooks/horizon
-	url = git@github.com:rcbops/horizon.git
+	url = https://github.com/rcbops/horizon.git
 [submodule "cookbooks/database"]
 	path = cookbooks/database
 	url = https://github.com/opscode-cookbooks/database.git
