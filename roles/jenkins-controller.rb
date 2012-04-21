@@ -5,7 +5,8 @@ run_list(
 )
 default_attributes(
   "mysql" => {
-    "allow_remote_root" => true
+    "allow_remote_root" => true,
+    "root_network_acl" => "%"
   },
   "package_component" => "essex-final",
   "public" => {
