@@ -1,0 +1,54 @@
+[submodule "cookbooks/apache2"]
+	path = cookbooks/apache2
+	url = https://github.com/opscode-cookbooks/apache2.git
+[submodule "cookbooks/openssl"]
+	path = cookbooks/openssl
+	url = https://github.com/opscode-cookbooks/openssl.git
+[submodule "cookbooks/erlang"]
+	path = cookbooks/erlang
+	url = https://github.com/opscode-cookbooks/erlang.git
+[submodule "cookbooks/apt"]
+	path = cookbooks/apt
+	url = https://github.com/opscode-cookbooks/apt.git
+[submodule "cookbooks/selinux"]
+	path = cookbooks/selinux
+	url = https://github.com/opscode-cookbooks/selinux.git
+[submodule "cookbooks/yum"]
+	path = cookbooks/yum
+	url = https://github.com/opscode-cookbooks/yum.git
+[submodule "cookbooks/openssh"]
+	path = cookbooks/openssh
+	url = https://github.com/opscode-cookbooks/openssh.git
+[submodule "cookbooks/ntp"]
+	path = cookbooks/ntp
+	url = https://github.com/opscode-cookbooks/ntp.git
+[submodule "cookbooks/nova"]
+	path = cookbooks/nova
+	url = https://github.com/rcbops/nova.git
+[submodule "cookbooks/keystone"]
+	path = cookbooks/keystone
+	url = https://github.com/rcbops/keystone.git
+[submodule "cookbooks/glance"]
+	path = cookbooks/glance
+	url = https://github.com/rcbops/glance.git
+[submodule "cookbooks/horizon"]
+	path = cookbooks/horizon
+	url = https://github.com/rcbops/horizon.git
+[submodule "cookbooks/database"]
+	path = cookbooks/database
+	url = https://github.com/opscode-cookbooks/database.git
+[submodule "cookbooks/postgresql"]
+	path = cookbooks/postgresql
+	url = https://github.com/opscode-cookbooks/postgresql.git
+[submodule "cookbooks/aws"]
+	path = cookbooks/aws
+	url = https://github.com/opscode-cookbooks/aws.git
+[submodule "cookbooks/xfs"]
+	path = cookbooks/xfs
+	url = https://github.com/opscode-cookbooks/xfs.git
+[submodule "cookbooks/mysql"]
+	path = cookbooks/mysql
+	url = https://github.com/rcbops/mysql.git
+[submodule "cookbooks/rabbitmq"]
+	path = cookbooks/rabbitmq
+	url = https://github.com/rcbops/rabbitmq.git

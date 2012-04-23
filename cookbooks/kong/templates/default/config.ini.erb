@@ -27,5 +27,12 @@ admin_port = <%= @keystone_admin_port %>
 apiver = <%= @keystone_apiver %>
 user = <%= @keystone_user %>
 password = <%= @keystone_pass %>
-tenantid = <%= @keystone_tenantid %>
+tenantname = <%= @keystone_tenantid %>
+region = <%= @keystone_region %>
+
+[KongRequester]
+auth_url = http://<%= @ip_address %>:<%= @keystone_service_port %>
+user = <%= @keystone_user %>
+password = <%= @keystone_pass %>
+tenantname = <%= @keystone_tenantid %>
 region = <%= @keystone_region %>
