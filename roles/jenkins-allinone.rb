@@ -7,6 +7,10 @@ default_attributes(
   "mysql" => {
     "allow_remote_root" => true
   },
+  "glance" => {
+    "image_upload" => true,
+    "images" => ["tty"]
+  },
   "package_component" => "essex-final",
   "public" => {
     "bridge_dev" => "eth0.100"
