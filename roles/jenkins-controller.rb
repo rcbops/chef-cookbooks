@@ -8,6 +8,10 @@ default_attributes(
     "allow_remote_root" => true,
     "root_network_acl" => "%"
   },
+  "glance" => {
+    "image_upload" => true,
+    "images" => ["tty"]
+  },
   "package_component" => "essex-final",
   "public" => {
     "bridge_dev" => "eth0.100"
