@@ -52,3 +52,6 @@
 [submodule "cookbooks/rabbitmq"]
 	path = cookbooks/rabbitmq
 	url = https://github.com/rcbops/rabbitmq.git
+[submodule "cookbooks/swift"]
+	path = cookbooks/swift
+	url = https://github.com/rcbops/swift
