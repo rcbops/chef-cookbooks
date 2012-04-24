@@ -15,100 +15,241 @@ Then upload it to the Chef Server:
     
     knife role from file roles/base_example.rb
 
+Role Descriptions
+=================
 
-Roles in use:
+_allinone_
+----------
 
-role - base
-    recipe - rcb::packages
-    recipe - openssh
-    recipe - ntp
+Description: This will create an all-in-one (all services on one box) Openstack environment.
 
-Simple:
-~~~~~
-role - allinone
-    role - single-controller
-        role - base
-        role - mysql-master
-        role - rabbitmq-server
-        role - keystone
-        role - glance-registry
-        role - glance-api
-        recipe - nova::nova-setup
-        role - nova-scheduler
-        role - nova-api-ec2
-        role - nova-api-os-compute
-        role - nova-volume
-        role - nova-vncproxy
-        role - horizon-server
+### run_list
 
-    role - single-compute
-        role - base
-        recipe - nova::compute
+    role[single-controller]
+    role[single-compute]
 
+_base_
+---------
 
-Complex:
-~~~~~~~
-role - single-controller
-    role - base
-    role - mysql-master
-    role - rabbitmq-server
-    recipe - keystone::server
-    recipe - glance
-    recipe - nova::nova-setup
-    recipe - nova::scheduler
-    recipe - nova::api-ec2
-    recipe - nova::api-os-compute
-    recipe - nova::volume
-    recipe - nova::vncproxy
-    role - horizon-server
+Description: "Base role for a server" __TODO__: Needs a better description
 
-role - single-compute
-    role - base
-    recipe - nova::compute
+### run_list
+    recipe[rcb::packages]
+    recipe[openssh]
+    recipe[ntp]
 
+### default_attributes
 
-Even More Complex:
-~~~~~~~~~~~~
-role - glance-api
-    role - base
-    recipe - glance::api
+    "ntp" => {
+      "servers" => ["0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org"]
+    }
 
-role - glance-registry
-    role - base
-    recipe - glance::registry
+### Dependencies
 
-role - keystone
-    role - base
-    recipe - keystone::server
+_glance-api_
+---------------
 
-role - mysql-master
-    role - base
-    recipe - mysql::Server
+Description:  "Glance API server"
 
-role - nova-api
-    role - base
-    recipe - nova::setup
-    recipe - nova::api-ec2
-    recipe - nova::api-os-compute
+### run_list
+    role[base]
+    recipe[glance::api]
 
-role - nova-scheduler
-    role - base
-    recipe - nova::nova-setup
-    recipe - nova::nova::scheduler
+### Dependencies
 
-role - rabbitmq-server
-    role - base
-    recipe - erlang::default
-    recipe - rabbitmq::default
+_glance-registry_
+--------------------
 
-role - horizon
-    role - base
-    recipe - horizon::Server
+Description: "Glance Registry server"
 
-role - nova-volume
-    role - base
-    recipe - nova::volume
+### run_list(
+    role[base]
+    recipe[glance::registry]
 
-role - single-compute
-    role - base
-    recipe - nova::compute
+### Dependencies
+
+_glance_
+--------
+
+Description: "Glance server"
+
+### run_list
+    role[base]
+    recipe[glance]
+
+### Dependencies
+
+_ha-controller_
+---------------
+
+__TODO__: Needs to be filled out
+
+_horizon-server_
+----------------
+
+__TODO__: Needs to be filled out
+
+_jenkins-allinone_
+------------------
+
+Description: this inherits from role[allinone], sets default attributes required by our jenkins jobs.
+
+### run_list
+
+    role[allinone]
+
+### default_attributes
+
+    "mysql" => {
+      "allow_remote_root" => true
+    },
+    "glance" => {
+      "image_upload" => true,
+      "images" => ["tty"]
+    },
+    "package_component" => "essex-final",
+    "public" => {
+      "bridge_dev" => "eth0.100"
+    },
+    "private" => {
+      "bridge_dev" => "eth0.101"
+    },
+    "virt_type" => "qemu"
+
+_jenkins-compute_
+-----------------
+
+Description: This inherits from role[single-compute], and sets default attributes required by our jenkins jobs.
+
+### run_list
+
+    role[single-compute]
+
+### default_attributes
+
+    "mysql" => {
+      "allow_remote_root" => true
+    },
+    "package_component" => "essex-final",
+    "public" => {
+      "bridge_dev" => "eth0.100"
+    },
+    "private" => {
+      "bridge_dev" => "eth0.101"
+    },
+    "virt_type" => "qemu"
+
+_jenkins-controller_
+--------------------
+
+Description: This inherits from role[single-controller], and sets default attributes required by our jenkins jobs.
+
+### run_list
+
+    role[single-controller]
+
+### default_attributes
+
+    "mysql" => {
+      "allow_remote_root" => true,
+      "root_network_acl" => "%"
+    },
+    "glance" => {
+      "image_upload" => true,
+      "images" => ["tty"]
+    },
+    "package_component" => "essex-final",
+    "public" => {
+      "bridge_dev" => "eth0.100"
+    },
+    "private" => {
+      "bridge_dev" => "eth0.101"
+    },
+    "virt_type" => "qemu"
+
+_keystone_
+----------
+
+__TODO__: Rename to keystone-server
+__TODO__: Needs to be filled out
+
+_mysql-master_
+--------------
+
+__TODO__: Needs to be filled out
+
+_nova-api-ec2_
+--------------
+
+__TODO__: Needs to be filled out
+
+_nova-api-os-compute_
+---------------------
+
+__TODO__: Needs to be filled out
+
+_nova-api_
+----------
+
+__TODO__: Needs to be filled out
+
+_nova-misc-services_
+--------------------
+
+__TODO__: Needs to be filled out
+
+_nova-scheduler_
+----------------
+
+__TODO__: Needs to be filled out
+
+_nova-vncproxy_
+---------------
+
+__TODO__: Needs to be filled out
+
+_nova-volume_
+-------------
+
+__TODO__: Needs to be filled out
+
+_rabbitmq-server_
+-----------------
+
+__TODO__: Needs to be filled out
+
+_single-compute_
+----------------
+
+__TODO__: Needs to be filled out
+
+_single-controller_
+-------------------
+
+__TODO__: Needs to be filled out
+
+_swift-account-server_
+----------------------
+
+__TODO__: Needs to be filled out
+
+_swift-all-in-one_
+------------------
+
+__TODO__: Needs to be filled out
+
+_swift-container-server_
+------------------------
+
+__TODO__: Needs to be filled out
+
+_swift-object-server_
+---------------------
+
+__TODO__: Needs to be filled out
+
+_swift-proxy-server_
+--------------------
+
+__TODO__: Needs to be filled out
+
