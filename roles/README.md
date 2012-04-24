@@ -21,7 +21,12 @@ Role Descriptions
 _allinone_
 ----------
 
-__TODO__: Needs to be filled out
+Description: This will create an all-in-one (all services on one box) Openstack environment.
+
+### run_list
+
+    role[single-controller]
+    role[single-compute]
 
 _base_
 ---------
@@ -73,7 +78,7 @@ Description: this inherits from role[allinone], sets default attributes required
 
 ### run_list
 
-    "role[allinone]"
+    role[allinone]
 
 ### default_attributes
 
@@ -100,7 +105,7 @@ Description: This inherits from role[single-compute], and sets default attribute
 
 ### run_list
 
-    "role[single-compute]"
+    role[single-compute]
 
 ### default_attributes
 
@@ -123,7 +128,7 @@ Description: This inherits from role[single-controller], and sets default attrib
 
 ### run_list
 
-    "role[single-controller]"
+    role[single-controller]
 
 ### default_attributes
 
