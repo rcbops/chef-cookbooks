@@ -44,22 +44,40 @@ Description: "Base role for a server" __TODO__: Needs a better description
       "servers" => ["0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org"]
     }
 
-### override_attributes
+### Dependencies
 
 _glance-api_
 ---------------
 
-__TODO__: Needs to be filled out
+Description:  "Glance API server"
+
+### run_list
+    role[base]
+    recipe[glance::api]
+
+### Dependencies
 
 _glance-registry_
 --------------------
 
-__TODO__: Needs to be filled out
+Description: "Glance Registry server"
+
+### run_list(
+    role[base]
+    recipe[glance::registry]
+
+### Dependencies
 
 _glance_
 --------
 
-__TODO__: Needs to be filled out
+Description: "Glance server"
+
+### run_list
+    role[base]
+    recipe[glance]
+
+### Dependencies
 
 _ha-controller_
 ---------------
