@@ -8,5 +8,5 @@ default_attributes(
   "glance" => {
     "image_upload" => true,
     "images" => ["tty"]
-  },
+  }
 )
