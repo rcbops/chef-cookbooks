@@ -5,7 +5,7 @@ default[:keystone][:admin_port] = "35357"
 default[:keystone][:api_version] = "v2.0"
 default[:keystone][:user] = "admin"
 default[:keystone][:password] = "secrete"
-default[:keystone][:tenantid] = "openstack"
+default[:keystone][:tenantid] = "admin"
 default[:keystone][:region] = "RegionOne"
 
 default[:nova][:network_label] = "public"
