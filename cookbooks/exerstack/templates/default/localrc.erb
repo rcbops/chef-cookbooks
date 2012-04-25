@@ -7,8 +7,13 @@ export NOVA_PASSWORD=<%= @keystone_admin_password %>
 export NOVA_REGION_NAME=<%= @keystone_region_name %>
 export PACKAGESET=<%= node[:package_component] %>
 export EC2_URL=<%= "http://#{node['nova']['api_ipaddress']}:8773/services/Cloud" %>
+<% if @ec2_access == "" -%>
+export EC2_ACCESS_KEY=<%= node['credentials']['EC2']['admin']['access'] %>
+export EC2_SECRET_KEY=<%= node['credentials']['EC2']['admin']['secret'] %>
+<% else -%>
 export EC2_ACCESS_KEY=<%= @ec2_access %>
 export EC2_SECRET_KEY=<%= @ec2_secret %>
+<% end -%>
 export SUSPEND_TIMEOUT=120
 export BOOT_TIMEOUT=120
 export ACTIVE_TIMEOUT=240
