@@ -1,14 +1,19 @@
 #!/bin/bash
 
-export HOST_IP=<%= node[:controller_ipaddress] %>
-export NOVA_PROJECT_ID=<%= node[:keystone][:tenantid] %>
-export NOVA_USERNAME=<%= node[:keystone][:user] %>
-export NOVA_PASSWORD=<%= node[:keystone][:password] %>
-export NOVA_REGION_NAME=<%= node[:keystone][:region] %>
+export HOST_IP=<%= node["ipaddress"] %>
+export NOVA_PROJECT_ID=<%= @keystone_admin_tenantname %>
+export NOVA_USERNAME=<%= @keystone_admin_username %>
+export NOVA_PASSWORD=<%= @keystone_admin_password %>
+export NOVA_REGION_NAME=<%= @keystone_region_name %>
 export PACKAGESET=<%= node[:package_component] %>
 export EC2_URL=<%= "http://#{node['nova']['api_ipaddress']}:8773/services/Cloud" %>
-export EC2_ACCESS_KEY=<%= node["credentials"]["EC2"]["admin"]["access"] %>
-export EC2_SECRET_KEY=<%= node["credentials"]["EC2"]["admin"]["secret"] %>
+<% if @ec2_access == "" -%>
+export EC2_ACCESS_KEY=<%= node['credentials']['EC2']['admin']['access'] %>
+export EC2_SECRET_KEY=<%= node['credentials']['EC2']['admin']['secret'] %>
+<% else -%>
+export EC2_ACCESS_KEY=<%= @ec2_access %>
+export EC2_SECRET_KEY=<%= @ec2_secret %>
+<% end -%>
 export SUSPEND_TIMEOUT=120
 export BOOT_TIMEOUT=120
 export ACTIVE_TIMEOUT=240
