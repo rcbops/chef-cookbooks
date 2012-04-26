@@ -2,7 +2,8 @@ name "jenkins-glance"
 description "Jenkins Glance server"
 run_list(
   "role[base]",
-  "recipe[glance]"
+  "role[glance-registry]",
+  "role[glance-api]"
 )
 default_attributes(
   "glance" => {
