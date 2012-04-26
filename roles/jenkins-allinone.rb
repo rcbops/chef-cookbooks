@@ -12,11 +12,11 @@ default_attributes(
     "images" => ["tty"]
   },
   "package_component" => "essex-final",
-  "public" => {
-    "bridge_dev" => "eth0.100"
-  },
-  "private" => {
-    "bridge_dev" => "eth0.101"
-  },
-  "virt_type" => "qemu"
+  "nova" => {
+    "libvirt" => { "virt_type" => "qemu" },
+    "network" => {
+      "public" => { "bridge_dev" => "eth0.100" },
+      "private" => { "bridge_dev" => "eth0.101" },
+    }
+  }
 )
