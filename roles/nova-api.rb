@@ -1,4 +1,4 @@
-name "api"
+name "nova-api"
 description "Nova API"
 run_list(
   "role[base]",
