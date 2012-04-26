@@ -1,4 +1,4 @@
-name "misc-services"
+name "nova-misc-services"
 description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
