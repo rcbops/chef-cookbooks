@@ -30,8 +30,8 @@ default_attributes(
             "ipv4_cidr" => "192.168.200.0/24",
             "num_networks" => "1",
             "network_size" => "255",
-            "bridge" => "br200",
-            "bridge_dev" => "eth0.200",
+            "bridge" => "br101",
+            "bridge_dev" => "eth0.101",
             "dns1" => "8.8.8.8",
             "dns2" => "8.8.4.4"
         }
