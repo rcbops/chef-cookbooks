@@ -14,6 +14,10 @@ default_attributes(
   "package_component" => "essex-final",
   "nova" => {
     "libvirt" => { "virt_type" => "qemu" },
+  }
+)
+override_attributes(
+  "nova" => {
     "networks" => [
         {
             "label" => "public",
