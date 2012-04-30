@@ -97,6 +97,7 @@ rabbit, something, arbitary_value = Chef::Search::Query.new.search(:node, "roles
     Chef::Log.info("kong/rabbitmq: using search")
     rabbit_ip_address = rabbit[0]['ipaddress']
     rabbit_user = rabbit[0]['rabbitmq']['default_user']
+    rabbit_password = rabbit[0]['rabbitmq']['default_pass']
   else
     Chef::Log.info("nova-common/rabbitmq: NOT using search")
     rabbit_ip_address = node['ipaddress']
@@ -120,6 +121,8 @@ template "/opt/kong/etc/config.ini" do
     :keystone_region => 'RegionOne',
     :nova_network_label => node[:nova][:network_label],
     :rabbit_user => rabbit_user,
+    :rabbit_password => rabbit_password,
+    :rabbit_ip_address => rabbit_ip_address,
     :swift_auth_port => node[:swift][:auth_port],
     :swift_auth_prefix => node[:swift][:auth_prefix],
     :swift_ssl => node[:swift][:auth_ssl],
