@@ -82,12 +82,31 @@ Description: "Glance server"
 _ha-controller_
 ---------------
 
-__TODO__: Needs to be filled out
+Description: "Installs and configures a (non-HA) Nova Controller."
+__TODO__: DO NOT USE THIS ROLE.
+
+### run_list
+    role[base]
+    recipe[rabbitmq]
+    recipe[keystone::server]
+    recipe[glance]
+    recipe[nova::nova-setup]
+    recipe[nova::scheduler]
+    recipe[nova::api-ec2]
+    recipe[nova::api-metadata]
+    recipe[nova::api-os-compute]
+    recipe[nova::api-os-volume]
+    recipe[nova::volume]
+    recipe[horizon::server]
 
 _horizon-server_
 ----------------
 
-__TODO__: Needs to be filled out
+Description: "Horizon (OpenStack Dashboard) Server"
+
+### run_list
+    role[base]
+    recipe[horizon::server]
 
 _jenkins-allinone_
 ------------------
@@ -170,28 +189,61 @@ Description: This inherits from role[single-controller], and sets default attrib
 _keystone_
 ----------
 
+Description: "Installs and Configures a Keystone Server"
 __TODO__: Rename to keystone-server
-__TODO__: Needs to be filled out
+
+### run_list
+    role[base]
+    recipe[keystone::server]
+
+### dependencies
+    Expects that a node with role[mysql-master] exists
 
 _mysql-master_
 --------------
 
-__TODO__: Needs to be filled out
+Description: "MySQL Server (non-ha)"
+
+### run_list
+    role[base]
+    recipe[mysql::server]
 
 _nova-api-ec2_
 --------------
 
-__TODO__: Needs to be filled out
+Description: "Installs and Configures the OpenStack EC2 compatability API."
+
+### run_list
+    role[base]
+    recipe[nova::nova-setup]
+    recipe[nova::api-ec2]
+
+__TODO__: Need to make sure this list is correct
 
 _nova-api-os-compute_
 ---------------------
 
-__TODO__: Needs to be filled out
+Description: "Installs and Configures the OpenStack API."
+
+### run_list
+    role[base]
+    recipe[nova::nova-setup]
+    recipe[nova::api-os-compute]
+
+__TODO__: Need to make sure this list is correct
 
 _nova-api_
 ----------
 
-__TODO__: Needs to be filled out
+Description: "Installs and Configures both OpenStack APIs (OS and EC2)."
+
+### run_list
+    role[base]
+    recipe[nova::nova-setup]
+    recipe[nova::api-ec2]
+    recipe[nova::api-os-compute]
+
+__TODO__: Need to make sure this list is correct
 
 _nova-misc-services_
 --------------------
@@ -201,32 +253,69 @@ __TODO__: Needs to be filled out
 _nova-scheduler_
 ----------------
 
-__TODO__: Needs to be filled out
+Description: "Installs the Nova Scheduler Service."
+
+### run_list
+    role[base]
+    recipe[nova::nova-setup]
+    recipe[nova::scheduler]
 
 _nova-vncproxy_
 ---------------
 
-__TODO__: Needs to be filled out
+Description: "Installs the Nova VNCProxy Service."
+
+### run_list
+    role[base]
+    recipe[nova::vncproxy]
 
 _nova-volume_
 -------------
 
-__TODO__: Needs to be filled out
+Description: "Installs the Nova Volume Service."
+
+### run_list
+    role[base]
+    recipe[nova::volume]
 
 _rabbitmq-server_
 -----------------
 
-__TODO__: Needs to be filled out
+Description: "Installs a RabbitMQ Server."
+
+### run_list
+    role[base]
+    recipe[erlang::default]
+    recipe[rabbitmq::default]
 
 _single-compute_
 ----------------
 
-__TODO__: Needs to be filled out
+Description: "Installs the Nova Compute Service."
+
+### run_list
+    role[base]
+    recipe[nova::compute]
 
 _single-controller_
 -------------------
 
-__TODO__: Needs to be filled out
+Description: "Installs and configures a (non-HA) Nova Controller."
+
+### run_list
+    role[base]
+    role[mysql-master]
+    role[rabbitmq-server]
+    role[keystone]
+    role[glance-registry]
+    role[glance-api]
+    recipe[nova::nova-setup]
+    role[nova-scheduler]
+    role[nova-api-ec2]
+    role[nova-api-os-compute]
+    role[nova-volume]
+    role[nova-vncproxy]
+    role[horizon-server]
 
 _swift-account-server_
 ----------------------
