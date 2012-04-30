@@ -2,13 +2,13 @@
 
 case node["platform"]
 when "ubuntu","debian"
-  %w{git bc euca2ools netcat}.each do |pkg|
+  %w{git bc euca2ools netcat glance-client}.each do |pkg|
     package pkg do
       action :install
     end
   end
 when "redhat","centos","fedora","scientific","amazon"
-  %w{git bc euca2ools nc}.each do |pkg|
+  %w{git bc euca2ools nc openstack-glance}.each do |pkg|
     package pkg do
       action :install
     end
