@@ -8,7 +8,7 @@ when "ubuntu","debian"
     end
   end
 when "redhat","centos","fedora","scientific","amazon"
-  %w{git bc euca2ools nc openstack-glance}.each do |pkg|
+  %w{git bc euca2ools nc openstack-glance openstack-keystone}.each do |pkg|
     package pkg do
       action :install
     end
