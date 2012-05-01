@@ -1,7 +1,6 @@
 name "base"
 description "Base role for a server"
 run_list(
-  "recipe[rcb::packages]",
   "recipe[openssh]",
   "recipe[ntp]"
 )
