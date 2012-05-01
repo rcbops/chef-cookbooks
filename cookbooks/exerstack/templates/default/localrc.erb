@@ -6,7 +6,7 @@ export NOVA_USERNAME=<%= @keystone_admin_username %>
 export NOVA_PASSWORD=<%= @keystone_admin_password %>
 export NOVA_REGION_NAME=<%= @keystone_region_name %>
 export PACKAGESET=<%= node[:package_component] %>
-export EC2_URL=<%= "http://#{node['nova']['api_ipaddress']}:8773/services/Cloud" %>
+export EC2_URL=<%= node["nova"]["ec2"]["publicURL"] %>
 <% if @ec2_access == "" -%>
 export EC2_ACCESS_KEY=<%= node['credentials']['EC2']['admin']['access'] %>
 export EC2_SECRET_KEY=<%= node['credentials']['EC2']['admin']['secret'] %>
