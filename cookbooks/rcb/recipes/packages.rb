@@ -30,9 +30,9 @@ when "redhat","centos","fedora","scientific","amazon"
         command "yum repolist"
     end
 
-    yum_repository "fedora-openstack-preview" do
-        repo_name "fedora-openstack-preview"
-        url "http://repos.fedorapeople.org/repos/apevec/openstack-preview/fedora-$releasever/noarch/"
-        action :add
-    end
+#    yum_repository "fedora-openstack-preview" do
+#        repo_name "fedora-openstack-preview"
+#        url "http://repos.fedorapeople.org/repos/apevec/openstack-preview/fedora-$releasever/noarch/"
+#        action :add
+#    end
 end

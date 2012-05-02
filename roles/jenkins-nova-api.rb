@@ -1,16 +1,11 @@
-name "jenkins-controller"
-description "This inherits from role[single-controller], and sets default attributes required for to run this role via jenkins"
+name "jenkins-nova-api"
+description "Jenkins Nova API"
 run_list(
-  "role[single-controller]"
+  "role[nova-api]",
 )
 default_attributes(
   "mysql" => {
-    "allow_remote_root" => true,
-    "root_network_acl" => "%"
-  },
-  "glance" => {
-    "image_upload" => true,
-    "images" => ["tty"]
+    "allow_remote_root" => true
   },
   "package_component" => "essex-final",
   "nova" => {
