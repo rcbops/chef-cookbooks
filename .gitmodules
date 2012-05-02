@@ -58,3 +58,6 @@
 [submodule "cookbooks/osops-utils"]
 	path = cookbooks/osops-utils
 	url = https://github.com/rcbops/osops-utils.git
+[submodule "cookbooks/dsh"]
+	path = cookbooks/dsh
+	url = https://github.com/rcbops/dsh
