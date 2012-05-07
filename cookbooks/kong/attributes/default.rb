@@ -13,7 +13,7 @@ default[:nova][:network_label] = "public"
 # default[:rabbitmq][:host] = "127.0.0.1"
 default[:rabbitmq][:user] = "guest"
 
-# default[:swift][:auth_host] = "127.0.0.1"
+default[:swift][:auth_host] = "127.0.0.1"
 default[:swift][:auth_port] = "443"
 default[:swift][:auth_prefix] = "/auth/"
 default[:swift][:auth_ssl] = "yes"
