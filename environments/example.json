@@ -1,0 +1,47 @@
+{
+  "name": "demo_rcb_me",
+  "description": "Chef-server example environment",
+  "cookbook_versions": {
+  },
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+  "default_attributes": {
+    "mysql": {
+      "allow_remote_root": true,
+      "root_network_acl": "%"
+    },
+    "glance": {
+      "image_upload": true,
+      "images": ["tty", "oneiric", "natty", "maverick"]
+    },
+    "floating": "true",
+    "package_component": "essex-final"
+  },
+  "override_attributes": {
+    "nova": {
+      "network": { "floating": { "ipv4_cidr": "10.254.254.0/24" } },
+      "networks": [
+        {
+            "label": "public",
+            "ipv4_cidr": "10.10.100.0/24",
+            "num_networks": "1",
+            "network_size": "255",
+            "bridge": "br100",
+            "bridge_dev": "eth0.100",
+            "dns1": "8.8.8.8",
+            "dns2": "8.8.4.4"
+        },
+        {
+            "label": "private",
+            "ipv4_cidr": "172.16.101.0/24",
+            "num_networks": "1",
+            "network_size": "255",
+            "bridge": "br101",
+            "bridge_dev": "eth0.101",
+            "dns1": "8.8.8.8",
+            "dns2": "8.8.4.4"
+        }
+      ]
+    }
+  }
+}
