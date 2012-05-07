@@ -81,7 +81,7 @@ template "/opt/kong/etc/config.ini" do
   group "root"
   mode "0644"
   variables(
-    :ip_address => keystone_api_ip,
+    :swift_auth_host => node[:swift][:auth_host],
     :swift_auth_port => node[:swift][:auth_port],
     :swift_auth_prefix => node[:swift][:auth_prefix],
     :swift_ssl => node[:swift][:auth_ssl],
