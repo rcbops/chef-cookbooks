@@ -12,7 +12,7 @@ For example, create `roles/base_example.rb`:
     #override_attributes()
 
 Then upload it to the Chef Server:
-    
+
     knife role from file roles/base_example.rb
 
 Role Descriptions
@@ -34,7 +34,6 @@ _base_
 Description: "Base role for a server" __TODO__: Needs a better description
 
 ### run_list
-    recipe[rcb::packages]
     recipe[openssh]
     recipe[ntp]
 
