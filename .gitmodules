@@ -67,3 +67,6 @@
 [submodule "cookbooks/kong"]
 	path = cookbooks/kong
 	url = https://github.com/rcbops/kong-cookbooks
+[submodule "cookbooks/collectd"]
+	path = cookbooks/collectd
+	url = https://github.com/rcbops/collectd-cookbooks
