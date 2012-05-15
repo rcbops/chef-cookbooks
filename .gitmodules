@@ -61,3 +61,12 @@
 [submodule "cookbooks/dsh"]
 	path = cookbooks/dsh
 	url = https://github.com/rcbops/dsh
+[submodule "cookbooks/exerstack"]
+	path = cookbooks/exerstack
+	url = https://github.com/rcbops/exerstack-cookbooks
+[submodule "cookbooks/kong"]
+	path = cookbooks/kong
+	url = https://github.com/rcbops/kong-cookbooks
+[submodule "cookbooks/collectd"]
+	path = cookbooks/collectd
+	url = https://github.com/rcbops/collectd-cookbooks
