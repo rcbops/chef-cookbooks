@@ -6,7 +6,7 @@
   "json_class": "Chef::Environment",
   "chef_type": "environment",
   "default_attributes": {
-    "developer_mode": "false",
+    "developer_mode": false,
     "mysql": {
       "allow_remote_root": true,
       "root_network_acl": "%"
