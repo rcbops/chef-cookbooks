@@ -64,3 +64,12 @@
 [submodule "cookbooks/kong-cookbooks"]
 	path = cookbooks/kong-cookbooks
 	url = git@github.com:mancdaz/kong-cookbooks.git
+[submodule "cookbooks/exerstack"]
+	path = cookbooks/exerstack
+	url = https://github.com/rcbops/exerstack-cookbooks
+[submodule "cookbooks/kong"]
+	path = cookbooks/kong
+	url = https://github.com/rcbops/kong-cookbooks
+[submodule "cookbooks/collectd"]
+	path = cookbooks/collectd
+	url = https://github.com/rcbops/collectd-cookbooks
