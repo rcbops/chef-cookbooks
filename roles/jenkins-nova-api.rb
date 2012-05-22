@@ -1,7 +1,7 @@
 name "jenkins-nova-api"
 description "Jenkins Nova API"
 run_list(
-  "role[nova-api]",
+  "role[nova-api]"
 )
 default_attributes(
   "mysql" => {
