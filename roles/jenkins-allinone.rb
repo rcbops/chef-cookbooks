@@ -17,6 +17,11 @@ default_attributes(
   }
 )
 override_attributes(
+  "osops_networks" => {
+    "public" => "192.168.1.0/24",
+    "management" => "192.168.1.0/24",
+    "nova" => "192.168.1.0/24"
+  },
   "nova" => {
     "networks" => [
         {
