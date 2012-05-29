@@ -12,7 +12,7 @@ For example, create `roles/base_example.rb`:
     #override_attributes()
 
 Then upload it to the Chef Server:
-    
+
     knife role from file roles/base_example.rb
 
 Role Descriptions
@@ -287,6 +287,21 @@ Description: "Installs a RabbitMQ Server."
     role[base]
     recipe[erlang::default]
     recipe[rabbitmq::default]
+
+ nova-controller
+----------------
+
+Description "Nova core functions"
+
+### run_list
+  role[base]
+  recipe[nova::nova-setup]
+  role[nova-scheduler]
+  role[nova-api-ec2]
+  role[nova-api-os-compute]
+  role[nova-volume]
+  role[nova-vncproxy]
+)
 
 _single-compute_
 ----------------
