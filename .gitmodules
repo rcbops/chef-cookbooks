@@ -27,13 +27,13 @@
 	url = https://github.com/rcbops/nova.git
 [submodule "cookbooks/keystone"]
 	path = cookbooks/keystone
-	url = https://github.com/rcbops/keystone.git
+	url = https://github.com/rcbops-cookbooks/keystone.git
 [submodule "cookbooks/glance"]
 	path = cookbooks/glance
 	url = https://github.com/rcbops/glance.git
 [submodule "cookbooks/horizon"]
 	path = cookbooks/horizon
-	url = https://github.com/rcbops/horizon.git
+	url = https://github.com/rcbops-cookbooks/horizon.git
 [submodule "cookbooks/database"]
 	path = cookbooks/database
 	url = https://github.com/opscode-cookbooks/database.git
