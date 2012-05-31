@@ -24,16 +24,16 @@
 	url = https://github.com/opscode-cookbooks/ntp.git
 [submodule "cookbooks/nova"]
 	path = cookbooks/nova
-	url = https://github.com/rcbops/nova.git
+	url = https://github.com/rcbops-cookbooks/nova.git
 [submodule "cookbooks/keystone"]
 	path = cookbooks/keystone
-	url = https://github.com/rcbops/keystone.git
+	url = https://github.com/rcbops-cookbooks/keystone.git
 [submodule "cookbooks/glance"]
 	path = cookbooks/glance
-	url = https://github.com/rcbops/glance.git
+	url = https://github.com/rcbops-cookbooks/glance.git
 [submodule "cookbooks/horizon"]
 	path = cookbooks/horizon
-	url = https://github.com/rcbops/horizon.git
+	url = https://github.com/rcbops-cookbooks/horizon.git
 [submodule "cookbooks/database"]
 	path = cookbooks/database
 	url = https://github.com/opscode-cookbooks/database.git
@@ -48,25 +48,25 @@
 	url = https://github.com/opscode-cookbooks/xfs.git
 [submodule "cookbooks/mysql"]
 	path = cookbooks/mysql
-	url = https://github.com/rcbops/mysql.git
+	url = https://github.com/rcbops-cookbooks/mysql.git
 [submodule "cookbooks/rabbitmq"]
 	path = cookbooks/rabbitmq
-	url = https://github.com/rcbops/rabbitmq.git
+	url = https://github.com/rcbops-cookbooks/rabbitmq.git
 [submodule "cookbooks/swift"]
 	path = cookbooks/swift
-	url = https://github.com/rcbops/swift
+	url = https://github.com/rcbops-cookbooks/swift.git
 [submodule "cookbooks/osops-utils"]
 	path = cookbooks/osops-utils
-	url = https://github.com/rcbops/osops-utils.git
+	url = https://github.com/rcbops-cookbooks/osops-utils.git
 [submodule "cookbooks/dsh"]
 	path = cookbooks/dsh
-	url = https://github.com/rcbops/dsh
+	url = https://github.com/rcbops-cookbooks/dsh.git
 [submodule "cookbooks/exerstack"]
 	path = cookbooks/exerstack
-	url = https://github.com/rcbops/exerstack-cookbooks
+	url = https://github.com/rcbops-cookbooks/exerstack.git
 [submodule "cookbooks/kong"]
 	path = cookbooks/kong
-	url = https://github.com/rcbops/kong-cookbooks
+	url = https://github.com/rcbops-cookbooks/kong.git
 [submodule "cookbooks/collectd"]
 	path = cookbooks/collectd
-	url = https://github.com/rcbops/collectd-cookbooks
+	url = https://github.com/rcbops/collectd-cookbooks.git
