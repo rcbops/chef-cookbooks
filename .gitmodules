@@ -69,4 +69,7 @@
 	url = https://github.com/rcbops-cookbooks/kong.git
 [submodule "cookbooks/collectd"]
 	path = cookbooks/collectd
-	url = https://github.com/rcbops/collectd-cookbooks.git
+	url = https://github.com/rcbops-cookbooks/collectd.git
+[submodule "cookbooks/collectd-plugins"]
+	path = cookbooks/collectd-plugins
+	url = https://github.com/rcbops-cookbooks/collectd-plugins.git
