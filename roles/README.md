@@ -357,3 +357,34 @@ _swift-proxy-server_
 
 __TODO__: Needs to be filled out
 
+
+ collectd-server
+----------------
+
+Description "Collectd Server"
+
+### run_list
+  role[base]
+  recipe[collectd-graphite::collectd-server]
+)
+
+ collectd-client
+----------------
+
+Description "Collectd Client"
+
+### run_list
+  role[base]
+  recipe[collectd-graphite::collectd-client]
+)
+
+ graphite
+----------------
+
+Description "graphite and carbon/whisper"
+
+### run_list
+  role[base]
+  recipe[graphite::graphite]
+  recipe[graphite::carbon]
+)
