@@ -73,3 +73,6 @@
 [submodule "cookbooks/collectd-plugins"]
 	path = cookbooks/collectd-plugins
 	url = https://github.com/rcbops-cookbooks/collectd-plugins.git
+[submodule "cookbooks/monit"]
+	path = cookbooks/monit
+	url = https://github.com/rcbops-cookbooks/monit.git
