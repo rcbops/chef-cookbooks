@@ -76,3 +76,9 @@
 [submodule "cookbooks/monit"]
 	path = cookbooks/monit
 	url = https://github.com/rcbops-cookbooks/monit.git
+[submodule "cookbooks/graphite"]
+	path = cookbooks/graphite
+	url = https://github.com/rcbops-cookbooks/graphite.git
+[submodule "cookbooks/collectd-graphite"]
+	path = cookbooks/collectd-graphite
+	url = https://github.com/rcbops-cookbooks/collectd-graphite.git
