@@ -82,3 +82,6 @@
 [submodule "cookbooks/collectd-graphite"]
 	path = cookbooks/collectd-graphite
 	url = https://github.com/rcbops-cookbooks/collectd-graphite.git
+[submodule "cookbooks/rsyslog"]
+	path = cookbooks/rsyslog
+	url = https://github.com/rcbops-cookbooks/rsyslog.git
