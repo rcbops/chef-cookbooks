@@ -7,7 +7,7 @@ run_list(
   "role[keystone]",
   "role[glance-registry]",
   "role[glance-api]",
-  "recipe[nova::nova-setup]",
+  "role[nova-setup]",
   "role[nova-scheduler]",
   "role[nova-api-ec2]",
   "role[nova-api-os-compute]",
@@ -15,4 +15,3 @@ run_list(
   "role[nova-vncproxy]",
   "role[horizon-server]"
 )
-
