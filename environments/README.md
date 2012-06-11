@@ -8,3 +8,5 @@ Environment Toggles
 ===================
 
 * `developer_mode` - Enables/Disables developer mode (default: false)
+* `enable_collectd` - Enables/Disables collectd monitoring (default: false)
+* `enable_monit` - Enables/Disables monit process monitoring (default: true)
