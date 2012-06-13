@@ -91,3 +91,6 @@
 [submodule "cookbooks/sysctl"]
 	path = cookbooks/sysctl
 	url = https://github.com/rcbops-cookbooks/sysctl.git
+[submodule "cookbooks/hardware"]
+	path = cookbooks/hardware
+	url = https://github.com/rcbops-cookbooks/hardware
