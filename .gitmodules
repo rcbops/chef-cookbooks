@@ -73,3 +73,24 @@
 [submodule "cookbooks/collectd-plugins"]
 	path = cookbooks/collectd-plugins
 	url = https://github.com/rcbops-cookbooks/collectd-plugins.git
+[submodule "cookbooks/monit"]
+	path = cookbooks/monit
+	url = https://github.com/rcbops-cookbooks/monit.git
+[submodule "cookbooks/graphite"]
+	path = cookbooks/graphite
+	url = https://github.com/rcbops-cookbooks/graphite.git
+[submodule "cookbooks/collectd-graphite"]
+	path = cookbooks/collectd-graphite
+	url = https://github.com/rcbops-cookbooks/collectd-graphite.git
+[submodule "cookbooks/rsyslog"]
+	path = cookbooks/rsyslog
+	url = https://github.com/rcbops-cookbooks/rsyslog.git
+[submodule "cookbooks/modules"]
+	path = cookbooks/modules
+	url = https://github.com/rcbops-cookbooks/modules.git
+[submodule "cookbooks/sysctl"]
+	path = cookbooks/sysctl
+	url = https://github.com/rcbops-cookbooks/sysctl.git
+[submodule "cookbooks/hardware"]
+	path = cookbooks/hardware
+	url = https://github.com/rcbops-cookbooks/hardware

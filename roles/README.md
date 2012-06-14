@@ -90,7 +90,7 @@ __TODO__: DO NOT USE THIS ROLE.
     recipe[rabbitmq]
     recipe[keystone::server]
     recipe[glance]
-    recipe[nova::nova-setup]
+    role[nova-setup]
     recipe[nova::scheduler]
     recipe[nova::api-ec2]
     recipe[nova::api-metadata]
@@ -215,7 +215,6 @@ Description: "Installs and Configures the OpenStack EC2 compatability API."
 
 ### run_list
     role[base]
-    recipe[nova::nova-setup]
     recipe[nova::api-ec2]
 
 __TODO__: Need to make sure this list is correct
@@ -227,7 +226,6 @@ Description: "Installs and Configures the OpenStack API."
 
 ### run_list
     role[base]
-    recipe[nova::nova-setup]
     recipe[nova::api-os-compute]
 
 __TODO__: Need to make sure this list is correct
@@ -239,7 +237,6 @@ Description: "Installs and Configures both OpenStack APIs (OS and EC2)."
 
 ### run_list
     role[base]
-    recipe[nova::nova-setup]
     recipe[nova::api-ec2]
     recipe[nova::api-os-compute]
 
@@ -257,7 +254,6 @@ Description: "Installs the Nova Scheduler Service."
 
 ### run_list
     role[base]
-    recipe[nova::nova-setup]
     recipe[nova::scheduler]
 
 _nova-vncproxy_
@@ -295,7 +291,7 @@ Description "Nova core functions"
 
 ### run_list
   role[base]
-  recipe[nova::nova-setup]
+  role[nova-setup]
   role[nova-scheduler]
   role[nova-api-ec2]
   role[nova-api-os-compute]
@@ -324,7 +320,7 @@ Description: "Installs and configures a (non-HA) Nova Controller."
     role[keystone]
     role[glance-registry]
     role[glance-api]
-    recipe[nova::nova-setup]
+    role[nova-controller]
     role[nova-scheduler]
     role[nova-api-ec2]
     role[nova-api-os-compute]

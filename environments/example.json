@@ -6,19 +6,21 @@
   "json_class": "Chef::Environment",
   "chef_type": "environment",
   "default_attributes": {
-    "developer_mode": false,
     "mysql": {
       "allow_remote_root": true,
       "root_network_acl": "%"
-    },
-    "glance": {
-      "image_upload": true,
-      "images": ["tty", "oneiric", "natty", "maverick"]
     },
     "floating": "true",
     "package_component": "essex-final"
   },
   "override_attributes": {
+    "developer_mode": false,
+    "enable_monit": true,
+    "enable_collectd": false,
+    "glance": {
+      "image_upload": true,
+      "images": ["tty", "oneiric", "natty", "maverick"]
+    },
     "nova": {
       "network": { "floating": { "ipv4_cidr": "10.254.254.0/24" } },
       "networks": [
@@ -43,6 +45,11 @@
             "dns2": "8.8.4.4"
         }
       ]
+    },
+    "osops_networks": {
+      "nova": "192.168.1.0/24",
+      "public": "192.168.1.0/24",
+      "management": "192.168.1..0/24"
     }
   }
 }
