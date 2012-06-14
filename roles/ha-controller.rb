@@ -5,7 +5,7 @@ run_list(
   "recipe[rabbitmq]",
   "recipe[keystone::server]",
   "recipe[glance]",
-  "recipe[nova::nova-setup]",
+  "role[nova-setup]",
   "recipe[nova::scheduler]",
   "recipe[nova::api-ec2]",
   "recipe[nova::api-metadata]",
@@ -14,4 +14,3 @@ run_list(
   "recipe[nova::volume]",
   "recipe[horizon::server]"
 )
-
