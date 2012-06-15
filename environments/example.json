@@ -10,17 +10,17 @@
       "allow_remote_root": true,
       "root_network_acl": "%"
     },
-    "glance": {
-      "image_upload": true,
-      "images": ["tty", "oneiric", "natty", "maverick"]
-    },
     "floating": "true",
     "package_component": "essex-final"
   },
   "override_attributes": {
     "developer_mode": false,
     "enable_monit": true,
-    "enable_collectd": false",
+    "enable_collectd": false,
+    "glance": {
+      "image_upload": true,
+      "images": ["tty", "oneiric", "natty", "maverick"]
+    },
     "nova": {
       "network": { "floating": { "ipv4_cidr": "10.254.254.0/24" } },
       "networks": [
