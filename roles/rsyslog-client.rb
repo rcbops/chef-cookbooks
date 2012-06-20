@@ -1,5 +1,5 @@
-name: "rsyslog-client"
-description: "rsyslog-client config"
+name "rsyslog-client"
+description "rsyslog-client config"
 run_list(
   "role[base]",
   "recipe[rsyslog::client]"
