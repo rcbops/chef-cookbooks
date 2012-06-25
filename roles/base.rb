@@ -3,7 +3,8 @@ description "Base role for a server"
 run_list(
   "recipe[openssh]",
   "recipe[ntp]",
-  "recipe[rsyslog::default]"
+  "recipe[rsyslog::default]",
+  "recipe[hardware]"
 )
 default_attributes(
   "ntp" => {
