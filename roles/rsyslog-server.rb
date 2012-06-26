@@ -2,7 +2,8 @@ name "rsyslog-server"
 description "rsyslog-server config"
 run_list(
   "role[base]",
-  "recipe[rsyslog::server]"
+  "recipe[rsyslog::server]",
+  "recipe[rsyslog::openstack]"
 )
 default_attributes(
   "rsyslog" => {
