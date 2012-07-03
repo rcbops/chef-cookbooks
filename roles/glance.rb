@@ -2,6 +2,7 @@ name "glance"
 description "Glance server"
 run_list(
   "role[base]",
-  "recipe[glance]"
+  "role[glance-registry]",
+  "role[glance-api]"
 )
 
