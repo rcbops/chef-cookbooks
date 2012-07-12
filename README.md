@@ -26,9 +26,11 @@ There are a number of different chef roles that are included with these cookbook
 
 `cd chef-cookbooks`  
 `knife cookbook upload -o cookbooks --all`  
-`rake roles`  
+`knife role from file roles/*.rb`
 
 ##### using the cookbooks #####
+
+NOTE: You must use chef >= 0.10.12
 
 Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+Start+Guide#CookbookFastStartGuide-Registeranodewithchefclient),  one or more nodes with your chef server.  Then use knife to assign roles to your nodes:
 
