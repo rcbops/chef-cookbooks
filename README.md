@@ -71,11 +71,7 @@ Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+
 You can define a customer string to be included in every template file managed by the Rackspace cookbooks by defining the custom_template_banner environment variable.  For Example:
 
 `knife environment edit <environment name>`
-<code>
-"override_attributes": {
-  "custom_template_banner": "# This\n# is\n# a\n# multiline\n# message"
-}
-</code>
+`"override_attributes": { "custom_template_banner": "# This\n# is\n# a\n# multiline\n# message"`
 
 ## License and Author ##
 
