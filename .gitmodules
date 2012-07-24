@@ -97,3 +97,6 @@
 [submodule "cookbooks/monitoring"]
 	path = cookbooks/monitoring
 	url = https://github.com/rcbops-cookbooks/monitoring.git
+[submodule "cookbooks/sosreport"]
+	path = cookbooks/sosreport
+	url = https://github.com/rcbops-cookbooks/sosreport.git

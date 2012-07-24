@@ -3,6 +3,7 @@ description "Base role for a server"
 run_list(
   "recipe[openssh]",
   "recipe[ntp]",
+  "recipe[sosreport]",
   "recipe[rsyslog::default]",
   "recipe[hardware]"
 )
