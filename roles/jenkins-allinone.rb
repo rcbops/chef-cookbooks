@@ -1,7 +1,8 @@
 name "jenkins-allinone"
 description "This inherits from role[allinone], and sets default attributes required for to run this role via jenkins"
 run_list(
-  "role[allinone]"
+  "role[allinone]",
+  "recipe[nova::patch]"
 )
 default_attributes(
   "mysql" => {
