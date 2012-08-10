@@ -97,3 +97,12 @@
 [submodule "cookbooks/monitoring"]
 	path = cookbooks/monitoring
 	url = https://github.com/rcbops-cookbooks/monitoring.git
+[submodule "cookbooks/sosreport"]
+	path = cookbooks/sosreport
+	url = https://github.com/rcbops-cookbooks/sosreport.git
+[submodule "cookbooks/rabbitmq-openstack"]
+	path = cookbooks/rabbitmq-openstack
+	url = https://github.com/rcbops-cookbooks/rabbitmq-openstack.git
+[submodule "cookbooks/mysql-openstack"]
+	path = cookbooks/mysql-openstack
+	url = https://github.com/rcbops-cookbooks/mysql-openstack.git
