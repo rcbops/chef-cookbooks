@@ -46,9 +46,6 @@
 [submodule "cookbooks/xfs"]
 	path = cookbooks/xfs
 	url = https://github.com/opscode-cookbooks/xfs.git
-[submodule "cookbooks/mysql"]
-	path = cookbooks/mysql
-	url = https://github.com/rcbops-cookbooks/mysql.git
 [submodule "cookbooks/rabbitmq"]
 	path = cookbooks/rabbitmq
 	url = https://github.com/rcbops-cookbooks/rabbitmq.git
@@ -106,3 +103,9 @@
 [submodule "cookbooks/mysql-openstack"]
 	path = cookbooks/mysql-openstack
 	url = https://github.com/rcbops-cookbooks/mysql-openstack.git
+[submodule "cookbooks/mysql"]
+	path = cookbooks/mysql
+	url = https://github.com/opscode-cookbooks/mysql
+[submodule "cookbooks/build-essential"]
+	path = cookbooks/build-essential
+	url = https://github.com/opscode-cookbooks/build-essential
