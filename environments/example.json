@@ -19,7 +19,7 @@
     "enable_collectd": false,
     "glance": {
       "image_upload": true,
-      "images": ["tty", "oneiric", "natty", "maverick"]
+      "images": ["cirros", "oneiric", "natty", "precise"]
     },
     "nova": {
       "network": { "floating": { "ipv4_cidr": "10.254.254.0/24" } },

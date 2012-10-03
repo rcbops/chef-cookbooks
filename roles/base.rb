@@ -1,6 +1,7 @@
 name "base"
 description "Base role for a server"
 run_list(
+  "recipe[osops-utils::packages]",
   "recipe[openssh]",
   "recipe[ntp]",
   "recipe[sosreport]",
