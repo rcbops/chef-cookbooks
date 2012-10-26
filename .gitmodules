@@ -109,3 +109,6 @@
 [submodule "cookbooks/build-essential"]
 	path = cookbooks/build-essential
 	url = https://github.com/opscode-cookbooks/build-essential
+[submodule "cookbooks/cinder"]
+	path = cookbooks/cinder
+	url = https://github.com/rcbops-cookbooks/cinder.git
