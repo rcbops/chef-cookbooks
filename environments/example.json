@@ -1,28 +1,28 @@
 {
-  "name": "demo_rcb_me",
+  "name": "example_environment",
   "description": "Chef-server example environment",
   "cookbook_versions": {
   },
   "json_class": "Chef::Environment",
   "chef_type": "environment",
   "default_attributes": {
-    "mysql": {
-      "allow_remote_root": true,
-      "root_network_acl": "%"
-    },
-    "floating": "true",
-    "package_component": "essex-final"
   },
   "override_attributes": {
     "developer_mode": false,
-    "enable_monit": true,
-    "enable_collectd": false,
+    "monitoring" : {
+      "metric_provider" : "collectd",
+      "procmon_provider" : "monit"
+    },
     "glance": {
       "image_upload": true,
-      "images": ["cirros", "oneiric", "natty", "precise"]
+      "images": ["cirros", "precise"]
     },
     "nova": {
-      "network": { "floating": { "ipv4_cidr": "10.254.254.0/24" } },
+      "ratelimit" : {
+        "api" : { "enabled" : true },
+        "volume" : { "enabled" : true }
+      },
+      "libvirt": { "virt_type": "qemu" },
       "networks": [
         {
             "label": "public",
@@ -46,10 +46,15 @@
         }
       ]
     },
+    "mysql": {
+      "allow_remote_root": true,
+      "root_network_acl": "%"
+    },
     "osops_networks": {
       "nova": "192.168.1.0/24",
       "public": "192.168.1.0/24",
       "management": "192.168.1.0/24"
-    }
+    },
+    "package_component": "essex-final"
   }
 }
