@@ -31,6 +31,7 @@ There are a number of different chef roles that are included with these cookbook
 ##### using the cookbooks #####
 
 NOTE: You must use chef >= 0.10.12
+NOTE: If you are using Red Hat Enterprise Linux you must use RHEL >= 6 and you must enable the repository rhel-x86_64-server-optional-6
 
 Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+Start+Guide#CookbookFastStartGuide-Registeranodewithchefclient),  one or more nodes with your chef server.  Then use knife to assign roles to your nodes:
 
