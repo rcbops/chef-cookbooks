@@ -1,6 +1,6 @@
-name "cinder-setup"
+name "haproxy"
 description "Where the setup operations for cinder get run"
 run_list(
   "role[base]",
-  "recipe[cinder::cinder-setup]"
+  "recipe[oshaproxy::default]"
 )
