@@ -1,6 +1,6 @@
 name "haproxy"
-description "Where the setup operations for cinder get run"
+description "install and configure haproxy load balancer for openstack services"
 run_list(
   "role[base]",
-  "recipe[oshaproxy::default]"
+  "recipe[haproxy::default]"
 )
