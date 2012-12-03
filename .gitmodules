@@ -112,3 +112,6 @@
 [submodule "cookbooks/cinder"]
 	path = cookbooks/cinder
 	url = https://github.com/rcbops-cookbooks/cinder.git
+[submodule "cookbooks/haproxy"]
+	path = cookbooks/haproxy
+	url = https://github.com/rcbops-cookbooks/haproxy.git
