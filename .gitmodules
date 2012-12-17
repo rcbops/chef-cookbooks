@@ -118,3 +118,6 @@
 [submodule "cookbooks/corosync"]
 	path = cookbooks/corosync
 	url = https://github.com/rcbops-cookbooks/corosync.git
+[submodule "cookbooks/chef-client"]
+	path = cookbooks/chef-client
+	url = https://github.com/opscode-cookbooks/chef-client.git
