@@ -115,3 +115,6 @@
 [submodule "cookbooks/haproxy"]
 	path = cookbooks/haproxy
 	url = https://github.com/rcbops-cookbooks/haproxy.git
+[submodule "cookbooks/corosync"]
+	path = cookbooks/corosync
+	url = https://github.com/rcbops-cookbooks/corosync.git
