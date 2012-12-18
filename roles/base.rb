@@ -7,7 +7,8 @@ run_list(
   "recipe[sosreport]",
   "recipe[rsyslog::default]",
   "recipe[hardware]",
-  "recipe[osops-utils::default]"
+  "recipe[osops-utils::default]",
+  "recipe[chef-client]"
 )
 default_attributes(
   "ntp" => {
