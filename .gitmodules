@@ -48,7 +48,7 @@
 	url = https://github.com/opscode-cookbooks/xfs.git
 [submodule "cookbooks/rabbitmq"]
 	path = cookbooks/rabbitmq
-	url = https://github.com/rcbops-cookbooks/rabbitmq.git
+	url = https://github.com/opscode-cookbooks/rabbitmq.git
 [submodule "cookbooks/swift"]
 	path = cookbooks/swift
 	url = https://github.com/rcbops-cookbooks/swift.git
@@ -112,3 +112,9 @@
 [submodule "cookbooks/cinder"]
 	path = cookbooks/cinder
 	url = https://github.com/rcbops-cookbooks/cinder.git
+[submodule "cookbooks/haproxy"]
+	path = cookbooks/haproxy
+	url = https://github.com/rcbops-cookbooks/haproxy.git
+[submodule "cookbooks/corosync"]
+	path = cookbooks/corosync
+	url = https://github.com/rcbops-cookbooks/corosync.git
