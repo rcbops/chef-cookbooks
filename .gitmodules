@@ -118,3 +118,6 @@
 [submodule "cookbooks/corosync"]
 	path = cookbooks/corosync
 	url = https://github.com/rcbops-cookbooks/corosync.git
+[submodule "cookbooks/nova-network"]
+	path = cookbooks/nova-network
+	url = https://github.com/rcbops-cookbooks/nova-network.git
