@@ -121,3 +121,9 @@
 [submodule "cookbooks/nova-network"]
 	path = cookbooks/nova-network
 	url = https://github.com/rcbops-cookbooks/nova-network.git
+[submodule "cookbooks/keepalived"]
+	path = cookbooks/keepalived
+	url = https://github.com/rcbops-cookbooks/keepalived.git
+[submodule "cookbooks/openstack-ha"]
+	path = cookbooks/openstack-ha
+	url = https://github.com/rcbops-cookbooks/openstack-ha.git
