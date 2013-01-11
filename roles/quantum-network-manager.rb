@@ -3,7 +3,7 @@ description "Where the quantum-dhcp-agent, quantum-l3-agent, and openvswitch set
 run_list(
   "role[base]",
   "recipe[nova::nova-common]",
+  "recipe[nova-network::quantum-plugin]",
   "recipe[nova-network::quantum-dhcp-agent]",
-  "recipe[nova-network::quantum-l3-agent]",
-  "recipe[nova-network::quantum-plugin]"
+  "recipe[nova-network::quantum-l3-agent]"
 )
