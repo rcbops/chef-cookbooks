@@ -8,7 +8,7 @@ run_list(
   "role[glance-registry]",
   "role[glance-api]",
   "role[nova-setup]",
-  "role[nova-network-setup]",
+  "role[nova-network-controller]",
   "role[nova-scheduler]",
   "role[nova-api-ec2]",
   "role[nova-api-os-compute]",
