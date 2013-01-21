@@ -5,6 +5,7 @@ run_list(
   "role[mysql-master]",
   "role[rabbitmq-server]",
   "role[keystone]",
+  "role[glance-setup]",
   "role[glance-registry]",
   "role[glance-api]",
   "role[nova-setup]",
