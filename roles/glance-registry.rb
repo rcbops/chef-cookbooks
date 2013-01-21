@@ -4,4 +4,3 @@ run_list(
   "role[base]",
   "recipe[glance::registry]"
 )
-
