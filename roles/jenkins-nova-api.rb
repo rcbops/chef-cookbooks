@@ -7,7 +7,7 @@ default_attributes(
   "mysql" => {
     "allow_remote_root" => true
   },
-  "package_component" => "essex-final",
+  "package_component" => "folsom",
   "nova" => {
     "libvirt" => { "virt_type" => "qemu" },
   }
