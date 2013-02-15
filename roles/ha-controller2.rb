@@ -15,5 +15,6 @@ run_list(
   "role[cinder-scheduler]",
   "role[nova-cert]",
   "role[nova-vncproxy]",
+  "role[horizon-server]",
   "role[openstack-ha]"
 )
