@@ -17,3 +17,5 @@ run_list(
   "role[horizon-server]",
   "role[openstack-ha]"
 )
+
+override_attributes "keepalived" => { "shared_address" => "true" }
