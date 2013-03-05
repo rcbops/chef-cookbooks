@@ -12,7 +12,7 @@ default_attributes(
     "image_upload" => true,
     "images" => ["tty"]
   },
-  "package_component" => "essex-final",
+  "package_component" => "folsom",
   "nova" => {
     "libvirt" => { "virt_type" => "qemu" },
   }
