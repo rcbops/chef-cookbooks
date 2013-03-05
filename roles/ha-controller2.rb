@@ -1,18 +1,21 @@
-name "single-controller-cinder"
-description "Nova Controller (non-HA)"
+name "ha-controller2"
+description "Nova Controller 2 (non-HA)"
 run_list(
   "role[base]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
-  "role[keystone]",
+  "role[keystone-api]",
   "role[glance-registry]",
   "role[glance-api]",
-  "role[nova-setup]",
   "role[nova-scheduler]",
   "role[nova-api-ec2]",
   "role[nova-api-os-compute]",
-  "role[cinder-all]",
+  "role[cinder-api]",
+  "role[cinder-scheduler]",
   "role[nova-cert]",
   "role[nova-vncproxy]",
-  "role[horizon-server]"
+  "role[horizon-server]",
+  "role[openstack-ha]"
 )
+
+override_attributes "keepalived" => { "shared_address" => "true" }

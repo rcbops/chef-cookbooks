@@ -126,7 +126,7 @@ Description: this inherits from role[allinone], sets default attributes required
       "image_upload" => true,
       "images" => ["tty"]
     },
-    "package_component" => "essex-final",
+    "package_component" => "folsom",
     "public" => {
       "bridge_dev" => "eth0.100"
     },
@@ -149,7 +149,7 @@ Description: This inherits from role[single-compute], and sets default attribute
     "mysql" => {
       "allow_remote_root" => true
     },
-    "package_component" => "essex-final",
+    "package_component" => "folsom",
     "public" => {
       "bridge_dev" => "eth0.100"
     },
@@ -177,7 +177,7 @@ Description: This inherits from role[single-controller], and sets default attrib
       "image_upload" => true,
       "images" => ["tty"]
     },
-    "package_component" => "essex-final",
+    "package_component" => "folsom",
     "public" => {
       "bridge_dev" => "eth0.100"
     },
