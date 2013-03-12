@@ -37,34 +37,34 @@ Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+
 
 * for an all-in-one deployment of nova, using keystone and glance, on a node called node1:  
 
-`knife node run_list add node1 role[allinone]`  
+`knife node run_list add node1 'role[allinone]'`  
 
 * for a 2 node deployment of nova, installing all nova controller functions, keystone and glance on node1, and setting node2 up as a compute server:  
 
-`knife node run_list add node1 role[single-controller]`  
-`knife node run_list add node2 role[single-compute]`  
+`knife node run_list add node1 'role[single-controller]'`  
+`knife node run_list add node2 'role[single-compute]'`  
 
 * for a multi node deployment as above but with 'N' nova compute nodes  
 
-`knife node run_list add node1 role[single-controller]`  
-`knife node run_list add node2 role[single-compute]`  
-`knife node run_list add node3 role[single-compute]`  
+`knife node run_list add node1 'role[single-controller]'`  
+`knife node run_list add node2 'role[single-compute]'`  
+`knife node run_list add node3 'role[single-compute]'`  
 `...`  
-`knife node run_list add node[n] role[single-compute]`  
+`knife node run_list add node[n] 'role[single-compute]'`  
 
 * for a many node deployment with mysql and keystone on one node, nova core functions and horizon on another, glance on another, rabbitmq on another, and 'N' compute nodes:
 
-`knife node run_list add node1 role[keystone]`  
-`knife node run_list add node1 role[mysql-master]`  
-`knife node run_list add node2 role[nova-controller]`  
-`knife node run_list add node2 role[horizon-server]`  
-`knife node run_list add node3 role[glance-api]`  
-`knife node run_list add node3 role[glance-registry]`  
-`knife node run_list add node4 role[rabbitmq-server]`  
-`knife node run_list add node5 role[single-compute]`  
-`knife node run_list add node6 role[single-compute]`  
+`knife node run_list add node1 'role[keystone]'`  
+`knife node run_list add node1 'role[mysql-master]'`  
+`knife node run_list add node2 'role[nova-controller]'`  
+`knife node run_list add node2 'role[horizon-server]'`  
+`knife node run_list add node3 'role[glance-api]'`  
+`knife node run_list add node3 'role[glance-registry]'`  
+`knife node run_list add node4 'role[rabbitmq-server]'`  
+`knife node run_list add node5 'role[single-compute]'`  
+`knife node run_list add node6 'role[single-compute]'`  
 `...`  
-`knife node run_list add nodeN role[single-compute]`  
+`knife node run_list add nodeN 'role[single-compute]'`  
 
 
 ## Custom template banners ##
