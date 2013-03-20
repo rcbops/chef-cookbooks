@@ -127,3 +127,9 @@
 [submodule "cookbooks/openstack-ha"]
 	path = cookbooks/openstack-ha
 	url = https://github.com/rcbops-cookbooks/openstack-ha.git
+[submodule "cookbooks/memcached"]
+	path = cookbooks/memcached
+	url = https://github.com/opscode-cookbooks/memcached.git
+[submodule "cookbooks/runit"]
+	path = cookbooks/runit
+	url = https://github.com/opscode-cookbooks/runit.git
