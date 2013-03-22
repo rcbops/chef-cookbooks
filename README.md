@@ -14,6 +14,9 @@ Each of the cookbooks in the cookbooks directory is actually a [git submodule](h
 
 There are a number of different chef roles that are included with these cookbooks.  Descriptions of each of the roles can be found in the [readme](https://github.com/rcbops/chef-cookbooks/blob/master/roles/README.md) in the roles directory.  
 
+## Network configuration ##
+Network configuration is stored in Chef `environment`. Please see `environments/example.json` and [networking documentation](networking.md).
+
 ## Usage ##
 
 ##### getting the cookbooks #####
