@@ -11,6 +11,7 @@ run_list(
   "role[nova-setup]",
   "role[nova-network-controller]",
   "role[nova-scheduler]",
+  "role[nova-conductor]",
   "role[nova-api-ec2]",
   "role[nova-api-os-compute]",
   "role[nova-volume]",
