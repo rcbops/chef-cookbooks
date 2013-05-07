@@ -2,7 +2,7 @@ name "keystone"
 description "Keystone server"
 run_list(
   "role[base]",
-  "recipe[keystone::server]",
+  "role[keystone-setup]",
   "role[keystone-api]"
 )
 
