@@ -79,26 +79,55 @@ Description: "Glance server"
 
 ### Dependencies
 
-_ha-controller_
+_ha-controller1
 ---------------
 
-Description: "Installs and configures a (non-HA) Nova Controller."
-__TODO__: DO NOT USE THIS ROLE.
+Description: "Primary Nova Controller (HA)"
 
 ### run_list
     role[base]
-    recipe[rabbitmq]
-    recipe[keystone::server]
-    recipe[glance]
+    role[mysql-master]
+    role[rabbitmq-server]
+    role[keystone-setup]
+    role[keystone-api]
+    role[glance-setup]
+    role[glance-registry]
     role[nova-setup]
-    recipe[nova::scheduler]
-    recipe[nova::api-ec2]
-    recipe[nova::api-metadata]
-    recipe[nova::api-os-compute]
-    recipe[nova::api-os-volume]
-    recipe[nova::volume]
-    recipe[horizon::server]
+    role[nova-network-controller]
+    role[nova-scheduler]
+    role[nova-conductor]
+    role[nova-api-ec2]
+    role[nova-api-os-compute]
+    role[cinder-setup]
+    role[cinder-api]
+    role[cinder-scheduler]
+    role[nova-cert]
+    role[nova-vncproxy]
+    role[horizon-server]
+    role[openstack-ha]
 
+_ha-controller2
+---------------
+
+Description: "Additional Nova Controller (HA)"
+
+### run_list
+    role[base]
+    role[mysql-master]
+    role[rabbitmq-server]
+    role[keystone-api]
+    role[glance-registry]
+    role[glance-api]
+    role[nova-scheduler]
+    role[nova-conductor]
+    role[nova-api-ec2]
+    role[nova-api-os-compute]
+    role[cinder-api]
+    role[cinder-scheduler]
+    role[nova-cert]
+    role[nova-vncproxy]
+    role[horizon-server]
+    role[openstack-ha]
 _horizon-server_
 ----------------
 
