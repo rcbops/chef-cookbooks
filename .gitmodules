@@ -130,3 +130,6 @@
 [submodule "cookbooks/runit"]
 	path = cookbooks/runit
 	url = https://github.com/opscode-cookbooks/runit.git
+[submodule "cookbooks/openstack-monitoring"]
+	path = cookbooks/openstack-monitoring
+	url = git://github.com/rcbops-cookbooks/openstack-monitoring.git
