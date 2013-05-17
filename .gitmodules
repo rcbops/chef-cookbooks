@@ -133,3 +133,6 @@
 [submodule "cookbooks/openstack-monitoring"]
 	path = cookbooks/openstack-monitoring
 	url = git://github.com/rcbops-cookbooks/openstack-monitoring.git
+[submodule "cookbooks/tempest"]
+	path = cookbooks/tempest
+	url = https://github.com/rcbops-cookbooks/tempest.git
