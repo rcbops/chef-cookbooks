@@ -136,3 +136,6 @@
 [submodule "cookbooks/tempest"]
 	path = cookbooks/tempest
 	url = https://github.com/rcbops-cookbooks/tempest.git
+[submodule "cookbooks/openstack_logging"]
+	path = cookbooks/openstack_logging
+	url = https://github.com/rcbops-cookbooks/openstack_logging.git

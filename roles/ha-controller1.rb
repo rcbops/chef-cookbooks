@@ -2,6 +2,7 @@ name "ha-controller1"
 description "Nova Controller 1 (HA)"
 run_list(
   "role[base]",
+  "role[rsyslog-server]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
   "role[keystone-setup]",
@@ -21,7 +22,8 @@ run_list(
   "role[nova-cert]",
   "role[nova-vncproxy]",
   "role[horizon-server]",
-  "role[openstack-ha]"
+  "role[openstack-ha]",
+  "role[openstack-logging]"
 )
 
 override_attributes "keepalived" => { "shared_address" => "true" }
