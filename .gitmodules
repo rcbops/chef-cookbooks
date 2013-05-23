@@ -136,3 +136,6 @@
 [submodule "cookbooks/tempest"]
 	path = cookbooks/tempest
 	url = https://github.com/rcbops-cookbooks/tempest.git
+[submodule "cookbooks/ceilometer"]
+	path = cookbooks/ceilometer
+	url = https://github.com/rcbops-cookbooks/ceilometer.git
