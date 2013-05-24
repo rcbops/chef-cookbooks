@@ -2,7 +2,7 @@ name "single-controller"
 description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
-  "role[rsyslog-client]",
+  "role[rsyslog-server]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
   "role[keystone]",
