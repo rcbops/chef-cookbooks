@@ -2,6 +2,7 @@ name "single-controller"
 description "Nova Controller (non-HA)"
 run_list(
   "role[base]",
+  "role[rsyslog-server]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
   "role[keystone]",
@@ -17,5 +18,6 @@ run_list(
   "role[nova-volume]",
   "role[nova-cert]",
   "role[nova-vncproxy]",
-  "role[horizon-server]"
+  "role[horizon-server]",
+  "role[openstack-logging]"
 )

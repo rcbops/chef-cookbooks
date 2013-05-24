@@ -6,6 +6,6 @@ run_list(
 )
 default_attributes(
   "rsyslog" => {
-    "server_search" => "role:rsyslog-server",
+    "server_search" => "roles:rsyslog-server",
   }
 )
