@@ -11,6 +11,7 @@ default_attributes(
     "server_search" => "roles:rsyslog-server",
     "per_host_dir" => "%HOSTNAME%",
     "log_dir" => "/var/log/rsyslog",
-    "priv_seperation" => false
+    "priv_seperation" => false,
+    "preserve_fqdn" => "on"
   }
 )
