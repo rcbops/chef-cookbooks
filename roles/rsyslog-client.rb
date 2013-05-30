@@ -7,5 +7,6 @@ run_list(
 default_attributes(
   "rsyslog" => {
     "server_search" => "roles:rsyslog-server",
+    "preserve_fqdn" => "on"
   }
 )
