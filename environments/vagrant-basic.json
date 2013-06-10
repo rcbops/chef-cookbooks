@@ -1,6 +1,6 @@
 {
-  "name": "example",
-  "description": "Chef-server example environment",
+  "name": "vagrant-basic",
+  "description": "vagrant for openstack environment",
   "cookbook_versions": {
   },
   "json_class": "Chef::Environment",
@@ -10,12 +10,12 @@
   "override_attributes": {
     "developer_mode": false,
     "monitoring" : {
-      "metric_provider" : "collectd",
-      "procmon_provider" : "monit"
+      "metric_provider" : "none",
+      "procmon_provider" : "none"
     },
     "glance": {
       "image_upload": true,
-      "images": ["cirros", "precise"]
+      "images": ["cirros"]
     },
     "nova": {
       "ratelimit" : {
@@ -30,7 +30,7 @@
             "num_networks": "1",
             "network_size": "255",
             "bridge": "br100",
-            "bridge_dev": "eth0.100",
+            "bridge_dev": "eth2",
             "dns1": "8.8.8.8",
             "dns2": "8.8.4.4"
         },
@@ -40,7 +40,7 @@
             "num_networks": "1",
             "network_size": "255",
             "bridge": "br101",
-            "bridge_dev": "eth0.101",
+            "bridge_dev": "eth3",
             "dns1": "8.8.8.8",
             "dns2": "8.8.4.4"
         }
@@ -51,9 +51,9 @@
       "root_network_acl": "%"
     },
     "osops_networks": {
-      "nova": "192.168.1.0/24",
-      "public": "192.168.1.0/24",
-      "management": "192.168.1.0/24"
+      "nova": "33.33.33.0/24",
+      "public": "33.33.33.0/24",
+      "management": "33.33.33.0/24"
     },
     "package_component": "folsom"
   }
