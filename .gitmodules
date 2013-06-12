@@ -139,3 +139,6 @@
 [submodule "cookbooks/ceilometer"]
 	path = cookbooks/ceilometer
 	url = https://github.com/rcbops-cookbooks/ceilometer.git
+[submodule "cookbooks/openstack-monitoring"]
+	path = cookbooks/openstack-monitoring
+	url = https://github.com/rcbops-cookbooks/openstack-monitoring.git
