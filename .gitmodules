@@ -142,3 +142,6 @@
 [submodule "cookbooks/openstack-monitoring"]
 	path = cookbooks/openstack-monitoring
 	url = https://github.com/rcbops-cookbooks/openstack-monitoring.git
+[submodule "cookbooks/memcached-openstack"]
+	path = cookbooks/memcached-openstack
+	url = https://github.com/rcbops-cookbooks/memcached-openstack.git
