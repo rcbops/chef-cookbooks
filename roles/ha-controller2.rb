@@ -5,6 +5,7 @@ run_list(
   "role[rsyslog-client]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
+  "role[memcached]",
   "role[keystone-api]",
   "role[glance-registry]",
   "role[glance-api]",
