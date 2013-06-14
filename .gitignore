@@ -2,3 +2,5 @@ metadata.json
 .chef
 .swp
 cookbooks.tgz
+.vagrant
+cookbooks/*
