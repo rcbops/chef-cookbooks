@@ -21,6 +21,8 @@ Network configuration is stored in Chef `environment`. Please see `environments/
 
 ##### getting the cookbooks #####
 
+###### Standard Method ######
+
 * clone the parent repository (note the `--recursive` flag - this will ensure that each of the repositories that the submodules point to is also cloned):
 
 `git clone --recursive git@github.com:rcbops/chef-cookbooks.git`  
@@ -30,6 +32,11 @@ Network configuration is stored in Chef `environment`. Please see `environments/
 `cd chef-cookbooks`  
 `knife cookbook upload -o cookbooks --all`  
 `knife role from file roles/*.rb`
+
+###### Berkshelf/Spiceweasel Method ######
+
+`git clone git@github.com:rcbops/chef-cookbooks.git`  
+`spiceweasel --execute infrastructure.yml`
 
 ##### using the cookbooks #####
 
@@ -76,6 +83,51 @@ You can define a custom string to be included in every template file managed by 
 
 `knife environment edit <environment name>`
 `"override_attributes": { "custom_template_banner": "# This\n# is\n# a\n# multiline\n# message"`
+
+## Building Openstack with Vagrant ##
+
+Will Install a Chef server and then an all-in-one style openstack server,  or a pair of servers for `single-compute`, `single controller`.
+See `environments/vagrant-basic.json` and `nodes/*` for install parameters.
+
+
+### Requirements ###
+
+* vagrant 1.2.1 +
+* vagrant plugin - vagrant-omnibus
+* vagrant plugin - vagrant-berkshelf
+* vagrant plugin - vagrant-cachier
+
+### Usage ###
+
+###### Get Started ######
+
+It uses berkshelf, so there's no need to recurse through the submodules.
+
+```
+git clone git@github.com:rcbops/chef-cookbooks.git openstack-chef-cookbooks
+cd openstack-chef-cookbooks
+```
+
+###### All In One ######
+
+`vagrant up chef allinone`  
+
+###### Single Controller + Single Compute + Cinder ######
+
+`vagrant up chef single_controller single_compute cinder`  
+
+###### HA Controller + Single Compute + Cinder ######
+
+`vagrant up chef ha_controller1 ha_controller2 single_compute cinder`  
+
+
+### What it does ###
+
+* Uses vagrant-omnibus to ensure recent version of chef-client is installed on your VM.
+* Uses vagrant-berkshelf to install some base packages listed in `Berksfile-vagrant`.
+* Once chef server is up it runs `spiceweasel -e infrastructure.yml` to set up cookbooks,roles, and environments.
+* Then runs knife to create node definitions which are called by the various VM definitions in the Vagrantfile.
+
 
 ## License and Author ##
 

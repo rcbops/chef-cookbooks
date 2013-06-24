@@ -1,0 +1,141 @@
+berksfile:
+    options: '--no-freeze --halt-on-frozen'
+
+
+cookbooks:
+# pulled in from Berksfile
+#- apt:
+#- build-essential:
+#- ruby:
+#- git:
+#- curl:
+#- apache2:
+#- openssl:
+#- erlang:
+#- selinux:
+#- yum:
+#- openssh:
+#- ntp:
+#- database:
+#- postgresql:
+#- aws:
+#- xfs:
+#- rabbitmq:
+#- mysql:
+#- memcached:
+#- runit:
+#- nova:
+#- keystone:
+#- glance:
+#- horizon:
+#- swift:
+#- osops-utils:
+#- dsh:
+#- exerstack:
+#- kong:
+#- collectd:
+#- collectd-plugins:
+#- monit:
+#- graphite:
+#- collectd-graphite:
+#- rsyslog:
+#- modules:
+#- sysctl:
+#- hardware:
+#- monitoring:
+#- sosreport:
+#- rabbitmq-openstack:
+#- mysql-openstack:
+#- cinder:
+#- haproxy:
+#- corosync:
+#- nova-network:
+#- keepalived:
+#- openstack-ha:
+
+roles:
+- allinone:
+- base:
+- ceilometer-api:
+- ceilometer-central-agent:
+- ceilometer-collector:
+- ceilometer-compute:
+- ceilometer-setup:
+- cinder-all:
+- cinder-api:
+- cinder-scheduler:
+- cinder-setup:
+- cinder-volume:
+- collectd-client:
+- collectd-server:
+- glance-api:
+- glance:
+- glance-registry:
+- glance-setup:
+- graphite:
+- ha-controller1:
+- ha-controller2:
+- haproxy:
+- ha-swift-controller1:
+- ha-swift-controller2:
+- horizon-server:
+- jenkins-allinone:
+- jenkins-compute:
+- jenkins-controller:
+- jenkins-glance:
+- jenkins-mysql-master:
+- jenkins-nova-api:
+- keystone-api:
+- keystone:
+- keystone-setup:
+- memcached:
+- mysql-master:
+- nova-api-ec2:
+- nova-api-os-compute:
+- nova-api:
+- nova-cert:
+- nova-conductor:
+- nova-controller:
+- nova-misc-services:
+- nova-network-compute:
+- nova-network-controller:
+- nova-network:
+- nova-scheduler:
+- nova-setup:
+- nova-vncproxy:
+- nova-volume:
+- openstack-ha:
+- openstack-logging:
+- quantum-network-manager:
+- rabbitmq-server:
+- rsyslog-client:
+- rsyslog-server:
+- single-compute:
+- single-compute-usage:
+- single-controller:
+- single-controller-usage:
+- single-network-node:
+- swift-account-server:
+- swift-all-in-one:
+- swift-container-server:
+- swift-management-server:
+- swift-object-server:
+- swift-proxy-server:
+- swift-setup:
+
+
+
+
+environments:
+- example:
+- vagrant-basic:
+
+data bags:
+# - pxe_dust:
+#     items:
+#     - "*"
+
+nodes:
+#- allinone:
+#     run_list: role[allinone]
+#     options: -E vagrant-basic

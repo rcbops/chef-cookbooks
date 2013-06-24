@@ -1,0 +1,14 @@
+{
+  "name": "ha-controller2",
+  "chef_environment": "vagrant-basic",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": [
+    "role[ha-controller2]",
+    "role[cinder-api]",
+    "role[cinder-scheduler]"
+  ]
+}

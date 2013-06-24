@@ -1,0 +1,100 @@
+{
+  "name": "vagrant-basic",
+  "description": "Environment for Rackspace Private Cloud (Grizzly)",
+  "cookbook_versions": {
+  },
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+  "default_attributes": {
+    "horizon": {
+      "theme": "Rackspace"
+    }
+  },
+  "override_attributes": {
+    "hardware": {
+      "install_oem": true
+    },
+    "keystone": {
+      "users": {
+        "admin": {
+          "password": "vagrant",
+          "roles": {
+            "admin": [
+              "admin"
+            ]
+          }
+        }
+      }
+    },
+    "vips": {
+      "mysql-db": "33.33.33.63",
+      "rabbitmq-queue": "33.33.33.62",
+      "horizon-dash_ssl": "33.33.33.61",
+      "cinder-api": "33.33.33.61",
+      "nova-api": "33.33.33.61",
+      "nova-ec2-public": "33.33.33.61",
+      "nova-novnc-proxy": "33.33.33.61",
+      "horizon-dash": "33.33.33.61",
+      "keystone-admin-api": "33.33.33.61",
+      "keystone-internal-api": "33.33.33.61",
+      "keystone-service-api": "33.33.33.61",
+      "nova-xvpvnc-proxy": "33.33.33.61",
+      "glance-registry": "33.33.33.61",
+      "glance-api": "33.33.33.61"
+    },   
+    "enable_monit": false,
+    "monitoring": {
+      "metric_provider": "collectd",
+      "procmon_provider": "monit"
+    },
+    "glance": {
+      "images": [
+        "cirros"
+      ],
+      "image": {
+        "cirros": "https://launchpad.net/cirros/trunk/0.3.0/+download/cirros-0.3.0-x86_64-disk.img"
+      },
+      "image_upload": true
+    },
+    "nova": {
+      "config": {
+        "ram_allocation_ratio": 1.0,
+        "cpu_allocation_ratio": 2.0,
+        "start_guests_on_host_boot": false,
+        "resume_guests_state_on_host_boot": false,
+        "use_single_default_gateway": false
+      },
+      "libvirt": { 
+        "virt_type": "qemu" 
+      },
+      "network": {
+        "dmz_cidr": "192.168.192.168/32",
+        "public_interface": "eth1",
+        "multi_host": true
+      },
+      "networks": [
+        {
+            "label": "public",
+            "ipv4_cidr": "172.16.101.0/24",
+            "num_networks": "1",
+            "network_size": "255",
+            "bridge": "br0",
+            "bridge_dev": "eth2",
+            "dns1": "8.8.8.8",
+            "dns2": "8.8.4.4"
+        }
+      ]
+    },
+    "mysql": {
+      "allow_remote_root": true,
+      "tunable": {
+        "log_queries_not_using_index": false
+      }
+    },
+    "osops_networks": {
+      "nova": "33.33.33.0/24",
+      "public": "33.33.33.0/24",
+      "management": "33.33.33.0/24"
+    }
+  }
+}

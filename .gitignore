@@ -1,4 +1,9 @@
 metadata.json
-.chef
+.chef/*.pem
 .swp
 cookbooks.tgz
+openrc
+cookbooks/
+.vagrant/
+.berkshelf/*
+!.berkshelf/config.json

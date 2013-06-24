@@ -1,5 +1,5 @@
 {
-  "name": "example_environment",
+  "name": "example",
   "description": "Chef-server example environment",
   "cookbook_versions": {
   },

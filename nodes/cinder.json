@@ -1,0 +1,12 @@
+{
+  "name": "cinder",
+  "chef_environment": "vagrant-basic",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": [
+    "role[cinder-volume]"
+  ]
+}
