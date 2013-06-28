@@ -133,3 +133,6 @@
 [submodule "cookbooks/memcached-openstack"]
 	path = cookbooks/memcached-openstack
 	url = https://github.com/rcbops-cookbooks/memcached-openstack
+[submodule "cookbooks/iptables"]
+	path = cookbooks/iptables
+	url = https://github.com/opscode-cookbooks/iptables.git
