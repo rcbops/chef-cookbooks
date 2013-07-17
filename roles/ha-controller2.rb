@@ -9,6 +9,7 @@ run_list(
   "role[keystone-api]",
   "role[glance-registry]",
   "role[glance-api]",
+  "recipe[glance::replicator]",
   "role[nova-scheduler]",
   "role[nova-conductor]",
   "role[nova-api-ec2]",
