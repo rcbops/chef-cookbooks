@@ -11,6 +11,7 @@ run_list(
   "role[glance-setup]",
   "role[glance-registry]",
   "role[glance-api]",
+  "recipe[glance::replicator]",
   "role[nova-setup]",
   "role[nova-network-controller]",
   "role[nova-scheduler]",
