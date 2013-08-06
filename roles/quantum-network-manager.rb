@@ -5,5 +5,6 @@ run_list(
   "recipe[nova::nova-common]",
   "recipe[nova-network::quantum-plugin]",
   "recipe[nova-network::quantum-dhcp-agent]",
-  "recipe[nova-network::quantum-l3-agent]"
+  "recipe[nova-network::quantum-l3-agent]",
+  "role[openstack-logging]"
 )
