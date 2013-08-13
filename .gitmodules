@@ -81,7 +81,7 @@
 	url = https://github.com/rcbops-cookbooks/collectd-graphite.git
 [submodule "cookbooks/rsyslog"]
 	path = cookbooks/rsyslog
-	url = https://github.com/rcbops-cookbooks/rsyslog.git
+	url = https://github.com/opscode-cookbooks/rsyslog.git
 [submodule "cookbooks/modules"]
 	path = cookbooks/modules
 	url = https://github.com/rcbops-cookbooks/modules.git
@@ -115,9 +115,6 @@
 [submodule "cookbooks/haproxy"]
 	path = cookbooks/haproxy
 	url = https://github.com/rcbops-cookbooks/haproxy.git
-[submodule "cookbooks/corosync"]
-	path = cookbooks/corosync
-	url = https://github.com/rcbops-cookbooks/corosync.git
 [submodule "cookbooks/nova-network"]
 	path = cookbooks/nova-network
 	url = https://github.com/rcbops-cookbooks/nova-network.git
@@ -133,3 +130,21 @@
 [submodule "cookbooks/runit"]
 	path = cookbooks/runit
 	url = https://github.com/opscode-cookbooks/runit.git
+[submodule "cookbooks/tempest"]
+	path = cookbooks/tempest
+	url = https://github.com/rcbops-cookbooks/tempest.git
+[submodule "cookbooks/openstack-logging"]
+	path = cookbooks/openstack-logging
+	url = https://github.com/rcbops-cookbooks/openstack-logging.git
+[submodule "cookbooks/ceilometer"]
+	path = cookbooks/ceilometer
+	url = https://github.com/rcbops-cookbooks/ceilometer.git
+[submodule "cookbooks/openstack-monitoring"]
+	path = cookbooks/openstack-monitoring
+	url = https://github.com/rcbops-cookbooks/openstack-monitoring.git
+[submodule "cookbooks/memcached-openstack"]
+	path = cookbooks/memcached-openstack
+	url = https://github.com/rcbops-cookbooks/memcached-openstack.git
+[submodule "cookbooks/iptables"]
+	path = cookbooks/iptables
+	url = https://github.com/opscode-cookbooks/iptables.git
