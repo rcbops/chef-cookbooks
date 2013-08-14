@@ -1,5 +1,6 @@
 site :opscode
 
+# opscode community cookbooks
 cookbook "apache2",					git: "https://github.com/opscode-cookbooks/apache2.git"
 cookbook "openssl",					git: "https://github.com/opscode-cookbooks/openssl.git"
 cookbook "erlang",					git: "https://github.com/opscode-cookbooks/erlang.git"
@@ -17,6 +18,14 @@ cookbook "postgresql",				git: "https://github.com/opscode-cookbooks/postgresql.
 cookbook "aws",						git: "https://github.com/opscode-cookbooks/aws.git"
 cookbook "xfs",						git: "https://github.com/opscode-cookbooks/xfs.git"
 cookbook "rabbitmq",				git: "https://github.com/opscode-cookbooks/rabbitmq.git"
+cookbook "rsyslog",					git: "https://github.com/opscode-cookbooks/rsyslog.git"
+cookbook "mysql",					git: "https://github.com/opscode-cookbooks/mysql"
+cookbook "build-essential",			git: "https://github.com/opscode-cookbooks/build-essential"
+cookbook "memcached",				git: "https://github.com/opscode-cookbooks/memcached.git"
+cookbook "runit",					git: "https://github.com/opscode-cookbooks/runit.git"
+cookbook "iptables",				git: "https://github.com/opscode-cookbooks/iptables.git"
+
+# rackspace rcbops
 cookbook "swift",					git: "https://github.com/rcbops-cookbooks/swift.git"
 cookbook "osops-utils",				git: "https://github.com/rcbops-cookbooks/osops-utils.git"
 cookbook "dsh",						git: "https://github.com/rcbops-cookbooks/dsh.git"
@@ -27,7 +36,6 @@ cookbook "collectd-plugins",		git: "https://github.com/rcbops-cookbooks/collectd
 cookbook "monit",					git: "https://github.com/rcbops-cookbooks/monit.git"
 cookbook "graphite",				git: "https://github.com/rcbops-cookbooks/graphite.git"
 cookbook "collectd-graphite",		git: "https://github.com/rcbops-cookbooks/collectd-graphite.git"
-cookbook "rsyslog",					git: "https://github.com/opscode-cookbooks/rsyslog.git"
 cookbook "modules",					git: "https://github.com/rcbops-cookbooks/modules.git"
 cookbook "sysctl",					git: "https://github.com/rcbops-cookbooks/sysctl.git"
 cookbook "hardware",				git: "https://github.com/rcbops-cookbooks/hardware"
@@ -35,18 +43,13 @@ cookbook "monitoring",				git: "https://github.com/rcbops-cookbooks/monitoring.g
 cookbook "sosreport",				git: "https://github.com/rcbops-cookbooks/sosreport.git"
 cookbook "rabbitmq-openstack",		git: "https://github.com/rcbops-cookbooks/rabbitmq-openstack.git"
 cookbook "mysql-openstack",			git: "https://github.com/rcbops-cookbooks/mysql-openstack.git"
-cookbook "mysql",					git: "https://github.com/opscode-cookbooks/mysql"
-cookbook "build-essential",			git: "https://github.com/opscode-cookbooks/build-essential"
 cookbook "cinder",					git: "https://github.com/rcbops-cookbooks/cinder.git"
 cookbook "haproxy",					git: "https://github.com/rcbops-cookbooks/haproxy.git"
 cookbook "nova-network",			git: "https://github.com/rcbops-cookbooks/nova-network.git"
 cookbook "keepalived",				git: "https://github.com/rcbops-cookbooks/keepalived.git"
 cookbook "openstack-ha",			git: "https://github.com/rcbops-cookbooks/openstack-ha.git"
-cookbook "memcached",				git: "https://github.com/opscode-cookbooks/memcached.git"
-cookbook "runit",					git: "https://github.com/opscode-cookbooks/runit.git"
 cookbook "tempest",					git: "https://github.com/rcbops-cookbooks/tempest.git"
 cookbook "openstack-logging",		git: "https://github.com/rcbops-cookbooks/openstack-logging.git"
 cookbook "ceilometer",				git: "https://github.com/rcbops-cookbooks/ceilometer.git"
 cookbook "openstack-monitoring",	git: "https://github.com/rcbops-cookbooks/openstack-monitoring.git"
 cookbook "memcached-openstack",		git: "https://github.com/rcbops-cookbooks/memcached-openstack.git"
-cookbook "iptables",				git: "https://github.com/opscode-cookbooks/iptables.git"
