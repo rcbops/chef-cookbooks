@@ -49,7 +49,7 @@ A few words about the various branches in this repository, and the cookbook repo
   * This branch will be gate tested but is not guaranteed to be a stable or deployable version.
 
 * release branches (folsom, grizzly, etc)
-  * **Do not submit pull requests to these branchs!**
+  * **Do not submit pull requests to these branches!**
   * Versions will be tagged after release by QE.
   * Each tag is a stable, deployable release branch for that version of OpenStack
   * No new features will be added.
