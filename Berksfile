@@ -26,7 +26,7 @@ cookbook "runit",					git: "https://github.com/opscode-cookbooks/runit.git"
 cookbook "iptables",				git: "https://github.com/opscode-cookbooks/iptables.git"
 
 # rackspace rcbops
-cookbook "swift",					git: "https://github.com/rcbops-cookbooks/swift.git"
+cookbook "swift",					git: "https://github.com/rcbops-cookbooks/swift.git", branch: "grizzly"
 cookbook "osops-utils",				git: "https://github.com/rcbops-cookbooks/osops-utils.git"
 cookbook "dsh",						git: "https://github.com/rcbops-cookbooks/dsh.git"
 cookbook "exerstack",				git: "https://github.com/rcbops-cookbooks/exerstack.git"
