@@ -26,7 +26,6 @@ The following guidelines for contribution should be followed if you want to subm
 * Make sure you stick to the coding style that is used already.
 * Make commits of logical units and describe them properly.
 * Check for unnecessary whitespace with `git diff --check` before committing.
-
 * If possible, submit tests to your patch / new feature so it can be tested easily.
 * Assure nothing is broken by running all the tests. See [TESTING.md](TESTING.md) within each cookbook repository for more detailed information.
 
@@ -44,13 +43,13 @@ The following guidelines for contribution should be followed if you want to subm
 
 A few words about the various branches in this repository, and the cookbook repositories.
 
-* master branch ("trunk"): *
+* master branch ("trunk"):
   * **All development happens here!**
   * Submit your pull requests to this branch.
   * This branch will be gate tested but is not guaranteed to be a stable or deployable version.
 
 * release branches (folsom, grizzly, etc)
-  * ** Do not submit pull requests to these branchs!**
+  * **Do not submit pull requests to these branchs!**
   * Versions will be tagged after release by QE.
   * Each tag is a stable, deployable release branch for that version of OpenStack
   * No new features will be added.
