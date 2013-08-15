@@ -1,5 +1,5 @@
 {
-  "name": "example_environment",
+  "name": "example_ha_environment",
   "description": "Chef-server example environment",
   "cookbook_versions": {
   },
@@ -42,6 +42,37 @@
         }
       }
     },
+    "vips": {
+      "rabbitmq-queue": "192.168.0.240",
+      "horizon-dash": "192.168.0.241",
+      "horizon-dash_ssl": "192.168.0.241",
+      "keystone-service-api": "192.168.0.241",
+      "keystone-admin-api": "192.168.0.241",
+      "keystone-internal-api": "192.168.0.241",
+      "nova-xvpvnc-proxy": "192.168.0.241",
+      "nova-api": "192.168.0.241",
+      "nova-ec2-public": "192.168.0.241",
+      "nova-novnc-proxy": "192.168.0.241",
+      "cinder-api": "192.168.0.241",
+      "glance-api": "192.168.0.241",
+      "glance-registry": "192.168.0.241",
+      "swift-proxy": "192.168.0.241",
+      "mysql-db": "192.168.0.242",
+      "config": {
+        "192.168.0.240": {
+          "vrid": 11,
+          "network": "public"
+        },
+        "192.168.0.241": {
+          "vrid": 12,
+          "network": "public"
+        },
+        "192.168.0.242": {
+          "vrid": 10,
+          "network": "public"
+        }
+      }
+    },
     "mysql": {
       "allow_remote_root": true,
       "root_network_acl": "%"
@@ -51,6 +82,5 @@
       "public": "192.168.1.0/24",
       "management": "192.168.1.0/24"
     },
-    "package_component": "folsom"
   }
 }
