@@ -21,6 +21,7 @@ Network configuration is stored in Chef `environment`. Please see `environments/
 
 ##### getting the cookbooks #####
 
+###### Standard Method ######
 * clone the parent repository (note the `--recursive` flag - this will ensure that each of the repositories that the submodules point to is also cloned):
 
 `git clone --recursive git@github.com:rcbops/chef-cookbooks.git`  
@@ -30,6 +31,12 @@ Network configuration is stored in Chef `environment`. Please see `environments/
 `cd chef-cookbooks`  
 `knife cookbook upload -o cookbooks --all`  
 `knife role from file roles/*.rb`
+
+###### Berkshelf/Spiceweasel Method ######
+
+`git clone git@github.com:rcbops/chef-cookbooks.git`  
+`spiceweasel --execute infrastructure.yml`
+
 
 ##### using the cookbooks #####
 
@@ -69,13 +76,53 @@ Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+
 `...`  
 `knife node run_list add nodeN 'role[single-compute]'`  
 
-
 ## Custom template banners ##
 
 You can define a custom string to be included in every template file managed by the Rackspace cookbooks by defining the custom_template_banner environment variable.  For Example:
 
 `knife environment edit <environment name>`
 `"override_attributes": { "custom_template_banner": "# This\n# is\n# a\n# multiline\n# message"`
+
+## Building Openstack with Vagrant ##
+
+Will Install a Chef server and then an all-in-one style openstack server,  or a pair of servers for `single-compute`, `single controller`.
+See `environments/vagrant-basic.json` and `nodes/*` for install parameters.
+
+
+### Requirements ###
+
+* vagrant 1.2.1 +
+* vagrant plugin - vagrant-omnibus
+* vagrant plugin - vagrant-berkshelf
+
+### Usage ###
+
+###### Chef ######
+This is the safe method
+
+`vagrant up chef allinone`  
+or
+`vagrant up chef single_controller single_compute`  
+
+
+###### Chef Zero ######
+lower overhead for low-spec machines.  has issues.
+
+* doesn't keep state through restarts.
+* can hang the vagrant provisioning which you have to hit with a few CTL-C.
+* mysql recipe freaks out, need to track down why and fix.
+* if you use LXC it doesn't create the private network so need to modify knife.rb and client.rb to suit.
+
+`vagrant up chef_zero [--provider=lxc]`  
+`vagrant up allinone`
+
+
+### What it does ###
+
+* Uses vagrant-omnibus to ensure recent version of chef-client is installed on your VM.
+* Uses vagrant-berkshelf to install some base packages listed in `Berksfile-vagrant`.
+* Once chef server is up it runs `spiceweasel -e infrastructure.yml` to set up cookbooks,roles, and environments.
+* then runs knife to create node definitions which can be used by `allinone`, `single_compute`, `single_controller`.
 
 ## License and Author ##
 

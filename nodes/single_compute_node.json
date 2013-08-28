@@ -1,0 +1,12 @@
+{
+  "name": "single-compute",
+  "chef_environment": "vagrant-basic",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": [
+    "role[single-compute]"
+  ]
+}
