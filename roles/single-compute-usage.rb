@@ -6,7 +6,7 @@ run_list(
   "role[rsyslog-client]",
   "role[nova-network-compute]",
   "role[single-compute]",
-  "role[ceilometer-compute]"
+  "role[ceilometer-compute]",
   "recipe[openstack-monitoring::nova-compute]",
   "role[openstack-logging]"
 )
