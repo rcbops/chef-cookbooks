@@ -86,6 +86,7 @@ Author:: Joseph Breu (<joseph.breu@rackspace.com>)
 Author:: William Kelly (<william.kelly@rackspace.com>)  
 Author:: Darren Birkett (<darren.birkett@rackspace.co.uk>)  
 Author:: Evan Callicoat (<evan.callicoat@rackspace.com>)  
+Author:: Andy McCrae (<andrew.mccrae@rackspace.co.uk>)  
 
 Copyright 2012, Rackspace US, Inc.  
 

@@ -2,6 +2,7 @@ name "ha-controller2"
 description "Nova Controller 2 (non-HA)"
 run_list(
   "role[base]",
+  "recipe[osops-utils::keepalived-timeouts]",
   "role[rsyslog-client]",
   "role[mysql-master]",
   "role[rabbitmq-server]",
