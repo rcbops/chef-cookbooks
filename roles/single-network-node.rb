@@ -4,8 +4,8 @@ run_list(
   "role[base]",
   "recipe[osops-utils::keepalived-timeouts]",
   "role[rsyslog-client]",
-  "recipe[nova-network::quantum-metadata-agent]",
-  "recipe[nova-network::quantum-dhcp-agent]",
-  "recipe[nova-network::quantum-plugin]",
+  "recipe[nova-network::neutron-metadata-agent]",
+  "recipe[nova-network::neutron-dhcp-agent]",
+  "recipe[nova-network::neutron-plugin]",
   "role[openstack-logging]"
 )
