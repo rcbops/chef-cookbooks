@@ -9,6 +9,7 @@
   },
   "override_attributes": {
     "developer_mode": false,
+    "enable_testing_repos": false,
     "monitoring" : {
       "metric_provider" : "collectd",
       "procmon_provider" : "monit"
