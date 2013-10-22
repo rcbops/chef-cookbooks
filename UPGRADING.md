@@ -10,7 +10,8 @@ Known Issues
   the chef-client run.  If you forget to do this, fear not.  The run
   will fail, at which point you can manually upgrade qemu-kvm and then
   run chef-client again with no issues.  Currently this takes a couple
-  of runs.  Make sure you've got the havana repos set up.
+  of runs.  Make sure you've got the havana repos set up.  I've filed
+  a bug: https://bugs.launchpad.net/ubuntu/+source/qemu/+bug/1243403
 
   apt-get install -y qemu-kvm qemu-utils qemu-system-common qemu-system-x86
 
