@@ -1,10 +1,10 @@
 name "ceilometer-all"
 description "Ceilometer Services"
 run_list(
-  "role[ceilometer-setup]"
+  "role[ceilometer-setup]",
   "role[ceilometer-api]",
   "role[ceilometer-central-agent]",
   "role[ceilometer-collector]",
-  "role[ceilometer-compute]",
+  "role[ceilometer-compute]"
 )
 
