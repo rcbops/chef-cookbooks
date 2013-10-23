@@ -150,4 +150,4 @@
 	url = https://github.com/opscode-cookbooks/iptables.git
 [submodule "cookbooks/heat"]
 	path = cookbooks/heat
-	url = git@github.com:rcbops-cookbooks/heat.git
+	url = https://github.com/rcbops-cookbooks/heat.git
