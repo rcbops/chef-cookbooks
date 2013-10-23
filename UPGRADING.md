@@ -22,3 +22,27 @@ Known Issues
   list, for example.  This can be resolved by apt-get install
   python-cmd2.  We've filed a package bug here:
   https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1242925
+
+
+4.1.X to 4.2 (CentOS6/RHEL6)
+============================
+
+
+Known Issues
+------------
+
+* Openstack Dashboard requires manual upgrade. 
+  RUN: `yum install openstack-dashboard` or else the package will not be 
+  upgraded which causes horizon to look for quantumclient as an import. 
+  Manually upgrading this package solves the issue. After this installation 
+  run chef-client normally.
+
+* Openstack Dashboard wants to upgrade the package 
+  "python-django-openstack-auth.noarch" to version "1.1.2-1". This
+  causes the dashboard to fail authentication and die. The specific error is,
+  '"POST /auth/login/ HTTP/1.1" 403 1006' and is only seen when in single 
+  server mode. To get around this, install the the previous package version 
+  "1.0.11-1.el6". Presently you have to downgrade to the "1.0.11-1.el6" 
+  package. 
+  Bug filed Here: https://bugzilla.redhat.com/show_bug.cgi?id=1000391
+
