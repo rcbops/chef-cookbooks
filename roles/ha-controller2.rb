@@ -22,7 +22,11 @@ run_list(
   "role[nova-vncproxy]",
   "role[horizon-server]",
   "role[openstack-ha]",
-  "role[openstack-logging]"
+  "role[openstack-logging]",
+  "role[ceilometer-setup]",
+  "role[ceilometer-api]",
+  "role[ceilometer-collector]",
+  "role[ceilometer-central-agent]"
 )
 
 override_attributes "keepalived" => { "shared_address" => "true" }

@@ -21,5 +21,9 @@ run_list(
   "role[nova-cert]",
   "role[nova-vncproxy]",
   "role[horizon-server]",
-  "role[openstack-logging]"
+  "role[openstack-logging]",
+  "role[ceilometer-setup]",
+  "role[ceilometer-api]",
+  "role[ceilometer-collector]",
+  "role[ceilometer-central-agent]"
 )
