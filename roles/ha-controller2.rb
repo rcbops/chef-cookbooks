@@ -23,7 +23,6 @@ run_list(
   "role[horizon-server]",
   "role[openstack-ha]",
   "role[openstack-logging]",
-  "role[ceilometer-setup]",
   "role[ceilometer-api]",
   "role[ceilometer-collector]",
   "role[ceilometer-central-agent]"
