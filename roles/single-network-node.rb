@@ -7,5 +7,6 @@ run_list(
   "recipe[nova-network::neutron-metadata-agent]",
   "recipe[nova-network::neutron-dhcp-agent]",
   "recipe[nova-network::neutron-plugin]",
+  "recipe[nova-network::neutron-l3-agent]",
   "role[openstack-logging]"
 )
