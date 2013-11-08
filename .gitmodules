@@ -151,3 +151,9 @@
 [submodule "cookbooks/heat"]
 	path = cookbooks/heat
 	url = https://github.com/rcbops-cookbooks/heat.git
+[submodule "cookbooks/swift-lite"]
+	path = cookbooks/swift-lite
+	url = https://github.com/rcbops-cookbooks/swift-lite.git
+[submodule "cookbooks/swift-private-cloud"]
+	path = cookbooks/swift-private-cloud
+	url = https://github.com/rcbops-cookbooks/swift-private-cloud.git
