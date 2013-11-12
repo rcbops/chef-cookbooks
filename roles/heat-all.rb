@@ -5,5 +5,5 @@ run_list(
   "role[heat-engine]",
   "role[heat-api]",
   "role[heat-api-cfn]",
-  "role[heat-api-cloudwatch]",
+  "role[heat-api-cloudwatch]"
 )
