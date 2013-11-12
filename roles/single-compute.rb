@@ -8,5 +8,6 @@ run_list(
   "role[nova-network-compute]",
   "recipe[nova::compute]",
   "recipe[openstack-monitoring::nova-compute]",
-  "role[openstack-logging]"
+  "role[openstack-logging]",
+  "role[ceilometer-compute]"
 )

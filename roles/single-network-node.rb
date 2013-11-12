@@ -1,5 +1,5 @@
 name "single-network-node"
-description "Quantum Network Node (non-HA)"
+description "Neutron Network Node (non-HA)"
 run_list(
   "role[base]",
   "recipe[osops-utils::keepalived-timeouts]",
