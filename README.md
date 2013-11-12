@@ -1,6 +1,6 @@
 ## Description ##
 
-This repository contains a collection of [chef](http://www.opscode.com/chef/) cookbooks  that can be used to deploy, and manage, the suite of OpenStack core projects (nova, glance, keystone, swift, horizon).  
+This repository contains a collection of [chef](http://www.opscode.com/chef/) cookbooks  that can be used to deploy, and manage, the suite of OpenStack core projects (nova, glance, keystone, swift, horizon).  [User documentation](http://www.rackspace.com/knowledge_center/getting-started/rackspace-private-cloud) is available in our knowledge center!  The rest of this documentation is primarily aimed at developers who want to hack on the cookbooks.
 
 The cookbooks have been designed and written in such a way that they can be used to deploy individual service components on _any_ of the nodes in the infrastructure; in short they can be used for single node 'all-in-one' installs (for testing), right up to multi/many node production installs.  
 
