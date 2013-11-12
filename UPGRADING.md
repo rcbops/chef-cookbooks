@@ -62,19 +62,3 @@ Known Issues
   rabbitmq["vip"] = "#{node['ipaddress']}
 
   node['ipaddress'] may not be the right ip, though!
-
-* Openstack Dashboard requires manual upgrade. 
-  RUN: `yum install openstack-dashboard` or else the package will not be 
-  upgraded which causes horizon to look for quantumclient as an import. 
-  Manually upgrading this package solves the issue. After this installation 
-  run chef-client normally.
-
-* Openstack Dashboard wants to upgrade the package 
-  "python-django-openstack-auth.noarch" to version "1.1.2-1". This
-  causes the dashboard to fail authentication and die. The specific error is,
-  '"POST /auth/login/ HTTP/1.1" 403 1006' and is only seen when in single 
-  server mode. To get around this, install the the previous package version 
-  "1.0.11-1.el6". Presently you have to downgrade to the "1.0.11-1.el6" 
-  package. 
-  Bug filed Here: https://bugzilla.redhat.com/show_bug.cgi?id=1000391
-
