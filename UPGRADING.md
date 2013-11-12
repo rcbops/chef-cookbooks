@@ -1,29 +1,17 @@
-4.1.X to 4.2
-============
+4.1.X to 4.2 (Ubuntu)
+=====================
 
 Process
 -------
-
-Ensure that you are on the latest 4.1 series of cookbooks.  We are not
-heavily testing upgrades from previous releases directly to havana.
 
 Use knife to edit the environment for the nova cluster.  Ensure that
 in override_attributes, there is the following section:
 
 "osops": { "do_package_upgrades": true }
 
-knife cookbook upload the latest cookbooks.
-knife role from_file the latest roles.
 
-If this is a quantum configuration, all node / environmental
-attributes with "quantum" in their name must be munged to say
-"neutron" instead.  Make these changes.
-
-Run chef-client everywhere!
-
-
-Known Issues (Ubuntu)
----------------------
+Known Issues
+-------------
 
 * In 4.1.3 and 4.2, rabbitmq now binds to the management network.  If
   you are colocating a chef server on the controller, you need to
@@ -55,14 +43,12 @@ Known Issues (Ubuntu)
   python-cmd2.  We've filed a package bug here:
   https://bugs.launchpad.net/ubuntu/+source/nova/+bug/1242925
 
-* Horizon does not depend on python-django1.5, but django 1.5 is
-  provided in the havana repository.  At the end of the upgrade
-  process, django 1.4 will remain installed.  New installations,
-  though, will have django 1.5.  This does not seem to cause any
-  trouble, but it may not be desirable.  A full apt-get upgrade will
-  resolve this issue.  This could be resolved by upgrading the package.
 
-Known Issues (Centos6)
+4.1.X to 4.2 (CentOS6/RHEL6)
+============================
+
+
+Known Issues
 ------------
 
 * In 4.1.3 and 4.2, rabbitmq now binds to the management network.  If
@@ -76,13 +62,3 @@ Known Issues (Centos6)
   rabbitmq["vip"] = "#{node['ipaddress']}
 
   node['ipaddress'] may not be the right ip, though!
-
-* Openstack Dashboard wants to upgrade the package 
-  "python-django-openstack-auth.noarch" to version "1.1.2-1". This
-  causes the dashboard to fail authentication and die. The specific error is,
-  '"POST /auth/login/ HTTP/1.1" 403 1006' and is only seen when in single 
-  server mode. To get around this, install the the previous package version 
-  "1.0.11-1.el6". Presently you have to downgrade to the "1.0.11-1.el6" 
-  package. 
-  Bug filed Here: https://bugzilla.redhat.com/show_bug.cgi?id=1000391
-
