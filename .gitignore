@@ -2,3 +2,6 @@ metadata.json
 .chef
 .swp
 cookbooks.tgz
+Berksfile
+Berksfile.lock
+openrc
