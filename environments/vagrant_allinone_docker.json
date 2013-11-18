@@ -1,0 +1,51 @@
+{
+  "name": "vagrant-allinone-docker",
+  "description": "Chef-server example environment",
+  "cookbook_versions": {
+  },
+  "json_class": "Chef::Environment",
+  "chef_type": "environment",
+  "default_attributes": {
+  },
+  "override_attributes": {
+    "developer_mode": false,
+    "enable_testing_repos": false,
+    "monitoring" : {
+      "metric_provider" : "collectd",
+      "procmon_provider" : "monit"
+    },
+    "glance": {
+      "image_upload": false,
+      "api": { "container_formats": "ami,ari,aki,bare,ovf,docker" }
+    },
+    "nova": {
+      "ratelimit" : {
+        "api" : { "enabled" : true },
+        "volume" : { "enabled" : true }
+      },
+      "libvirt": { "virt_type": "" },
+      "compute": { "connection_type": ""},
+      "docker" : { "enabled": true },
+      "networks": {
+        "public": {
+            "label": "public",
+            "ipv4_cidr": "192.168.100.0/24",
+            "bridge": "br100",
+            "bridge_dev": "eth1",
+            "dns1": "8.8.8.8",
+            "dns2": "8.8.4.4"
+        }
+      }
+    },
+    "mysql": {
+      "allow_remote_root": true,
+      "root_network_acl": "%"
+    },
+    "osops_networks": {
+      "nova": "192.168.100.0/24",
+      "public": "192.168.100.0/24",
+      "management": "192.168.100.0/24"
+    },
+    "package_component": "havana"
+  }
+}

@@ -45,8 +45,8 @@ Vagrant.configure("2") do |config|
     ubuntu1204.vm.box = "opscode-ubuntu-12.04"
     ubuntu1204.vm.box_url = "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
     ubuntu1204.vm.provision :chef_client do |chef|
-      chef.environment = "vagrant-allinone"
-      chef.run_list = [ "recipe[apt::cacher-client]", "role[allinone]" ]
+      chef.environment = "vagrant-allinone-docker"
+      chef.run_list = [ "recipe[apt::cacher-client]", "role[allinone]", "recipe[nova::docker-registry]" ]
     end
     ubuntu1204.vm.provision :shell, :inline => <<-SCRIPT
       cp /root/openrc /vagrant/openrc

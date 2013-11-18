@@ -5,3 +5,5 @@ cookbooks.tgz
 Berksfile
 Berksfile.lock
 openrc
+.vagrant
+.zero-knife.rb
