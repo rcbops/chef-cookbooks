@@ -2,3 +2,8 @@ metadata.json
 .chef
 .swp
 cookbooks.tgz
+Berksfile
+Berksfile.lock
+openrc
+.vagrant
+.zero-knife.rb

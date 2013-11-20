@@ -69,6 +69,40 @@ Ensure you have [registered](http://wiki.opscode.com/display/chef/Cookbook+Fast+
 `...`  
 `knife node run_list add nodeN 'role[single-compute]'`  
 
+## Testing ###
+
+#### Vagrant ####
+
+Requirements:
+
+* Vagrant >= 1.3.0 - http://downloads.vagrantup.com/
+* VirtualBox - https://www.virtualbox.org/wiki/Downloads
+* Vagrant Plugins
+
+    vagrant plugin install vagrant-omnibus
+    vagrant plugin install vagrant-chef-zero
+    vagrant plugin install vagrant-berkshelf
+
+* rcbops repo
+
+    git clone --recursive git@github.com:rcbops/chef-cookbooks.git
+
+* Launch
+
+    vagrant up ubuntu1204
+
+* Test
+
+    source openrc
+    nova boot --image cirros-image --flavor 1 Test
+    nova list
+    ping 192.168.1.2
+
+Things you should know about
+
+* Chef Environment - `environments/vagrant_allinone.json`
+* Berkshelf - Vagrant will create a berkshelf file based on the contents of `.gitmodules` and `cookbooks`
+
 
 ## Custom template banners ##
 
