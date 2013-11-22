@@ -58,6 +58,11 @@
       "glance-registry": "192.168.0.241",
       "swift-proxy": "192.168.0.241",
       "mysql-db": "192.168.0.242",
+      "ceilometer-api": "192.168.0.241",
+      "ceilometer-central-agent": "192.168.0.241",
+      "heat-api": "192.168.0.241",
+      "heat-api-cfn": "192.168.0.241",
+      "heat-api-cloudwatch": "192.168.0.241",
       "config": {
         "192.168.0.240": {
           "vrid": 11,
