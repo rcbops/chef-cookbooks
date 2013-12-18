@@ -157,3 +157,6 @@
 [submodule "cookbooks/swift-private-cloud"]
 	path = cookbooks/swift-private-cloud
 	url = https://github.com/rcbops-cookbooks/swift-private-cloud.git
+[submodule "cookbooks/ceph"]
+	path = cookbooks/ceph
+	url = https://github.com/ceph/ceph-cookbooks
