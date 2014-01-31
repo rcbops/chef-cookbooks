@@ -14,6 +14,7 @@ run_list(
   "role[nova-scheduler]",
   "role[nova-conductor]",
   "role[nova-api-ec2]",
+  "role[nova-api-metadata]",
   "role[nova-api-os-compute]",
   "role[nova-network-controller]",
   "role[cinder-api]",
