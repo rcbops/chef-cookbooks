@@ -160,3 +160,13 @@
 [submodule "cookbooks/ceph"]
 	path = cookbooks/ceph
 	url = https://github.com/ceph/ceph-cookbooks
+[submodule "cookbooks/openstack-ceph"]
+	path = cookbooks/openstack-ceph
+	url = https://github.com/rcbops-cookbooks/openstack-ceph
+[submodule "cookbooks/cron"]
+        path = cookbooks/cron
+        url = https://github.com/opscode-cookbooks/cron.git
+[submodule "cookbooks/chef-client"]
+        path = cookbooks/chef-client
+        url = https://github.com/opscode-cookbooks/chef-client.git
+
