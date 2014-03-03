@@ -169,3 +169,6 @@
 [submodule "cookbooks/chef-client"]
 	path = cookbooks/chef-client
 	url = https://github.com/opscode-cookbooks/chef-client.git
+[submodule "cookbooks/logrotate"]
+	path = cookbooks/logrotate
+	url = https://github.com/stevendanna/logrotate.git
