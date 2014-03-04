@@ -7,7 +7,7 @@ run_list(
   "recipe[ntp]",
   "recipe[rsyslog::default]",
   "recipe[hardware]",
-  "recipe[osops-utils::default]"
+  "recipe[osops-utils::version]"
 )
 default_attributes(
   "ntp" => {
