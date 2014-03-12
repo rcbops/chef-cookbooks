@@ -23,15 +23,15 @@ run_list(
   "role[cinder-setup]",
   "role[cinder-api]",
   "role[cinder-scheduler]",
+  "role[ceilometer-setup]",
+  "role[ceilometer-api]",
+  "role[ceilometer-collector]",
+  "role[ceilometer-central-agent]",
   "role[nova-cert]",
   "role[nova-vncproxy]",
   "role[horizon-server]",
   "role[openstack-ha]",
-  "role[openstack-logging]",
-  "role[ceilometer-setup]",
-  "role[ceilometer-api]",
-  "role[ceilometer-collector]",
-  "role[ceilometer-central-agent]"
+  "role[openstack-logging]"
 )
 
 override_attributes "keepalived" => { "shared_address" => "true" }
