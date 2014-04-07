@@ -79,9 +79,6 @@
 [submodule "cookbooks/rsyslog"]
 	path = cookbooks/rsyslog
 	url = https://github.com/opscode-cookbooks/rsyslog.git
-[submodule "cookbooks/modules"]
-	path = cookbooks/modules
-	url = https://github.com/Youscribe/modules-cookbook
 [submodule "cookbooks/sysctl"]
 	path = cookbooks/sysctl
 	url = https://github.com/rcbops-cookbooks/sysctl.git
