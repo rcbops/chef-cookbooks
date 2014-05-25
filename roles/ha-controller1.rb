@@ -22,7 +22,6 @@ run_list(
   "role[nova-api-os-compute]",
   "role[cinder-setup]",
   "role[cinder-api]",
-  "role[cinder-scheduler]",
   "role[nova-cert]",
   "role[nova-vncproxy]",
   "role[horizon-server]",
