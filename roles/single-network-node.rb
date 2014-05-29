@@ -10,5 +10,6 @@ run_list(
   "recipe[nova-network::neutron-l3-agent]",
   "recipe[nova-network::neutron-lbaas-agent]",
   "recipe[nova-network::rpcdaemon]",
+  "recipe[openstack-monitoring::nova-network]",
   "role[openstack-logging]"
 )
