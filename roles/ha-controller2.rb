@@ -18,7 +18,6 @@ run_list(
   "role[nova-api-os-compute]",
   "role[nova-network-controller]",
   "role[cinder-api]",
-  "role[cinder-scheduler]",
   "role[ceilometer-api]",
   "role[ceilometer-collector]",
   "role[ceilometer-central-agent]",
