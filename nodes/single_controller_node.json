@@ -1,0 +1,14 @@
+{
+  "name": "single-controller",
+  "chef_environment": "vagrant-basic",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": [
+    "role[single-controller]",
+    "role[cinder-api]",
+    "role[cinder-scheduler]"
+  ]
+}

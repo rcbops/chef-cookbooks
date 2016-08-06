@@ -1,0 +1,13 @@
+{
+  "name": "allinone",
+  "chef_environment": "vagrant-basic",
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "run_list": [
+    "role[allinone]",
+    "role[cinder-all]"
+  ]
+}
